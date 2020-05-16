@@ -1,0 +1,1318 @@
+﻿//lexFile 码表文件
+import fsys;
+import fsys.codepage;
+import string.builder;
+import string.database;
+import string.conv;	
+import wubi.phrase;
+
+namespace wubi;
+
+class lexFile{
+	ctor( filePath ){
+		if(!filePath){
+			filePath = self.path();
+			if(!filePath){
+				return null,"请指定码表路径";
+			}
+		}
+		
+		this.inputCodes =  {};
+		this.outputMap =  {}; 
+		this.codeWeight  = {}; 
+		this.clear = function(){
+			this.codeWeight = {};
+			..table.clear(this.inputCodes)
+			..table.clear(outputMap)
+		};
+		
+		var trim = ..string.trim;
+		var match = ..string.match;
+		var push = ..table.push;
+		var replace = ..string.replace;
+		this.addText = function(bin){
+			var outputMap = this.outputMap;
+			var inputCodes = this.inputCodes;
+			
+			var splitEx = ..string.splitEx;
+			
+			//清理yaml
+			var bin,yamlCount = ..string.replace(bin,"!\N---\s\n.+!\N\.\.\.\s*\N?!",""); 
+			
+			//清理注释
+			var bin = ..string.replace(bin,"!\N#\t?!\N+\n","");
+			
+			var jidian;
+			var descIdx,descEndIdx = ..string.find(bin,"!\N\[Text\]\s*\n\s*");  
+		
+			if(descEndIdx){
+				var description = ..string.slice(bin,1,descIdx);
+				if(..string.indexOf(description,"~:生僻字词") && ..string.indexOf(description,"^:用户词组")){
+					jidian = true;
+				}
+				
+				bin = ..string.right(bin,-(descEndIdx+1));
+				if( ..string.match(bin,"^[^a-z]+[a-z\s]+\r?\n") ){ 
+					//微软码表
+					for line in ..string.lines(bin) { 
+						words,code = match(line,"^([^a-z]*)([a-z\s]+)$")
+						
+						if( code && #words ){ 
+							code = trim(code); 
+							var codes = splitEx(code,"\s+");
+					
+							for(i=1;#codes;1) {
+								var code = codes[i];
+								if(!outputMap[code]){
+									outputMap[code] = {};
+									push(inputCodes,code);
+								}
+								
+								push(outputMap[code],words); 
+							} 
+						}
+					} 
+					
+					return;
+				}
+			}
+			  
+			var code,words,weight;
+			var codeWeight = this.codeWeight; 
+            var descWeightMin = 0xFFFFFFFF;
+			for line in ..string.lines(bin) {
+				var code,words,weight = match(line,"^([a-z]{1,4})\s+(\S*)\s+(\d+)\s*$")
+				if(words && code && (#weight) ){ 
+					weight = tonumber(weight);
+					
+					words = replace(words,"@%20",' ')
+					words = replace(words,"@%09",'\t') 
+					words = replace(words,"@%0A",'\n')
+						
+					if(!outputMap[code]){
+						outputMap[code] = {words};
+						push(inputCodes,code);
+						
+						codeWeight[code] = {[words]=weight};
+					}
+					else {
+						push(outputMap[code],words); 
+						codeWeight[code][words] = weight;
+					};
+					
+					continue;
+				};
+				
+				var code,words = match(line,"^([a-z]{1,4})\s+(\S.*)\s*")
+				if( !(code && words) ){ 
+					words,code,weight = match(line,"^(\S+)\s+([a-z]{1,4})\s+(\d+)\s*[a-z]*\s*$");
+					if(words && code && (#weight) ){
+						if(!outputMap[code]){
+							outputMap[code] = {};
+							push(inputCodes,code);
+							codeWeight[code] = {};
+						}
+						
+						words = replace(words,"@%20",' ')
+						words = replace(words,"@%09",'\t') 
+						words = replace(words,"@%0A",'\n')
+						push(outputMap[code],words); 
+						
+						weight = 0xFFFF-(tonumber(weight))
+						codeWeight[code][words] = weight;
+						if( weight<descWeightMin ){
+							descWeightMin = weight;
+						}
+						continue;
+					}
+					if(codeWeight[0]){
+						continue;
+					}
+					
+					words,code = match(line,"^(\S+)\s+([a-z]{1,4})\s*$")
+					
+					if( !(code && words) ){
+						words,code = match(line,"^(\S+)\s+([a-z\s]+)$")
+						
+						if( code && #words ){ 
+							code = trim(code);
+							
+							var codes = splitEx(code,"\s+");
+					
+							for(i=1;#codes;1) {
+								var code = codes[i];
+								if(!outputMap[code]){
+									outputMap[code] = {};
+									push(inputCodes,code);
+								}
+								
+								push(outputMap[code],words); 
+							}
+							
+							continue;
+						}
+					}
+				}
+				
+				words = words ? trim(words);
+				if( code && #words ){ 
+					if(!outputMap[code]){
+						outputMap[code] = {};
+						push(inputCodes,code);
+					}
+					
+					var strs = splitEx(words,"\s+");
+					for(i=1;#strs;1) {
+						var s = replace(strs[i],"@%20",' ')
+						s = replace(s,"@%09",'\t') 
+						s = replace(s,"@%0A",'\n')
+						push(outputMap[code],s); 
+					}
+				} 
+            } 				
+            
+            if(descWeightMin != 0xFFFFFFFF){
+            	if(descWeightMin>5000){
+            		for(code,weight in this.codeWeight){ 
+            			for(t,w in weight){ 
+            				weight[t] = w-descWeightMin+5000;
+            			} 
+            		} 
+            	}
+            }
+            
+            //清理极点标记
+            if(jidian){
+                this.codeWeight = {};
+            	var remove = ..table.remove;
+            	var right = ..string.right;
+				for(i=#inputCodes;1;-1){
+					var code = inputCodes[i]  
+					var texts = this.outputMap[code]
+					for(i=#texts;1;-1){
+						var txt = texts[i];
+						if(txt[1]=='^'# || txt[1]=='$'# || txt[1]=='!'#){
+							remove(texts,i);
+						}  
+						elseif(txt[1]=='~'#){
+							texts[i] = right(txt,-2);
+						}
+					}
+					
+					if(!#texts){
+						outputMap[code] = null;
+						remove(inputCodes,i);
+					}
+				};
+            }
+		}
+		
+		
+		this.addFile = function(filePath){
+			if( #filePath && ..io.exist(filePath) ){ 
+				var file = ..io.open(filePath,"rb");
+				if(!file){
+					return null,"打开文件失败";
+				}
+				
+				var fromUnicode = ..string.fromUnicode;
+				if(file.read(#"imscwubi")==="imscwubi"){ 
+					var header = file.read({ 
+						WORD majorVersion = 1;
+						WORD MinorVersion = 1; 
+						int indexOffset = 0x40;
+						int tableOffset = 0xA8;
+							int fileSize;
+					})
+					if(!header) {
+						file.close();
+						return null;
+					}
+					
+					file.seek("set",header.tableOffset);
+					
+					var outputMap = this.outputMap;
+					var inputCodes = this.inputCodes;
+					
+					var codeWeight = this.codeWeight;
+					while(file.seek()<header.fileSize){
+						var record = file.read({
+							WORD length;
+							WORD weight;
+							WORD codeLength;
+							WORD code[4]; 
+						})
+						if(!record){
+							file.close();
+						 	return null;
+						}
+					
+						var len =  (record.length-16); 
+						var word = file.readUnicode(len/2)
+						var code = ..string.left( record.code,record.codeLength); 
+					
+						if(!outputMap[code]){
+							outputMap[code] = {word}
+							push(inputCodes,code);
+						}
+						else {
+							push(outputMap[code],word);
+						}
+						
+						if(!codeWeight[code]){
+							codeWeight[code] = {[word]=record.weight} 
+						}
+						else {
+							codeWeight[code][word] = record.weight;
+						} 
+						
+						file.seek("cur",2);
+					} 
+					 
+					file.close();
+				}
+				else { 
+					file.close();
+					this.addText(..fsys.codepage.load(filePath)); 
+				}	
+				
+				return true;
+			}
+		}
+		this.addFile(filePath);
+		this.path = filePath;
+
+		
+	};  
+	add = function(code,word,weight){
+		if( code && word ){ 
+			if(!this.outputMap[code]){
+				this.outputMap[code] = {word}
+				push(this.inputCodes,code);
+			}
+			else {
+				push(this.outputMap[code],word);
+			} 
+			
+			if(weight){
+				if(!this.codeWeight[code])this.codeWeight[code]={[word]=weight};
+				else this.codeWeight[code][word]=weight;
+			}
+		} 	
+	};
+	addLex = function(lexFileObject){
+		var outputMap2 = lexFileObject.outputMap;
+		var codeWeight2 = lexFileObject.codeWeight;
+		var inputCodes2 = lexFileObject.inputCodes;
+		
+		var outputMap = this.outputMap;
+		var codeWeight = this.codeWeight;
+		var inputCodes = this.inputCodes;
+		
+		var push = ..table.push;
+		var append = ..table.append;
+		var mixin = ..table.mixin;
+		
+		for(i=1;#inputCodes2;1){
+			var code = inputCodes2[i]  
+			var wordWeight = codeWeight2[code];
+			var words = outputMap2[code]
+				
+			if(!outputMap[code]){
+				outputMap[code] = append({},words);
+				push(inputCodes,code);
+			}
+			else {
+				append(outputMap[code],words) 
+			}
+			
+			codeWeight[code] = mixin(codeWeight[code]:{},codeWeight2[code])
+		}
+	};
+	saveLex = function(filePath){ 
+		var file = filePath ? ..io.open(filePath,"w+b"); 
+		if(!file){
+			return null,"打开文件失败"
+		}
+		
+		file.write({
+				BYTE magic[] = "imscwubi";
+				WORD majorVersion = 1;
+				WORD MinorVersion = 1; 
+				int indexOffset = 0x40;
+				int tableOffset = 0xA8;
+				int fileSize;
+				int unknown = 0x78563412;
+				BYTE reserved[0x24];
+		});
+		
+		file.seek("set",0xA8)
+		
+		var alphaIndex = {};
+		var alphaBase = 'a'# - 1;    
+		var prevAlpha = alphaBase;  
+		
+		var inputCodes = this.inputCodes;
+		..table.sort(inputCodes);
+		
+		var toUnicode = ..string.toUnicode; 
+		
+		var outputMap = this.outputMap;
+		var codeWeight = this.codeWeight;
+		var word,weight;
+		for(i=1;#inputCodes;1){
+			var code = inputCodes[i] 
+			while (prevAlpha < code[1])  {
+				prevAlpha++;
+				alphaIndex[prevAlpha - alphaBase] = file.seek() - 0xA8;
+			}
+			
+			var wordWeight = codeWeight[code];
+			var words = outputMap[code]
+			code = toUnicode(code); 
+			
+			weight = 0;
+			for(i=1;#words;1){  
+				word = words[i]
+				//if(word==words[i-1])continue;
+				 
+				if(wordWeight[[word]]){
+					weight = wordWeight[word];
+				}
+				else {
+					weight = weight + 1;
+				} 
+				
+				word = toUnicode(word);
+				file.write({
+					WORD length = 16 + #word;
+					WORD weight = weight;
+					WORD codeLength = #code/2;
+					WORD code[4] = code;
+					BYTE text[] = word;
+					BYTE ends[2]; 
+				})  
+			}
+		}
+		
+		while (prevAlpha < 'z'#){
+			prevAlpha++;
+			alphaIndex[prevAlpha - alphaBase] = file.seek() - 0xA8;
+		}
+			
+		var fileSize = file.seek();
+		file.seek("set",20)
+		file.write({int fileSize = fileSize});
+		
+		file.seek("set",0x40);
+		file.write({int prevAlpha[26]=alphaIndex}); 
+		file.close();
+		
+		return true;	
+	}
+	saveTxt = function(filePath,reverse){ 
+		var file = filePath ? ..io.open(filePath,"w+,ccs=UTF-16LE")
+		if(!file){
+			return null,"打开文件失败"
+		}
+		
+		this.sort();
+		var toUnicode = ..string.toUnicode;
+		for(i=1;#this.inputCodes;1){
+			var code = this.inputCodes[i]  
+			var texts = this.outputMap[code]
+			for(i=1;#texts;1){
+				var txt = texts[i]
+				if(!reverse){
+					file.write( toUnicode(code+'\t'+txt+'\n'))
+				}
+				else {
+					file.write( toUnicode(txt+'\t'+code+'\n'))
+				} 
+			}
+		}; 
+		
+		file.close();
+	}
+	find = function(word,min){
+		for(code,words in this.outputMap){
+			for(i=1;#words;1){
+				var str = words[i]
+				if(word===str){
+					if(min && #code<min ) continue
+					return code,str;
+				} 
+			} 
+		} 
+	}
+	spelling = function(word){
+		var max;
+		for(code,words in this.outputMap){
+			for(i=1;#words;1){
+				var str = words[i]
+				if(word===str){
+					if( #code === 4 ) return code;
+					if(#code>#max)max = code;
+				} 
+			} 
+		} 
+		return max;
+	}
+	filter = function(f){
+		var push = ..table.push;
+		var remove = ..table.remove;
+		var newInputCodes = {}
+		var inputCodes = this.inputCodes;
+		var outputMap = this.outputMap;
+		for(i=1;#inputCodes;1){
+			var code = inputCodes[i]  
+			var texts = outputMap[code]
+			for(i=#texts;1;-1){
+				var txt = texts[i];
+				if(!f(txt,code)){remove(texts,i);}  
+			}
+			
+			if(!#texts){
+				outputMap[code] = null;
+			}
+			else {
+				push(newInputCodes,code);
+			} 
+		}; 
+		
+		this.inputCodes = newInputCodes;	
+	}
+	sort = function(f){
+		var inputCodes = this.inputCodes;
+		..table.sort(inputCodes);
+          
+        var codeWeight = this.codeWeight;
+        var sort = ..table.sort;
+        for(code,words in outputMap){
+            var weight = codeWeight[code];
+            if(!weight){  continue; }
+            
+			var c,w;
+			if(!weight[ words[1] ]) weight[ words[1] ] = 1;
+			for(i=2;#words;1){
+				c = words[i]
+				w = weight[c]
+				if(!w){
+					weight[c] = weight[ words[i-1] ] + 1;
+				}
+			} 
+			
+            sort(words,lambda(b) (weight[owner]) < (weight[b]) ) 
+        }
+		
+		if(!f) return f;  
+		
+		var remove = ..table.remove;
+		for(i=#this.inputCodes;1;-1){
+			var code = this.inputCodes[i]  
+			var words = this.outputMap[code]
+			
+			var newWords = f(code,words)
+			if(!#newWords){
+				if(newWords){
+					this.outputMap[code] = null;
+					remove(this.inputCodes,i);	
+				}
+			}
+			else {
+				this.outputMap[code] = newWords;
+				var weight = codeWeight[code];
+				if(weight){
+					var w;
+					if(!weight[ newWords[1] ]) weight[ newWords[1] ] = 1;
+					for(i=2;#newWords;1){
+						w = weight[ newWords[i] ]
+						if(!w || (w<weight[ newWords[i-1] ]) ){
+						 	weight[ newWords[i] ] = weight[ newWords[i-1] ] + 1;
+						}
+					} 	
+				} 
+			}
+		}; 	
+	};
+	saveWordWeight  = function(filePath){
+		var wordWeight = {};
+		var inputCodes = this.inputCodes;
+		var outputMap = this.outputMap;
+		var codeWeight = this.codeWeight;
+		var mixin = ..table.mixin;
+		for(i=#inputCodes;1;-1){
+			var code = inputCodes[i];  
+			var words = outputMap[code];
+		
+			var weight = codeWeight[code];
+			if(weight){mixin(wordWeight,weight); }
+		}
+		
+		var file,err = ..io.open(filePath,"w+t");
+		if(!file) return null,err;
+		
+		for(k,v in wordWeight){
+			 file.write(k,'\t',v,'\n');
+		} 
+		file.close();
+		return true;
+	};
+	loadWordWeight  = function(filePath,reorder){
+		var match = ..string.match;
+		var wordWeight = {};
+		for(line in ..io.lines(filePath)){
+			 var word,weight = match(line,"(:+)\s+(\d+)");
+			 if(word && weight){
+			 	wordWeight[word] = tonumber(weight);	
+			 }
+		} 
+		this.wordWeight = wordWeight;
+		
+		var inputCodes = this.inputCodes;
+		var outputMap = this.outputMap;
+		var codeWeight = {};
+		for(i=#inputCodes;1;-1){
+			var code = inputCodes[i]  
+			var words = outputMap[code]
+		
+			var weight = codeWeight[code];
+			if(!weight){
+				weight = {}
+				codeWeight[code] = weight;
+			}
+			
+			if(!reorder){
+				weight[ words[1] ] = wordWeight[words[1]] : 0xF36B;
+				
+				for(i=2;#words;1){
+					w = wordWeight[ words[i] ]
+					if(!w || (w<=weight[ words[i-1] ]) ){
+						w = weight[ words[i-1] ] + 1;  
+					}
+					
+					weight[ words[i] ] = w;
+				}	
+			}
+			else {
+				for(i=1;#words;1){
+					weight[ words[i] ] = wordWeight[ words[i] ] : 0xF36B;
+				}	
+			}
+		};
+		this.codeWeight = codeWeight;
+	};
+	unique = function(){
+		var len = ..string.len; 
+		var push = ..table.push;
+		var remove = ..table.remove;
+		
+		var outputMap = this.outputMap;
+		var inputCodes = this.inputCodes;
+		
+		for(i=#inputCodes;1;1){
+			var code = inputCodes[i]  
+			var words = outputMap[code]
+			
+			var newText = {}
+			var multiCharacterWord;
+			for(i=1;#texts){
+				var txt = texts[i];
+				var l = len(txt);
+				if(l>1){ 
+					if( !multiCharacterWord  ) {
+						push(newText,txt)
+						multiCharacterWord = true;
+					}
+				}  
+				else{ push(newText,txt) }
+			}
+			
+			this.outputMap[code] = newWords;
+		}	
+	}
+	simplified = function(){
+		var remove = ..table.remove;
+		var len = ..string.len;
+		
+		var map = {}
+		var inputCodes = this.inputCodes;
+		var outputMap = this.outputMap;
+		for(i=#inputCodes;1;-1){
+			var code = inputCodes[i]  
+			var texts = outputMap[code]
+			for(i=#texts;1;-1){
+				var txt = texts[i];
+				if(len(txt)==1){
+					if(!map[txt] || (#code<map[txt])){
+						map[txt] = #code;
+					} 
+				}  
+			}
+		}; 
+		
+		for(i=#inputCodes;1;-1){
+			var code = inputCodes[i]  
+			var texts = outputMap[code]
+			for(i=#texts;1;-1){
+				var txt = texts[i];
+				if(map[txt] && (#code>map[txt])){ 
+					remove(texts,i);
+				}  
+			}
+			
+			if(!#texts){
+				outputMap[code] = null;
+				remove(inputCodes,i);
+			}
+		}; 		
+	}; 
+	optShortCodeChar  = function(){
+		var remove = ..table.remove;
+		var len = ..string.len;
+		
+		var map = {}
+		var inputCodes = this.inputCodes;
+		var outputMap = this.outputMap;
+		var codeWeight = this.codeWeight;
+		for(i=#inputCodes;1;-1){
+			var code = inputCodes[i]  
+			if (#code==4) continue;
+			
+			var txt = outputMap[code][1];
+			if( len(txt)==1 ){
+				map[txt] = #code;
+			} 
+		}; 
+		
+		var count = 0;
+		for(i=#inputCodes;1;-1){
+			var code = inputCodes[i]  
+			var texts = outputMap[code]
+			if(#texts < 2 ) continue;
+			
+			var txt = texts[1];
+			var txt2 = texts[2];
+			if( map[txt] && (#code==4) ){ 
+				if(map[txt2] && map[txt]!=3){
+					continue;
+				}
+				codeWeight[code][txt]  = codeWeight[code][txt2] + 1;
+				texts[2],texts[1] = txt,txt2;
+				count++; 
+			}
+		};
+		
+		return count; 		
+	}; 
+	getTableData = function(){
+		this.sort();
+		
+		var push = ..table.push;
+		var result = {};
+		for(i=1;#this.inputCodes;1){
+			var code = this.inputCodes[i]  
+			var texts = this.outputMap[code]
+			push( result,..table.append({code},texts));
+		};
+		
+		return result;
+	};
+	setTableData = function(result){
+		var push = ..table.push;
+		var append = ..table.append;
+		for(i=1;#result;1){ 
+			var code = result[i][1]
+			push(this.inputCodes,code);
+			this.outputMap[code] = ..table.slice(result[i],2);
+		} 
+	};
+	hasPhrase = function(){
+		var len = #this.inputCodes;
+		if(len){
+			var ret = 2#00;
+			
+			var inputCodes = this.inputCodes;
+			for(i=#inputCodes;1;-1){ 
+				if(inputCodes[i][1]=='z'#){
+					ret = 2#01 ;
+					break;
+				} 
+			}
+			
+			var outputMap = this.outputMap;
+			for(i='a'#;'y'#;1){
+				var code = ..string.pack(i,i,i,i); 
+				texts = outputMap[code];
+				
+				if(#texts){
+					var hasWord;
+					var gb,rare = 0,0;
+					for(i=1;#texts;1){
+						cur = ..string.len(texts[i]);
+						if(cur===1){
+							if(..string.conv.isGb2312(texts[i])){
+								gb++;
+								continue;
+							}
+							
+							if(hasWord){  
+								rare++; 
+							}
+						}
+						else {
+							hasWord = true;
+						} 
+					} 
+					
+					if((gb && ((gb+rare)>4 && (#texts>=9) )) || (!gb && rare)){
+						ret = ret | 2#10 ;
+						break
+					}
+				}
+			} 
+			
+			return ret;
+		}
+	};
+	removePhrase = function(){
+		var push = ..table.push;
+		var remove = ..table.remove;
+		var indexOf = ..string.indexOf;
+		var replace = ..string.replace; 
+		var match = ..string.match;
+		var strBuilder = ..string.builder();
+		var outputMap = this.outputMap;
+		var inputCodes = this.inputCodes;
+		var code,texts;
+		
+		var keyNames = {}
+		for(i='a'#;'y'#;1){
+			var code = ..string.pack(i,i,i,i); 
+			keyNames[code] = true;
+		} 
+		
+		var newInputCodes = {}	
+		for(i=1;#inputCodes){
+			code = inputCodes[i]
+			if(!indexOf(code,"z")){
+				if( !keyNames[code] ){
+					push(newInputCodes,code);
+					continue;
+				}
+				
+				texts = outputMap[code];
+				
+				var hasWord;
+				var gb,rare = 0,0;
+				for(i=1;#texts;1){
+					cur = ..string.len(texts[i]);
+					if(cur===1){
+						if(..string.conv.isGb2312(texts[i])){
+							gb++;
+							continue;
+						}
+						
+						if(hasWord){  
+							rare++; 
+						}
+					}
+					else {
+						hasWord = true;
+					} 
+				} 
+				
+				if(!((gb && ((gb+rare)>4 && (#texts>=9) )) || (!gb && rare))){
+					push(newInputCodes,code);
+					continue;
+				} 
+			}
+			
+			texts = outputMap[code]
+			for(i=1;#texts;1){
+				var txt = replace(texts[i],'\n',"%0A"); 
+				txt = replace(txt,' ',"%20") 
+				txt = replace(txt,'\t',"%09")
+				strBuilder.append(code+'='+txt+'\r\n'); 
+			}
+		
+			outputMap[code] = null; 
+		};   
+		this.inputCodes = newInputCodes;
+		
+		var ret = tostring(strBuilder); 
+		strBuilder.free();
+		return ret;	
+	}
+	removeFromSystemPhrase = function(){
+		var phraseMap = ..wubi.phrase.loadMapFromSystem();
+		var strBuilder = ..string.builder();
+		var replace = ..string.replace;
+		var push = ..table.push;
+		var outputMap = this.outputMap;
+		var inputCodes = this.inputCodes;
+		
+		var newInputCodes = {}
+		for(i=#inputCodes;1;-1){
+			var code = inputCodes[i]  
+			var words = outputMap[code]
+			
+			if(phraseMap[code]) {
+				for(i=1;#words;1){
+					var txt = replace(words[i],'\n',"%0A"); 
+					strBuilder.append(code+'='+txt+'\r\n'); 
+				}
+				
+				outputMap[code] = null;	 
+			} 
+			else {
+				push(newInputCodes,code);
+			}
+		} 
+		this.inputCodes = newInputCodes;
+		
+		var ret = tostring(strBuilder); 
+		strBuilder.free();
+		return ret;
+	} 
+	tostring = function(reverse,singleLine,sortWeight){
+		if(!#this.inputCodes){return "";} 
+		if(sortWeight===null){sortWeight=true;}
+		this.sort();
+		
+		var push = ..table.push;
+		var replace = ..string.replace;
+		var hex  = ..string.hex;
+		var urlEncode = lambda(c) hex(c,"%");
+		var strBuilder = ..string.builder();
+		
+		var inputCodes = this.inputCodes; 
+		var outputMap = this.outputMap;
+		var codeWeight = this.codeWeight;
+		
+		if(reverse){
+			if(singleLine){
+				var chars = {}
+				var mapCodes ={}
+				for(i=1;#inputCodes;1){
+					var code =inputCodes[i]  
+					var texts = outputMap[code]
+					for(j=1;#texts;1){
+						var txt = replace(texts[j],"\s",urlEncode)
+						if(!mapCodes[txt]){
+							mapCodes[txt] = {code}
+							push(chars,txt);
+						}
+						else {
+							push(mapCodes[txt],code);
+						}
+					}
+				};
+				 
+				for(i=1;#chars;1){
+					var chr = chars[i];
+					var codes = mapCodes[chr];
+					
+					strBuilder.append(chr+'\t'+codes[1]);
+					for(j=2;#codes;1){
+						if(codes[j]!=codes[j-1])strBuilder.append(' '+ codes[j]);
+					}
+					
+					strBuilder.append('\r\n');
+				} 
+			}
+			else {
+				if(sortWeight){
+					var wordWeight;
+					for(i=1;#this.inputCodes;1){
+						var code =inputCodes[i]  
+						var texts = this.outputMap[code]
+						
+						var weight = 0;
+						wordWeight = codeWeight[code];
+						for(i=1;#texts;1){
+							if(wordWeight && wordWeight[ texts[i] ]){
+								weight = wordWeight[ texts[i] ];
+							}
+							else {
+								weight = weight + 1;
+							}
+						
+							var txt = replace(texts[i],"\s",urlEncode) 
+							strBuilder.append(txt+'\t'+code+'\t'+ (0xFFFF-weight)+'\r\n');
+						}
+					};	
+				}
+				else {
+					for(i=1;#this.inputCodes;1){
+						var code =inputCodes[i]  
+						var texts = this.outputMap[code]
+						for(i=1;#texts;1){
+							var txt = replace(texts[i],"\s",urlEncode)
+							strBuilder.append(txt+'\t'+code+'\r\n');
+						}
+					};
+				} 
+			} 
+		}
+		else {
+			if(singleLine){
+				for(i=1;#this.inputCodes;1){
+					var code =inputCodes[i]  
+					var texts = this.outputMap[code]
+					strBuilder.append(code);
+					for(i=1;#texts;1){
+						if(texts[i]==texts[i-1]) continue;
+						var txt = replace(texts[i],"\s",urlEncode)
+						strBuilder.append('\t'+txt);
+					}
+					strBuilder.append('\r\n');
+				};
+			}
+			else {
+				if(sortWeight){
+					var wordWeight;
+					for(i=1;#this.inputCodes;1){
+						var code = inputCodes[i];  
+						var texts = outputMap[code];
+						wordWeight = codeWeight[code];
+						
+						var weight = 0;
+						for(i=1;#texts;1){
+							if(wordWeight && wordWeight[ texts[i] ]){
+								weight = wordWeight[ texts[i] ];
+							}
+							else {
+								weight = weight + 1;
+							}
+							
+							var txt = replace(texts[i],"\s",urlEncode)
+							strBuilder.append(code+'\t'+txt+'\t'+weight+'\r\n');
+						}
+					}; 	
+				}
+				else {
+					for(i=1;#this.inputCodes;1){
+						var code =inputCodes[i]  
+						var texts = this.outputMap[code]
+						for(i=1;#texts;1){
+							var txt = replace(texts[i],"\s",urlEncode)
+							strBuilder.append(code+'\t'+txt+'\r\n');
+						}
+					}; 
+				} 
+			}
+		}
+		
+		var ret = tostring(strBuilder) 
+		strBuilder.free();
+		return ret;		
+	}
+	statistics = function(){
+		var totalCode,coincidentCode,totalTxt,coincidentTxt = 0,0,0,0;
+		for(i=1;#this.inputCodes;1){
+			var code = this.inputCodes[i]  
+			var texts = this.outputMap[code]
+			
+			totalCode++;
+			totalTxt = totalTxt + #texts;
+			if(#texts>1){
+				coincidentCode++;
+				coincidentTxt = coincidentTxt + #texts;
+			}
+		};
+		
+		return {
+			totalCode = totalCode;
+			coincidentCode = coincidentCode;
+			totalTxt = totalTxt;
+			coincidentTxt = coincidentTxt;
+		}	
+	}
+	isEmpty = function(){
+		return !#this.inputCodes;
+	}
+	getCode = function(code){
+		return this.outputMap[code]
+	}
+	getCachCharCodes = function(clear){
+		if(clear) this.cachCharCodes = null;
+		
+		if(!this.cachCharCodes){
+			var len = ..string.len;
+			var cachCharCodes = {}
+			for(code,words in this.outputMap){
+				if(#code<2) continue;
+				
+				for(k,word in words){
+					 if(len(word)===1){
+					 	cachCharCodes[word] = code;
+					 }
+				} 
+			}
+			
+			this.cachCharCodes = cachCharCodes;
+		}
+		
+		return this.cachCharCodes;
+	}
+	combineCode = function(str){
+		var cachCharCodes = this.getCachCharCodes();
+		
+		var arr = ..string.split(str);
+		if(#arr<2){return;}
+		
+		var codes = {}
+		codes[1] = cachCharCodes[arr[1]];
+		codes[2] = cachCharCodes[arr[2]];
+		
+		if(!(codes[1]&&codes[2])){return;}
+		
+		if(arr[3]){
+			codes[3] = cachCharCodes[arr[3]];
+			if(!(codes[3]))return;
+		}
+		
+		if(#arr>=4){
+			codes[4]= cachCharCodes[arr[#arr]];
+			if(!(codes[4]))return;
+		}
+		
+		if(#arr==2){ 
+			return codes[1][[1]] ++ codes[1][[2]] ++ codes[2][[1]] ++ codes[2][[2]];
+		}
+		elseif(#arr==3){ 
+			return codes[1][[1]] ++ codes[2][[1]] ++ codes[3][[1]] ++ codes[3][[2]];
+		}
+		elseif(#arr>=4){ 
+			return codes[1][[1]] ++ codes[2][[1]] ++ codes[3][[1]] ++ codes[4][[1]];
+		}
+	}
+	combineCodeZhengma = function(str){
+		var cachCharCodes = this.getCachCharCodes();
+		
+		var arr = ..string.split(str);
+		if(#arr<2){return;}
+		
+		var codes = {}
+		codes[1] = cachCharCodes[arr[1]];
+		codes[2] = cachCharCodes[arr[2]];
+		
+		if(!(codes[1]&&codes[2])){return;}
+		
+		if(arr[3]){
+			codes[3] = cachCharCodes[arr[3]];
+			if(!(codes[3]))return;
+		}
+		
+		if(#arr>=4){
+			codes[4]= cachCharCodes[arr[4]];
+			if(!(codes[4]))return;
+		}
+		
+		if(#arr==2){ 
+			return codes[1][[1]] ++ codes[1][[2]] ++ codes[2][[1]] ++ codes[2][[2]];
+		}
+		elseif(#arr==3){ 
+			return codes[1][[1]] ++ codes[2][[1]] ++ codes[2][[2]] ++ codes[3][[1]];
+		}
+		elseif(#arr>=4){ 
+			return codes[1][[1]] ++ codes[2][[1]] ++ codes[3][[1]] ++ codes[4][[1]];
+		}
+	}
+	test = function(code,str){
+		var words = this.outputMap[code];
+		return !!(words && ..table.find(words,str));
+	}
+	getVersion = function(){
+		if( this.test("q","月") && this.test("e","世")){
+			return "zhengma";	
+		}
+		
+		if( this.test("qv","月") && this.test("ev","世")){
+			return "zhengma","formation";	
+		}
+		
+		var wubi98 = 0;
+		var wubi06 = 0;
+		var wubi86 = 0;
+		var wubi091 = 0;
+		
+		if(this.test("teb","笔") || this.test("teb","筆") ){ 
+			wubi98++; 
+			wubi06--;
+			wubi86--;
+			wubi091--;
+		}
+		else {
+			wubi98--; 
+			wubi06++;
+			wubi86++;
+			wubi091++;	
+		}
+		
+		if(this.test("othc","煅")){ 
+			wubi98++; 
+			wubi06--;
+			wubi86--;
+			wubi091--;
+		}
+		else {
+			wubi98--; 
+			wubi06++;
+			wubi86++;	
+			wubi091++;	
+		}
+		
+		if( this.test("tuwb","舱") || this.test("tuwb","艙")  ){ 
+			wubi98++; 
+			wubi06--;
+			wubi86--;
+			wubi091--; 
+		}
+		else {
+			wubi98--; 
+			wubi06++;
+			wubi86++;
+			wubi091++;
+		}
+		
+		if(this.test("uqwn","瓷")){ 
+			wubi86++; 
+			wubi06--;
+			wubi98--;
+			wubi091--;
+		}
+		else {
+			wubi86--; 
+			wubi06++;
+			wubi98++;
+			wubi091++;
+		}
+	
+		if(this.test("khdy","跋") ){
+			wubi98++;
+			wubi06++;
+			wubi86--;
+			wubi091--;
+		}
+		else { 
+			wubi98--;
+			wubi06--;
+			wubi86++;
+			wubi091++; 
+		}
+		
+		if(this.test("XFXY","线") || this.test("XFXY","線") ){  
+			wubi06++;
+			wubi86--;
+			wubi98--; 
+			wubi091--;
+		}
+		else {
+			wubi06--;
+			wubi86++;
+			wubi98++;
+			wubi091++; 
+		}
+		
+		if(this.test("ks","整")){ 
+			wubi98--; 
+			wubi06--;
+			wubi86--;
+			wubi091++; 
+		}
+		else {
+			wubi98++; 
+			wubi06++;
+			wubi86++;
+			wubi091--;
+		} 
+		
+		if(this.test("lm","示")){ 
+			wubi98--; 
+			wubi06--;
+			wubi86--;
+			wubi091++;
+		}
+		else {
+			wubi98++; 
+			wubi06++;
+			wubi86++;
+			wubi091--;
+		} 
+		
+		if(this.test("ms","刺")){ 
+			wubi98--; 
+			wubi06--;
+			wubi86--;
+			wubi091++;
+		}
+		else {
+			wubi98++; 
+			wubi06++;
+			wubi86++;
+			wubi091--;
+		} 
+			
+		if(wubi98>wubi86 && wubi98>wubi06 && wubi98>wubi091){
+			return "98"; 
+		}
+		elseif(wubi06>wubi86 && wubi06>wubi98 && wubi06>wubi091){
+			return "06";
+		}
+		elseif(wubi091>wubi86 && wubi091>wubi98 && wubi091>wubi06){
+			return "091";
+		}
+		return "86";
+	} 
+}
+
+namespace lexFile{
+	
+	path = function(){
+		var lex = ..fsys.getWinDir("\InputMethod\CHS\ChsWubiNew.lex")
+		if(!..io.exist(lex,4)){
+			return ..io.exist( ..fsys.getWinDir("\InputMethod\CHS\ChsWubi.lex"),4 )
+				or ..fsys.getWinDir("\InputMethod\CHS\ChsWubiNew.lex");
+		} 
+		
+		return lex;
+	} 
+}
+
+/**intellisense()
+wubi.lexFile = 五笔码表解析器
+wubi.lexFile.path() = 返回微软五笔码表路径
+wubi.lexFile(__) = 创建五笔码表解析器\n参数@1指定码表文件，支持以下三种格式：\n1、微软二进制码表 *.lex文件\n2、*.txt文件格式，每行为表示按键的字母串 + 制表符 + 中文文本\n3、同上 *.txt 格式，但中文文本在前，表示按键的字母串在后面,\n一组按键对应多个输入文本可以使用空格分开,\n输入文件可以是Unicode或UTF8编码\n无参数则默认读取系统码表\n参数为空字符串或不存在的路径时不读取码表
+wubi.lexFile() = !wubiLexFile.
+end intellisense**/
+
+/**intellisense(!wubiLexFile)
+saveLex(.(filePath) = 输出微软二进制码表 *.lex 文件
+saveTxt(.(filePath,reverse) = 输出文本格式码表 *.txt 文件\n参数@filePath指定输出文件路径,\n@reverse参数可省略,如果为true则输出时文本在前字母在后
+add(.(inputCode,word) = 添加编码\n参数code为表示按键的字母串，长度不能大于4，\nstr为输入文本
+addLex(.(lexFileObject) = 追加@lexFileObject参数指定的wubi.lexFile对象到当前码表
+addText(.(txt) = 使用文本格式添加多个编码,\n每一行都必须由表示按键的字母串、制表符或空格、要输入的文本组成，\n字母组成的键名在行首，后面跟一个空格以及要输入的字符串,\n如果一组键名对应多个输入文本,文本间用空格分开,\n兼容键名在行尾的格式
+clear() = 清空数据
+find(__) = 反查编码，\n参数输入文本，返回匹配的编码，文本\n可选用第二个参数指定编码的最小长度
+getCode(__) = 返回指定编码的输出文本数组 
+getVersion() = 返回输入法类型，\n可能返回的值为"98","86","06"，06版本为新世纪编码
+tostring(.(reverse,singleLine) = 返回文本格式词库\n@reverse参数控制是否反转为词前码后\n@singleLine参数控制是否启用一码一行或一行多码
+filter(过滤函数) = @.filter(\n	function(txt,code){\n		return true;__/*遍历顺序已经按按键的字母序排序,\n返回true保留，返回false删除该词条*/\n	}\n)	
+statistics() = 返回统计数据
+simplified() = 出简不出全
+optShortCodeChar() = 简码字全码后移
+combineCode(__) = 参数中输入词组，返回自动生成的编码,\n此函数使用五笔规则生成编码，不需要在码表中查找词组\n失败返回null,成功返回编码
+isEmpty() = 如果码表为空则返回true
+getTableData() = 返回表数据,\n返回表为包含所有编码的数组,\n每个编码为一个数组,第一列为编码,其余列为词语
+setTableData(__) = 添加参数指定的表数据,\n每个编码为一个数组,第一列为编码,其余列为词语
+zPhrase() = 抽取所有含z键编码为短语词库文本格式
+hasPhrase() = 是否含z键编码
+removePhrase() =  分离Z键编码词条、非键名单字优先词条到短语
+removeFromSystemPhrase() = 检测系统短语占用的编码,\n并将这些词条转换为单语格式并返回,\n返回的短语为文本格式
+unique() = 一码一词，不限单字
+sort() = @.sort(\n	function(code,texts){\n		__/*code为编码,texts为对应的词语数组,返回调频后的新词语数组\n返回null忽略*/\n		return texts;\n	}\n)
+saveWordWeight(.(filePath) = 导出词频文件
+loadWordWeight(.(filePath,reorder) = 加载权重文件\n@filePath参数指定路径，\n一行一词，前词后权重，制表符分隔词与权重\n@reorder参数指定是否根据词频调整候选排序
+end intellisense**/

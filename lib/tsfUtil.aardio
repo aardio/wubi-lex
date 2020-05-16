@@ -1,0 +1,223 @@
+﻿//tsfUtil ﻿工具
+
+import fsys;
+import fsys.acl;
+import service;
+import fsys;
+import service;
+import process;
+import wubi.lexFile;
+import wubi.phrase;
+import win.dlg.message;
+import process.popen;
+import com.interface.ITfInputProcessorProfileMgr;
+import winex;
+import key.ime;
+
+namespace tsfUtil{
+	
+	var input = ..raw.loadDll("input.dll","","stdcall,unicode")
+	
+	reset = function(proc){
+		for hwnd in ..winex.each() { 
+			..key.ime.changeRequest(0x4090409,hwnd)
+		}
+	
+		input.InstallLayoutOrTip("0x0804:{6A498709-E00B-4C45-A018-8F9E4081AE40}{82590C13-F4DD-44F4-BA1D-8667246FDF8E}",0 )
+
+		var srvMgr = ..service.manager();
+		srvMgr.startDisabled("TabletInputService");
+		srvMgr.stop("TabletInputService")
+
+		var ok,out,err = ..process.popen(
+			,`schtasks /End /TN "\Microsoft\Windows\TextServicesFramework\MsCtfMonitor"`
+			).waitOne()
+	
+		..process.kill("ctfmon.exe");
+		..process.kill("ChsIME.exe");
+
+		if(proc) proc();
+		else {
+			sleep(1000)
+		}
+		
+		srvMgr.startManual("TabletInputService");
+		srvMgr.start("TabletInputService") 
+		
+		var ok,out,err = ..process.popen(
+			,`schtasks /Run /TN "\Microsoft\Windows\TextServicesFramework\MsCtfMonitor"`
+			).waitOne()  
+			
+		sleep(1000); 
+	}
+	
+	deactivate = function(){
+		var tfpMgr = ..com.interface.ITfInputProcessorProfileMgr.Create() 
+			
+		tfpMgr.DeactivateProfile(1,0x804,
+				..win.guid.fromString("{6a498709-e00b-4c45-a018-8f9e4081ae40}"),
+				..win.guid.fromString("{82590c13-f4dd-44f4-ba1d-8667246fdf8e}"),
+				null,0x20000000);	
+	}
+	
+	activate = function(){ 
+		var tfpMgr = ..com.interface.ITfInputProcessorProfileMgr.Create() 
+	
+		tfpMgr.ActivateProfile(1,0x804,
+			..win.guid.fromString("{6a498709-e00b-4c45-a018-8f9e4081ae40}"),
+			..win.guid.fromString("{82590c13-f4dd-44f4-ba1d-8667246fdf8e}"),
+			null,0x20000000);	
+	}
+	
+	aclGrant = function(filePath,fileProc){
+		if(!..io.exist(filePath) ){ return fileProc(filePath) }
+		
+		var out,err = ..fsys.acl.takeOwn(filePath);
+		if(!out) return null,err;
+		
+		var out,err = ..fsys.acl.temp(filePath,function(filePath){
+			var out,err = ..fsys.acl.icacls(filePath,"/grant","Administrators:(F)")
+			if(!out) return null,err;
+			
+			return fileProc(filePath);
+		})
+		if( (!out) && err ) return null,err;
+			
+		var out,err = ..fsys.acl.icacls(filePath,"/setowner","NT SERVICE\TrustedInstaller");
+		return out,err;
+	};
+ 
+	var intallLex = function(srcLexPath,srcLexText,appendMode,winform){
+		var dlg = ..win.dlg.message(winform)
+		var lexFile;
+		if(srcLexText){
+			lexFile = ..wubi.lexFile("");
+			lexFile.addText(srcLexText);	
+		}
+		else {
+			lexFile = ..wubi.lexFile(srcLexPath)
+		}
+		
+		if(!lexFile){
+			dlg.err('错误的码表文件\n' + srcLexPath)
+			return;
+		}
+	
+		var phraseText;
+		var hasPhrase = lexFile.hasPhrase();
+		if(hasPhrase){
+			var txt = "";
+			if(hasPhrase& 2#01){ txt = txt+'此码表包含z通配键编码的词条，\n' } 
+			if(hasPhrase& 2#10){ txt = txt+'此码表包含非常用单字占用键名编码的词条，\n' } 
+			txt = txt+'这些词条只能放在短语词库内。\n\n按「确定」按钮将提取这些词条并覆盖到系统短语词库，\n继续操作可能耗时数分钟，现有短语词库将会清空。\n\n按「取消」中止操作。'
+			
+			if(!dlg.ask(txt)){
+				return false,"已取消操作";
+			}
+			phraseText = lexFile.removePhrase();
+		}
+		
+		if(appendMode){
+			var sysLex = ..wubi.lexFile()
+			sysLex.addLex( lexFile );
+			lexFile = sysLex;
+		}
+
+		return aclGrant(..fsys.getWinDir("\InputMethod\CHS\ChsWubiNew.lex"),
+			function(chsWubiNewPath){
+				return aclGrant(..fsys.getWinDir("\InputMethod\CHS\ChsWubi.lex"),
+					function(chsWubiPath){
+						reset(
+							function(){ 
+								for(i=1;10;1){
+									..process.kill("ctfmon.exe")
+									..process.kill("ChsIME.exe")
+									
+									if(chsWubiNewPath)..fsys.delete(chsWubiNewPath )  
+									if(chsWubiPath)..fsys.delete(chsWubiPath ) 
+									
+									if((!..io.exist(chsWubiNewPath)) && (!..io.exist(chsWubiPath)) ){ break; }  
+									sleep(1000)
+								}
+								
+								 
+								var savePath = chsWubiNewPath : chsWubiPath;
+								if(savePath){
+									var lexData;
+									if(phraseText||srcLexText||appendMode){
+										lexFile.saveLex(savePath);
+										lexData =..string.load(chsWubiNewPath);  
+									}
+									else {
+										lexData = ..string.load(srcLexPath);
+									}
+									
+									if(lexData){
+										if(chsWubiNewPath && (chsWubiNewPath!=savePath)){
+											..string.save(chsWubiNewPath,lexData); 
+										}
+										
+										if(chsWubiPath && (chsWubiPath!=savePath)){
+											..string.save(chsWubiPath,lexData); 
+										}
+									} 
+									
+									winform.publish("wubi.system.lex.changed");	
+								} 
+								
+						 
+								if(phraseText){
+									var ret,err = ..wubi.phrase.saveToSystem(phraseText);
+									if(!ret){
+										winform.msgboxErr(err:"未知错误","wubiLex - 短语词库")
+									} 	
+									else {
+										winform.publish("wubi.system.phrase.changed")
+									}
+								}  
+							}
+							
+						) 
+						return true;
+					}
+				);		
+			}
+		);
+	}
+	
+	intallLexFile = function(srcPath,appendMode,winform){
+		return intallLex(srcPath,,appendMode,winform);
+	};
+	
+	intallLexText = function(srcText,appendMode,winform){
+		return intallLex("",srcText,appendMode,winform);
+	};
+	
+	intallPhrase = function(phraseText,winform){
+		var ret,err;
+		reset(
+			function(){
+				ret,err = ..wubi.phrase.saveToSystem(phraseText); 
+				if(ret && winform){
+					winform.publish("wubi.system.phrase.changed")
+				}
+			}
+		)
+		
+		return ret,err;
+	}
+}
+
+/**intellisense(tsfUtil)
+intallLexFile(.(srcPath,appendMode,winform) = 复制srcPath指定的lex码表到系统码表
+intallLexText(.(srcText,appendMode,winform) = 解析srcText指定的码表文本并安装到系统码表
+intallPhrase(.(phraseText,winform) = 安装短语
+reset(proc) = @.reset(\n	function(){\n			\n	}\n)	
+deactivate() = deactivate
+activate() = activate
+aclGrant(filePath,proc) = @.aclGrant(
+	__,function(filePath){
+			
+	}
+)
+end intellisense**/

@@ -1,0 +1,64 @@
+﻿//spellingTable 拆字数据表
+namespace wubi;
+
+class spellingTable{
+	ctor( wubiVersion ){
+		this.dataPath = ..io.appData("/aardio/std/wubi/spelling-data-table/v2/"+wubiVersion+".txt");
+		
+		..thread.invoke( 
+			function(dataPath,wubiVersion){
+				import sevenZip.lzma.httpFile;
+				 
+				sevenZip.lzma.httpFile.saveFromUrl(
+					"http://wubi.aardio.com/download/spelling/data-table/"+wubiVersion+".lzma"
+					,dataPath); 
+					
+			},this.dataPath,wubiVersion
+		)
+	};
+	find = function(str){
+		if(!..io.exist(this.dataPath) ) return null;
+		
+		if(!this.dataMap){
+			var dataMap = {}
+			var match = ..string.match;
+			for line in ..io.lines(this.dataPath) {
+				var str,spelling = match(line,"(\S+)\s+(\S+)") 
+				if( str && spelling ){ 
+					dataMap[str] = spelling;
+				} 
+			}
+			
+			this.dataMap = dataMap; 
+		}
+		
+		return this.dataMap[str];
+	}
+}
+
+spellingTable.find  = function(version,str){
+	if(!self[version]){
+		self[version] = spellingTable(version)
+		if(self[version])return self[version].find(str); 
+	}
+	else {
+		return self[version].find(str); 
+	} 
+}
+
+spellingTable.init  = function(version){
+	if(!self[version]){
+		self[version] = spellingTable(version)
+	}
+	
+	return self[version];
+}
+
+	
+/**intellisense()
+wubi.spellingTable = 拆字数据表
+wubi.spellingTable.find(.(wubiVersion,str) = 反查拆字\n参数@2输入文本，返回拆分的字根
+wubi.spellingTable.init(.(wubiVersion) = 初始化并返回指定五笔版本的拆字数据表
+wubi.spellingTable.init() = !wubiSpellingTable.
+!wubiSpellingTable.find(.(str) = 反查拆字\n参数@2输入文本，返回拆分的字根
+end intellisense**/

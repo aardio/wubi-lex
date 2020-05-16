@@ -1,0 +1,170 @@
+﻿//lexNetContents 网络码表
+
+namespace app.lexNetContents{
+	
+	getTable = function(){
+		var dataPath = ..io.appData("/aardio/std/wubi/lex-default.table");
+	
+		if(..io.exist(dataPath)){
+			var result;
+			try{
+				result = eval(..string.load(dataPath))
+			}
+			
+			if(result){
+				return result;
+			} 
+		}
+		
+		return defaultData;	
+	}
+	
+	update = function(){
+		..thread.invoke( 
+			function(){
+				import inet.http;
+				var http = inet.http();
+				http.disableCache();
+				
+				var bin = http.get("http://wubi.aardio.com/download/lex/_index.txt");
+				if(bin){
+					string.save(..io.appData("/aardio/std/wubi/lex-default.table"), bin) 
+				}
+			}
+		) 
+	} 
+	
+	defaultData =  {
+		{
+			name = "五笔86";
+			items = {
+				{
+					name = "微软五笔86( 单字 )";
+					url = "http://wubi.aardio.com/download/lex/ChsWubi86.min.lex.lzma";
+				};
+				{
+					name = "微软五笔86( 完整 )";
+					url = "http://wubi.aardio.com/download/lex/ChsWubi86.lex.lzma";
+				};	 
+				{
+					name = "QQ五笔86( 单字 )";
+					url = "http://wubi.aardio.com/download/lex/qq86.min.lex.lzma";
+				};
+				{
+					name = "QQ五笔86( 完整 )";
+					url = "http://wubi.aardio.com/download/lex/qq86.lex.lzma";
+				};
+				{
+					name = "极点五笔86( 单字 )";
+					url = "http://wubi.aardio.com/download/lex/freeime86.min.lex.lzma";
+				};
+				{
+					name = "极点五笔86( 完整 )";
+					url = "http://wubi.aardio.com/download/lex/freeime86.lex.lzma";
+				};
+			}
+		};
+		{	 
+			name = "五笔98";
+			items = { 
+				{
+					name = "五笔98( 单字 )";
+					url = "http://wubi.aardio.com/download/lex/ChsWubi98.min.lex.lzma";
+				};
+				{
+					name = "五笔98( 完整 )";
+					url = "http://wubi.aardio.com/download/lex/ChsWubi98.lex.lzma";
+				};
+				{
+					name = "QQ五笔98( 完整 )";
+					url = "http://wubi.aardio.com/download/lex/qq98.lex.lzma";
+				};
+				{
+					name = "昱琼词库98( 完整 )";
+					url = "http://wubi.aardio.com/download/lex/yuqiong98.lex.lzma";
+				};
+				{
+					name = "海峰词库98( 完整 )";
+					url = "http://wubi.aardio.com/download/lex/sun98.lex.lzma";
+				};
+			}
+		};
+		{	 
+			name = "五笔新世纪";
+			items = {  
+				{
+					name = "新世纪( 完整 )";
+					url = "http://wubi.aardio.com/download/lex/06.lex.lzma";
+				};
+				{
+					name = "新世纪( 单字 )";
+					url = "http://wubi.aardio.com/download/lex/06.min.lex.lzma";
+				};
+			}
+		};
+		{	 
+			name = "五笔09";
+			items = {   
+				{
+					name = "点儿091( 完整 )";
+					url = "http://wubi.aardio.com/download/lex/091.lex.lzma";
+				};
+			}
+		};
+		{	 
+			name = "郑码";
+			items = {   
+				{
+					name = "郑码( 构词表 )";
+					url = "http://wubi.aardio.com/download/lex/zhengma/zhengma.chars.lex.lzma";
+				};
+				{
+					name = "郑码( 6.6 )";
+					url = "http://wubi.aardio.com/download/lex/zhengma/zhengma6.6.lex.lzma";
+				};
+				{
+					name = "郑码( 5.0 )";
+					url = "http://wubi.aardio.com/download/lex/zhengma/zhengma5.0.lex.lzma";
+				};
+				{
+					name = "郑码( 小指 )";
+					url = "http://wubi.aardio.com/download/lex/zhengma/zhengma.xiaozhi.lex.lzma";
+				};
+				{
+					name = "郑码( 小泉 )";
+					url = "http://wubi.aardio.com/download/lex/zhengma/zhengma.xiaoquan.lex.lzma";
+				};
+				{
+					name = "郑码( 过客一剑 )";
+					url = "http://wubi.aardio.com/download/lex/zhengma/zhengma.guoke.lex.lzma";
+				};
+				{
+					name = "郑码( 云在天外 )";
+					url = "http://wubi.aardio.com/download/lex/zhengma/zhengma.yztw.lex.lzma";
+				};
+				{
+					name = "郑码( 超强 )";
+					url = "http://wubi.aardio.com/download/lex/zhengma/zhengma.chaoqiang.lex.lzma";
+				};
+				{
+					name = "郑码( 超集 )";
+					url = "http://wubi.aardio.com/download/lex/zhengma/zhengma.ex.lex.lzma";
+				};
+				{
+					name = "郑码( 繁体 )";
+					url = "http://wubi.aardio.com/download/lex/zhengma/zhengma.cht.lex.lzma";
+				};
+				{
+					name = "郑码( 繁体超集 )";
+					url = "http://wubi.aardio.com/download/lex/zhengma/zhengma.cht.ex.lex.lzma";
+				};
+			}
+		};
+	} 
+}
+
+
+/**intellisense()
+app.lexNetContents.getTable() = 获取默认码表目录
+app.lexNetContents.update() = 更新数据
+end intellisense**/

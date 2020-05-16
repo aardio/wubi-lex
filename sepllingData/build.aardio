@@ -1,0 +1,133 @@
+import fonts.fontAwesome;
+import win.ui;
+/*DSG{{*/
+winform = win.form(text="wubiLex - 反查字根表简易编辑器";right=981;bottom=816)
+winform.add(
+btnLoad={cls="button";text="加载";left=684;top=13;right=809;bottom=46;dr=1;dt=1;font=LOGFONT(h=-15);z=4};
+btnLzma={cls="button";text="压缩输出为lzma文件";left=670;top=777;right=899;bottom=810;db=1;dr=1;font=LOGFONT(h=-15;name='FontAwesome');z=7};
+btnSave={cls="button";text="保存";left=819;top=13;right=944;bottom=46;disabled=1;dr=1;dt=1;font=LOGFONT(h=-15);z=2};
+btnSearch={cls="plus";text='\uF002';left=365;top=21;right=394;bottom=44;color=3947580;dr=1;dt=1;font=LOGFONT(h=-16;name='FontAwesome');iconColor=2960685;notify=1;z=5};
+cmbWubiVersion={cls="combobox";left=497;top=16;right=669;bottom=42;dr=1;dt=1;edge=1;font=LOGFONT(h=-15);items={"86";"98";"06";"091";"zhengma"};mode="dropdownlist";z=3};
+editData={cls="edit";left=22;top=67;right=953;bottom=594;db=1;dl=1;dr=1;dt=1;edge=1;hscroll=1;multiline=1;vscroll=1;z=1};
+editEtymons={cls="edit";left=22;top=603;right=953;bottom=764;autohscroll=false;db=1;dl=1;dr=1;edge=1;multiline=1;vscroll=1;z=8};
+editSearch={cls="plus";left=91;top=18;right=356;bottom=42;align="right";border={bottom=1;color=-8355712};dr=1;dt=1;editable=1;font=LOGFONT(h=-16);z=6}
+)
+/*}}*/
+
+winform.btnSave.oncommand = function(id,event){
+    if(winform.editData.spellingFilePath){
+  		string.save(winform.editData.spellingFilePath,winform.editData.text);
+		winform.editData.modified = false;  
+		winform.btnSave.disabled  = true;	
+    } 
+}
+
+winform.editData.onChange = function(){ 
+	winform.btnSave.disabled =	!winform.editData.modified;
+}
+
+winform.btnLoad.oncommand = function(id,event){
+    if(winform.editData.modified ){ 
+    	if(!winform.msgboxTest('文本已修改\n继续操作将丢弃修改的文本'))return;
+    }
+    
+    winform.editData.spellingFilePath = "\sepllingData\"+winform.cmbWubiVersion.selText+".txt";
+	winform.editData.text = string.load(winform.editData.spellingFilePath);
+	winform.editData.modified = false;
+}
+
+winform.cmbWubiVersion.selIndex = 1;
+
+import wubi.fonts;
+wubi.fonts.install(winform.editData,16);
+
+winform.editData.limit = 0;
+
+import ustring;
+winform.btnSearch.oncommand = function(id,event){
+	var kw = winform.editSearch.text;
+	if(!#kw){ return; }
+	if(#string.trim(kw)){
+		kw = string.trim(kw);
+	}
+	
+	var min,max = winform.editData.getsel();
+	if(max) min = max; 
+	
+	var txt = string.toUnicode(winform.editData.text);
+	kw = string.toUnicode(kw);
+		
+	var i,j = ustring.indexOf(txt,kw,min+1);
+	if((!(i&&j)) && (min>0)){
+		i,j =  ustring.indexOf(txt,kw,0);
+	}
+	
+	if(i&&j){
+		winform.editData.setsel(i,j);
+		winform.editData.scrollCaret();
+	}
+}
+
+winform.editSearch.editBox.onOk = function(){ 
+	winform.btnSearch.oncommand();
+	return true; 	
+}
+
+winform.btnSearch.skin(  {
+		color = { 
+			default = 0xFF3C3C3C;
+			hover = 0xFFFF0000; 
+			active = 0xFF00FF00; 
+		}
+	} );
+winform.editSearch.setCueBannerText("请输入查找文本")
+
+winform.btnLzma.oncommand = function(id,event){
+    winform.btnLzma.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
+	thread.invoke( 
+		function(winform){
+			import sevenZip.lzma;
+			sevenZip.lzma.encodeFile("\sepllingData\06.txt","\sepllingData\dist\06.lzma")
+			sevenZip.lzma.encodeFile("\sepllingData\86.txt","\sepllingData\dist\86.lzma")
+			sevenZip.lzma.encodeFile("\sepllingData\98.txt","\sepllingData\dist\98.lzma")
+			sevenZip.lzma.encodeFile("\sepllingData\091.txt","\sepllingData\dist\091.lzma")
+			sevenZip.lzma.encodeFile("\sepllingData\zhengma.txt","\sepllingData\dist\zhengma.lzma")
+			winform.btnLzma.disabledText = null;
+		},winform
+	)
+}
+	
+import wubi.fonts;
+wubi.fonts.install(winform.editEtymons,16);
+ 
+winform.editEtymons.text =/*
+丶丶冫氵灬彡ミン
+丿亻彳ノ𠂉丆ㄤ尢厂疒厃⺁虍
+マ⺈饣クス
+丨〢〣亅レ刂リ丩
+扌忄牜⺪㐄丬卜爿朩⻊钅釒飠衤礻
+阝卩ㄗ
+乚ヒ乜乇几
+氐弋
+一乛乛冖宀亠⺳䒑
+丷ッ爫⺌乊
+巜巛
+乙⺄𠃌乁勹卂
+匚冂凵ㄇㄩ口囗彐ヨ匸
+丅ㄒ丄
+ㄥ厶幺纟糹
+⺧耂耂艹屮廾卄卅卌廿ㄝ
+亍丌兀亓乇ユ
+⺷⺶チテ
+讠辶廴
+夂攵攴彑乂ㄨ乄犭殳
+丂ㄎ丂ㄣㄣㄢㄅㄋ
+癶覀 罒⺮肀⺻
+⺋疋 
+仝亽⺗孑孓皿氺㡀豕戋乑聿旲隹镸夆黽毌
+󰀁󰅅󰁒󰁇󰀂󰀄󰀆󰁄󰀊󰀋󰁞󰁟󰁠󰁙󰁢󰁵󰀍󰀎󰀐󰀑󰀗󰀙󰀚󰀛󰀜󰀟󰀠󰀣󰀥󰀧󰀨󰀩󰀪󰀫󰀯󰀰󰀱󰀲󰀳󰀴󰀷󰀸󰀹󰀺󰀻󰁂󰁅󰅂󰁆󰁖󰁗󰁘󰁚󰁜󰁝󰁡󰁤󰁦󰁪󰁬󰁭󰁃󰀼󰀽󰀾󰁮󰁯󰁲󰁳󰁴󰁷󰁸󰁺󰀀󰁽󰀤󰁾󰀖󰀓󰀔󰀕󰁻󰂄󰂞󰃧󰄃󰄲󰄹󰅀󰅁󰅄󰅇󰅉󰅊󰅋󰅌󰅍󰅎󰅏󰅐󰅑󰅓󰅔󰅕󰅖󰅗󰀞󰂃󰁈󰁉󰁁󰁊󰁋󰁌󰁎󰁏󰁐󰁑󰁓󰁕
+󰀝󰀘󰀌󰀢󰀬󰀵󰁥󰁣󰀏󰁶󰁧󰀦󰁀󰀅󰁫〇
+*/
+
+winform.show();
+return win.loopMessage();

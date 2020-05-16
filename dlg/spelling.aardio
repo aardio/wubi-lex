@@ -1,0 +1,514 @@
+import fonts.fontAwesome;
+import win.ui;
+/*DSG{{*/
+var winform = win.form(text="五笔码表管理﻿工具";right=1040;bottom=602;bgcolor=16777215)
+winform.add(
+editInput={cls="plus";left=287;top=146;right=712;bottom=181;border={bottom=1;color=-16744448};dl=1;dr=1;dt=1;editable="edit";font=LOGFONT(h=-16);tabstop=1;textPadding={top=6;bottom=1};z=8};
+etymonImage={cls="plus";left=148;top=208;right=265;bottom=327;db=1;dl=1;dr=0.75;dt=1;repeat="scale";z=41};
+hotkey={cls="hotkey";left=647;top=573;right=787;bottom=593;clip=1;db=1;dr=1;edge=1;hide=1;z=1};
+inkEdit={cls="atlax";text="InkEd.InkEdit";left=743;top=179;right=999;bottom=446;dr=1;dt=1;z=14};
+keyA={cls="plus";left=292;top=418;right=336;bottom=455;ah=1;align="right";aw=1;bgcolor=12712703;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="A";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=23};
+keyB={cls="plus";left=484;top=466;right=528;bottom=503;ah=1;align="right";aw=1;bgcolor=14085631;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="B";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=36};
+keyC={cls="plus";left=396;top=466;right=440;bottom=503;ah=1;align="right";aw=1;bgcolor=14085631;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="C";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=34};
+keyD={cls="plus";left=377;top=418;right=421;bottom=455;ah=1;align="right";aw=1;bgcolor=12712703;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="D";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=25};
+keyE={cls="plus";left=365;top=374;right=409;bottom=411;ah=1;align="right";aw=1;bgcolor=16509893;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="E";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=7};
+keyF={cls="plus";left=421;top=418;right=465;bottom=455;ah=1;align="right";aw=1;bgcolor=12712703;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="F";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=26};
+keyG={cls="plus";left=465;top=418;right=509;bottom=455;ah=1;align="right";aw=1;bgcolor=12712703;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="G";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=27};
+keyH={cls="plus";left=519;top=418;right=563;bottom=455;ah=1;align="right";aw=1;bgcolor=14085594;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="H";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=28};
+keyI={cls="plus";left=595;top=374;right=639;bottom=411;ah=1;align="right";aw=1;bgcolor=15853297;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="I";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=18};
+keyJ={cls="plus";left=563;top=418;right=607;bottom=455;ah=1;align="right";aw=1;bgcolor=14085594;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="J";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=29};
+keyK={cls="plus";left=607;top=418;right=651;bottom=455;ah=1;align="right";aw=1;bgcolor=14085594;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="K";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=30};
+keyL={cls="plus";left=651;top=418;right=695;bottom=455;ah=1;align="right";aw=1;bgcolor=14085594;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="L";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=31};
+keyM={cls="plus";left=582;top=466;right=626;bottom=503;ah=1;align="right";aw=1;bgcolor=14085594;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="M";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=38};
+keyN={cls="plus";left=538;top=466;right=582;bottom=503;ah=1;align="right";aw=1;bgcolor=14085631;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="N";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=37};
+keyO={cls="plus";left=639;top=374;right=683;bottom=411;ah=1;align="right";aw=1;bgcolor=15853297;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="O";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=20};
+keyP={cls="plus";left=683;top=374;right=727;bottom=411;ah=1;align="right";aw=1;bgcolor=15853297;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="P";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=21};
+keyQ={cls="plus";left=277;top=374;right=321;bottom=411;ah=1;align="right";aw=1;bgcolor=16509893;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="Q";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=4};
+keyR={cls="plus";left=409;top=374;right=453;bottom=411;ah=1;align="right";aw=1;bgcolor=16509893;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="R";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=10};
+keyS={cls="plus";left=333;top=418;right=377;bottom=455;ah=1;align="right";aw=1;bgcolor=12712703;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="S";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=24};
+keyT={cls="plus";left=453;top=374;right=497;bottom=411;ah=1;align="right";aw=1;bgcolor=16509893;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="T";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=12};
+keyU={cls="plus";left=551;top=374;right=595;bottom=411;ah=1;align="right";aw=1;bgcolor=15853297;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="U";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=16};
+keyV={cls="plus";left=440;top=466;right=484;bottom=503;ah=1;align="right";aw=1;bgcolor=14085631;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="V";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=35};
+keyW={cls="plus";left=321;top=374;right=365;bottom=411;ah=1;align="right";aw=1;bgcolor=16509893;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="W";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=6};
+keyX={cls="plus";left=352;top=466;right=396;bottom=503;ah=1;align="right";aw=1;bgcolor=14085631;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="X";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=33};
+keyY={cls="plus";left=507;top=374;right=551;bottom=411;ah=1;align="right";aw=1;bgcolor=15853297;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="Y";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=13};
+keyZ={cls="plus";left=308;top=466;right=352;bottom=503;ah=1;align="right";aw=1;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="Z";textPadding={right=6;bottom=2};valign="bottom";z=32};
+lbInk={cls="static";text="手写输入:";left=743;top=156;right=863;bottom=173;dr=1;dt=1;transparent=1;z=15};
+menuItem={cls="plus";text="下拉列表项模板1";left=361;top=183;right=631;bottom=228;align="right";bgcolor=11525002;border={left=1;right=1;bottom=1;color=-3546113};tabstop=1;textPadding={right=20};z=5};
+menuItem2={cls="plus";text="下拉列表项模板2";left=361;top=228;right=631;bottom=273;align="right";bgcolor=11525002;border={left=1;right=1;bottom=1;color=-3546113};tabstop=1;textPadding={right=20};z=11};
+plusCode={cls="plus";left=265;top=232;right=499;bottom=282;align="right";dl=0.25;dr=0.52;dt=1;font=LOGFONT(h=-37);textPadding={right=10};z=9};
+plusDownloadSpellingGif={cls="plus";text='\uF019  下载拆字详解图库';left=745;top=468;right=984;bottom=504;bgcolor=11580047;db=1;dr=1;font=LOGFONT(h=-16;name='FontAwesome');hide=1;notify=1;tabstop=1;z=17};
+plusEtymon={cls="plus";text="字根图";left=885;top=572;right=981;bottom=594;align="left";db=1;dr=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=9}};iconText='\uF0E8';notify=1;tabstop=1;textPadding={left=25};z=40};
+plusHotkey={cls="plus";text="设置热键";left=788;top=572;right=884;bottom=594;align="left";db=1;dr=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=9}};iconText='\uF11C ';notify=1;tabstop=1;textPadding={left=25};z=39};
+plusSpellingGif={cls="plus";left=499;top=232;right=719;bottom=288;dl=0.48;dt=1;repeat="scale";z=22};
+plusTitle={cls="plus";text="根据当前安装的系统码表反查上面输入的汉字";left=302;top=195;right=727;bottom=228;aw=1;color=5921370;dt=1;z=19};
+plusWubiTable={cls="plus";left=163;top=520;right=854;bottom=553;clip=1;color=5921370;db=0.08;dl=1;dr=1;font=LOGFONT(h=-16);z=2};
+txtSpelling={cls="edit";left=311;top=303;right=688;bottom=359;align="center";bgcolor=16777215;color=255;dl=0.3;dr=0.34;dt=1;font=LOGFONT(h=-21);z=3}
+)
+/*}}*/
+
+import win.debounce;
+import wubi.lexFile;
+import string.conv.pinyin;
+import wubi.table;	
+
+var showEtymonImage = function(ver,k){
+	var path = io.appData("/aardio/std/wubi/etymon/v3/"+ver+"/"+k+".gif")
+	if(!..io.exist(path) ){
+		thread.invoke( 
+			function(winform,ver,k,path){
+				import inet.http;
+				var bin = inet.http().get("http://wubi.aardio.com/download/etymon/"+ver+"/"+k+".gif");
+				
+				if(bin){
+					string.save(path,bin)
+					winform.etymonImage.background = path;
+				}	
+			},winform,ver,k,path
+		)
+	} 
+	else {
+		winform.etymonImage.background = path;
+	} 	
+}
+
+import wubi.phrase;
+import wubi.spellingTable;
+var searchSpelling = win.debounce(function(str){
+
+	winform.txtSpelling.text = ""
+	winform.plusSpellingGif.background = null;
+	winform.plusTitle.text = ""
+	
+	var ver = winform.wubiVersion;
+	var levelOne = wubi.table.levelOne[ver];
+	if(!table.find(levelOne,str)){ 
+		for(name,ctrl in winform.eachControl("plus","key[A-Z]") ){
+			ctrl.checked = false
+			ctrl.text = ""	
+			
+			var k = string.right(name,1);
+			var wubiKeyChars = wubi.table[ver][k];
+			if(wubiKeyChars){
+				ctrl.iconText = k +" "+ string.charAt(wubiKeyChars,1);	
+			} 
+		}	
+		
+		winform.plusWubiTable.text = ""
+	}
+	else {
+		for(name,ctrl in winform.eachControl("plus","key[A-Z]") ){
+			ctrl.checked = false
+			ctrl.text = ""	
+			
+			var k = string.right(name,1);
+			if(levelOne[k]) ctrl.iconText = k +" "+ levelOne[k];
+		}
+		
+		winform.plusWubiTable.text = "一级简码"
+	}
+	
+	winform.plusTitle.text = "拼音：" + string.conv.pinyin(str,,true);	
+	var code = winform.systemLex.spelling(str) 
+	if(!code && winform.systemPhraseMap){
+		code = wubi.phrase.findCodeFromMap(winform.systemPhraseMap,str);
+	}
+	
+	if(code){
+		code = string.upper(code);
+		winform.plusCode.text = code;
+			
+		if(#code<=4){
+			if(winform.wubiVersion){
+				showEtymonImage(winform.wubiVersion,code[[1]]);
+			}
+			
+			var numbers = {"①";"②";"③";"④";} 
+			for(i=#code;1;-1){ 
+				var ctrl = winform[ "key" + code[[i]] ];
+				ctrl.text = numbers[i];
+				ctrl.checked = true; 
+			}	
+		} 
+	}
+	else {
+		winform.plusCode.text =  "缺少编码";
+	}
+	
+	var wchars = string.split(str);
+	var length  = #wchars;
+	 
+	var spellingTable = wubi.spellingTable.init(winform.wubiVersion);
+	if(winform.wubiVersion=="zhengma"){
+		winform.txtSpelling.text = spellingTable.find(str); 
+		return;
+	}
+	elseif(spellingTable){
+			
+			winform.txtSpelling.text = spellingTable.find(str); 
+ 
+			if(length && !#winform.txtSpelling.text){
+				var codes = {};
+				for(i=1;length;1){
+					var code = spellingTable.find( wchars[i] ) 
+					if(!code) continue;
+					
+					codes[i] = string.split(code)
+				}
+			
+				if(#codes === length && !table.some(codes,lambda(v)v===null) ){
+					if(length==2){ 
+						if(#codes[1]>=2 && #codes[2]>=2){
+							winform.txtSpelling.text =  codes[1][1] ++ codes[1][2] ++ codes[2][1] ++ codes[2][2] 
+						}	
+					}
+					elseif(length==3){ 
+						if(#codes[1]>=1 && #codes[2]>=1 && #codes[3]>=2){
+							winform.txtSpelling.text =  codes[1][1] ++ codes[2][1] ++ codes[3][1] ++ codes[3][2] 
+						}	
+					}
+					elseif(length==4){ 
+						if(#codes[1]>=1 && #codes[2]>=1 && #codes[3]>=1 && #codes[4]>=1){
+							winform.txtSpelling.text =  codes[1][1] ++ codes[2][1] ++ codes[3][1] ++ codes[4][1] 
+						}	
+					}
+					elseif(length>4){ 
+						if(#codes[1]>=1 && #codes[2]>=1 && #codes[3]>=1 && #codes[#codes]>=1){
+							winform.txtSpelling.text =  codes[1][1] ++ codes[2][1] ++ codes[3][1] ++ codes[#codes][1] 
+						}	
+					}
+				}
+			}	
+	}
+	
+	var getSpellingGifPath = function(char){
+		var path = io.appData("aardio\std\wubi\spelling\" 
+				+ winform.wubiVersion + "\" + char + ".gif")
+				
+		if(!io.exist(path) ){
+			path = io.exist( io.appData("aardio\std\wubi\spelling\86\" + char + ".gif") )
+				|| io.exist( io.appData("aardio\std\wubi\spelling\98\" + char + ".gif") )
+		}
+		
+		return path;
+	}
+	
+	var wubiSpellingGifPathA = getSpellingGifPath( wchars[1] ); 
+	if(length>1){ 
+		if( ..io.exist(wubiSpellingGifPathA) ){		 
+			if(length==2){ 
+				var wubiSpellingGifPathB = getSpellingGifPath( wchars[2] );  
+			
+				if( wubiSpellingGifPathB ){ 
+					var bmp = gdip.bitmap(..string.loadBuffer(wubiSpellingGifPathA)); 
+					var bmp2  = gdip.bitmap(wubiSpellingGifPathB);
+					var graphics = bmp.getGraphics();
+					graphics.drawImage(bmp2,bmp.width/2,0);
+					winform.plusSpellingGif.setBackground(bmp);
+					graphics.delete();
+					bmp2.dispose();
+				}
+			}
+			elseif(length==3){ 
+				var wubiSpellingGifPathB = getSpellingGifPath( wchars[2] );  
+				var wubiSpellingGifPathC = getSpellingGifPath( wchars[3] ); 
+					
+				if( wubiSpellingGifPathB && wubiSpellingGifPathC ){ 
+					var bmp = gdip.bitmap(..string.loadBuffer(wubiSpellingGifPathA)); 
+					var bmp2  = gdip.bitmap(wubiSpellingGifPathB);
+					var bmp3  = gdip.bitmap(wubiSpellingGifPathC);
+					var graphics = bmp.getGraphics();
+					graphics.drawImage(bmp2,bmp.width/4,0);
+					graphics.drawImage(bmp3,bmp.width/2,0);
+					winform.plusSpellingGif.setBackground(bmp);
+					graphics.delete();
+					bmp2.dispose();
+					bmp3.dispose();
+				}
+			}
+			elseif(length>=4){ 
+				var wubiSpellingGifPathB = getSpellingGifPath( wchars[2] );  
+				var wubiSpellingGifPathC = getSpellingGifPath( wchars[3] );  
+				var wubiSpellingGifPathD = getSpellingGifPath( wchars[#wchars] );  
+				
+				if( wubiSpellingGifPathB && wubiSpellingGifPathC && wubiSpellingGifPathD ){ 
+					var bmp = gdip.bitmap(..string.loadBuffer(wubiSpellingGifPathA)); 
+					var bmp2  = gdip.bitmap(wubiSpellingGifPathB);
+					var bmp3  = gdip.bitmap(wubiSpellingGifPathC);
+					var bmp4  = gdip.bitmap(wubiSpellingGifPathD);
+					var graphics = bmp.getGraphics();
+					graphics.drawImage(bmp2,bmp.width/4,0);
+					graphics.drawImage(bmp3,bmp.width/2,0);
+					graphics.drawImage(bmp4,bmp.width/4*3,0);
+					winform.plusSpellingGif.setBackground(bmp);
+					graphics.delete();
+					bmp2.dispose();
+					bmp3.dispose();
+					bmp4.dispose();
+				}
+			}
+		}
+	}
+	else{
+		var path = io.appData("aardio\std\wubi\spelling\" 
+				+ winform.wubiVersion + "\" + wchars[1] + ".gif")
+		
+		if(io.exist(path)){
+			winform.plusSpellingGif.setBackground(string.loadBuffer(path));	
+		} 
+		else {
+			thread.invoke( 
+				function(winform,ver,wchar){
+					import inet.http;
+					var bin = inet.http().get("http://wubi.aardio.com/download/spelling/"+ver+"/" + string.hex(wchar,"") + ".gif");
+					
+					if(bin){
+						var path = io.appData("aardio\std\wubi\spelling\" 	+ ver + "\" + wchar + ".gif")
+						string.save(path,bin);
+						
+						winform.plusSpellingGif.setBackground(bin);	
+					}	
+					else {
+						var path = io.exist( io.appData("aardio\std\wubi\spelling\86\" + wchar + ".gif") )
+							|| io.exist( io.appData("aardio\std\wubi\spelling\98\" + wchar + ".gif") )
+							
+						if(path){
+							winform.plusSpellingGif.setBackground(string.loadBuffer(path));	
+						}
+					}
+						
+				},winform,winform.wubiVersion,wchars[1]
+			)
+		}
+	}
+	
+	
+},100)
+
+import style;
+import win.ui.tabs;
+var menu = win.ui.tabs(winform.menuItem,winform.menuItem2)
+menu.skin( style.dropdown ) 
+menu.initPopup(winform.editInput.editBox,false)
+menu.onOk = function(strip){ 
+	winform.editInput.setFocus(strip.text);
+}
+
+import web.rest.jsonLiteClient;
+var http = web.rest.jsonLiteClient();
+var suggestion = http.api("http://suggestion.baidu.com/su?cb=&wd={0}") 
+ 
+import string.conv.pinyin;
+import win.debounce;
+var showSuggestion = win.debounce( 
+	function(text){
+		var items = string.conv.pinyin( string.lower(text) ) 
+		if(#items){ 
+			menu.setItemTexts(items,8,1); 
+		}
+		else {
+			var result =  suggestion[ text ].get();
+			if(!#result[["s"]]) return;
+			
+			menu.setItemTexts(result.s,8,1);
+		}
+		
+		var x,y,cx,cy = winform.editInput.getPos();
+		menu.popup(true,win.toScreen(winform.hwnd,x + cx/2 - 230,y+cy))	 
+	}
+)	
+
+winform.editInput.editBox.onChange = function(){  
+	var str = string.trim(winform.editInput.text) 
+	if(string.match(str,"^[a-zA-Z]+$")){
+		if(str !== menu.selText){ 
+			showSuggestion(str);
+		} 
+		return;
+	}
+	else {
+		menu.popup(false);
+	}
+	
+	str = string.match(str,":+");
+	if(!#str) return;
+		
+	var char = string.charAt(str,1)
+	if(!char){
+		if(winform.wubiVersion){
+			var verString = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["06"]="五笔新世纪";["zhengma"]="郑码"})[winform.wubiVersion];
+			winform.plusTitle.text = "可在上面重复输入相同单字进行练习, 当前安装的系统码表: " + verString	
+		}
+	
+		var bmp = winform.plusSpellingGif.setBackground(null);
+		if(bmp){ bmp.dispose() }
+		
+		winform.plusCode.text = "";
+		winform.txtSpelling.text = "";	
+		return;	
+	}
+
+	if(!#string.replace(str,char,"")){
+		str = char;
+	}
+
+	if(#str)searchSpelling(str)
+}
+
+winform.editInput.setFocus();
+if( "IInkEdit" == winform.inkEdit.getControlTypeName() ){
+	var inkEdit = winform.inkEdit.getControl(); 
+	inkEdit.Enabled=true; //启用
+	inkEdit.UseMouseForInput=true;//允许鼠标输入
+	inkEdit.BackColor=0xDCF8FF; //背景色
+	inkEdit.RecognitionTimeout=1000 //识别速度,写的快这个值可以改小
+	inkEdit.InkMode=inkEdit.IEM_Ink;//收集墨迹和手势
+	inkEdit.InkInsertMode=0  //文本模式
+	inkEdit.Locked=false;//关闭只读 
+	inkEdit.SelFontName="Tahoma"; //字体
+	inkEdit.SelFontSize=12; //文字大小
+	inkEdit.SelInksDisplayMode = 1
+	
+	inkEdit.Change = function(){
+		winform.editInput.text = inkEdit.Text;
+		inkEdit.text = "";
+	}
+}
+else {
+	var wb = winform.inkEdit.getControl();
+	wb.Navigate("about:当前系统不支持Microsoft Ink")
+}
+
+winform.show() 
+
+subscribe("wubi.system.phrase.changed",function(...){
+	winform.systemPhraseMap = wubi.phrase.loadMapFromSystem()
+})
+	
+subscribe("wubi.system.lex.changed",function(...){
+	winform.systemLex = wubi.lexFile()
+	var ver  = winform.systemLex.getVersion()
+	var verString = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["06"]="五笔新世纪";["zhengma"]="郑码"})[ver];
+	winform.plusTitle.text = '根据系统码表( ' +verString + ' )反查上面输入的汉字,可直接输入拼音\n五笔编码自第二码开始可使用Z键通配任意编码（ 首码除外 ）'
+	
+	var wubiSpellingGifPath86 = fsys.appdata("aardio\std\wubi\spelling\86");
+	var wubiSpellingGifPath98 = fsys.appdata("aardio\std\wubi\spelling\98"); 
+	if( !(..io.exist(wubiSpellingGifPath86) && ..io.exist(wubiSpellingGifPath98)) ){
+		winform.plusDownloadSpellingGif.hide = ver == "zhengma"
+	}
+	else {
+		winform.plusDownloadSpellingGif.hide = true;
+	}
+	
+	wubi.spellingTable.init(ver); 
+	winform.wubiVersion = ver;
+	
+	winform.editInput.text = "";
+	winform.plusCode.text =""
+	winform.plusSpellingGif.background = null;
+	winform.txtSpelling.text = "";
+	
+	import wubi.table;
+	for(name,ctrl in winform.eachControl("plus","^key[A-Z]") ){
+		ctrl.onMouseHover = function(wParam,lParam){
+			winform.hotkey.hide = true;
+			if(!winform.wubiVersion) return;
+			
+			var k = string.right(name,1);
+			var wubiKeyChars = wubi.table[winform.wubiVersion][k]
+			if(wubiKeyChars){
+				winform.plusWubiTable.text = wubiKeyChars;
+				showEtymonImage(winform.wubiVersion,k);	
+			}
+		
+		}
+		ctrl.onMouseLeave = function(wParam,lParam){
+			winform.plusWubiTable.text = ""
+		}	
+		
+		var k = string.right(name,1);
+		var wubiKeyChars = wubi.table[ver][k];
+		if(wubiKeyChars){
+			ctrl.iconText = k +" "+ string.charAt(wubiKeyChars,1);
+		}
+		 
+		ctrl.text = ""; 
+		ctrl.skin(style.key)
+	}
+	
+} )
+
+if(mainForm){
+	mainForm.tabs.strips[2].disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
+	win.delay(200);	
+}
+
+import wubi.fonts;
+wubi.fonts.install(winform.txtSpelling);
+
+winform.plusTitle.text = "请稍候几秒,正在加载字根数据库..."
+
+..win.setTimeout(
+	function(){
+		publish("wubi.system.lex.changed");	
+		publish("wubi.system.phrase.changed");
+		if(mainForm) mainForm.tabs.strips[2].disabledText = null;
+	},100
+)
+
+winform.plusDownloadSpellingGif.skin(style.primaryButton)
+
+import sevenZip.lzma.httpFile;
+winform.plusDownloadSpellingGif.oncommand = function(id,event){
+	var downbox = inet.downBox(winform.hwnd,"下载五笔拆分图解字库",-1);
+	var saveDir = fsys.appdata("/aardio/std/wubi/download")
+	var extraDir = fsys.appdata("/aardio/std/wubi/")
+	
+	var bmp = winform.plusSpellingGif.setBackground(null);
+	if(bmp){ bmp.dispose() }
+	
+	if( sevenZip.lzma.httpFile.download("http://wubi.aardio.com/download/spelling.tar.lzma"
+		,"下载五笔拆分图解字库",saveDir,extraDir,"spelling.tar.lzma",winform) ){
+		winform.editInput.editBox.onChange()
+		winform.plusDownloadSpellingGif.hide = true;
+	}
+}
+
+winform.plusHotkey.skin(style.transButton)
+
+import config;
+winform.hotkey.sethotkey(config.hotkey.spelling[1],config.hotkey.spelling[2])
+winform.plusHotkey.onMouseHover = function(wParam,lParam){
+	winform.hotkey.hide = false;
+	winform.plusWubiTable.text = "五笔输入时按热键反查，也可以按同一热键回到原来的窗口，不影响继续输入"
+}
+
+winform.plusHotkey.oncommand = function( id,event ){
+	winform.plusHotkey.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
+	
+	var hotmod,hotkey = winform.hotkey.gethotkey()
+	config.hotkey.spelling = {hotmod;hotkey};
+	config.hotkey.save();
+	
+	publish("spellingHotkeyChange")	
+	
+	win.delay(1000);
+	winform.plusHotkey.disabledText = null;
+}
+
+winform.plusEtymon.skin(style.transButton)
+winform.plusEtymon.onMouseHover = function(wParam,lParam){
+	winform.hotkey.hide = true;
+	winform.plusWubiTable.text = "鼠标悬停在上面的虚拟键上可以查看对应键位的字根歌诀"
+}
+
+winform.plusEtymon.oncommand = function(id,event){
+	publish("showEtymon")
+}
+
+subscribe("spellingFocus",function(){
+	winform.editInput.setFocus();
+} )
+
+winform.enableDpiScaling();
+win.loopMessage();

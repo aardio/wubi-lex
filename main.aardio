@@ -1,0 +1,217 @@
+//RUNAS//
+import process.admin;
+import fonts.fontAwesome;
+import win.ui;
+/*DSG{{*/
+mainForm = win.form(cls="AARDIO_WUBI_FORM";text="wubiLex ( Win10 五笔助手 )";right=1040;bottom=642;bgcolor=15793151;border="none")
+mainForm.add(
+caption={cls="bkplus";text="wubiLex 9.7.7";left=35;top=12;right=153;bottom=30;color=15780518;dl=1;dt=1;font=LOGFONT(h=-16);z=5};
+custom={cls="custom";left=0;top=40;right=1040;bottom=643;bgcolor=16777215;db=1;dl=1;dr=1;dt=1;z=1};
+logo={cls="bkplus";text='\uF0AD';left=6;top=9;right=35;bottom=34;color=15780518;dl=1;dt=1;font=LOGFONT(h=-18;name='FontAwesome');z=4};
+stripHelp={cls="plus";text="帮助";left=554;top=5;right=648;bottom=40;align="left";color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome');padding={left=12;top=3}};iconText='\uF06A';notify=1;paddingLeft=1;paddingRight=1;paddingTop=3;textPadding={left=38};x=0.5;y=0.2;z=8};
+stripHotkey={cls="plus";text="热键";left=352;top=5;right=446;bottom=40;align="left";color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome');padding={left=12;top=3}};iconText='\uF11C ';notify=1;paddingLeft=1;paddingRight=1;paddingTop=3;textPadding={left=38};x=0.5;y=0.2;z=9};
+stripLex={cls="plus";text="词库";left=149;top=5;right=243;bottom=40;align="left";color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome');padding={left=12;top=3}};iconText='\uF00A';notify=1;paddingLeft=1;paddingRight=1;paddingTop=3;textPadding={left=38};x=0.5;y=0.2;z=3};
+stripSetting={cls="plus";text="设置";left=453;top=5;right=547;bottom=40;align="left";color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome');padding={left=12;top=3}};iconText='\uF0AD';notify=1;paddingLeft=1;paddingRight=1;paddingTop=3;textPadding={left=38};x=0.5;y=0.2;z=7};
+stripSpelling={cls="plus";text="反查";left=250;top=5;right=344;bottom=40;align="left";color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome');padding={left=12;top=3}};iconText='\uF002';notify=1;paddingLeft=1;paddingRight=1;paddingTop=3;textPadding={left=38};x=0.5;y=0.2;z=6};
+titleBar={cls="bkplus";left=0;top=0;right=1042;bottom=41;bgcolor=14977280;dl=1;dr=1;dt=1;z=2}
+)
+/*}}*/
+
+import win.ui.atom;
+var atom,hwnd = mainForm.atom("6A99BEF6-4024-4537-9C43-7FE5BADCF5E3.wubi");
+if(!atom){ 
+	win.showForeground(hwnd);
+	win.quitMessage();	
+	return;
+}
+
+import fsys.update.simpleMain;
+if( fsys.update.simpleMain(
+	"wubiLex ( Win10 五笔助手 )",
+	"http://wubi.aardio.com/update/",
+	..io.appData("/aardio/std/wubi/app/update"),
+	function(version,description){
+		globalUpdateInfo = {
+			version = version;
+			description = description;
+		};
+		
+		publish("wubiLexUpdated");
+	} )){
+	return 0;	
+}
+
+
+import win.ui.simpleWindow;
+win.ui.simpleWindow( mainForm );
+
+import win.dlg.message;
+win.dlg.message.install();
+
+import win.ui.tabs;
+var tbs = win.ui.tabs( 
+	mainForm.stripLex,
+	mainForm.stripSpelling,
+	mainForm.stripHotkey,
+	mainForm.stripSetting,
+	mainForm.stripHelp
+);
+	
+tbs.skin({
+	foreground={
+		active=0xFFFFFFFF;
+		default=0x00FFFFFF;
+		hover=0x38FFFFFF
+	};
+	color={
+		default=0xFFFFFFFF; 
+	};
+	checked={
+		foreground={default=0xFFFFFFFF;};
+		color={default=0xFF42A875;};
+	}
+})
+	
+tbs.loadForm(1,"\dlg\dict\dict.aardio" ); 
+tbs.loadForm(2,"\dlg\spelling.aardio" ); 
+tbs.loadForm(3,"\dlg\hotkey.aardio" ); tbs.preloadForm(3,false)
+tbs.loadForm(4,"\dlg\setting.aardio" ); 
+tbs.loadForm(5,"\dlg\help\help.aardio" ); 
+tbs.selIndex = 1;
+
+import win.util.tray;
+mainForm.onMinimize = function(lParam){
+	mainForm.tray = win.util.tray(mainForm)  
+	mainForm.modifyStyleEx(0x40000/*_WS_EX_APPWINDOW*/,0x80/*_WS_EX_TOOLWINDOW*/)
+	mainForm.show(false); 
+	return true; 
+}
+
+mainForm.onClose = function(hwnd,message,wParam,lParam){
+	if(!_STUDIO_INVOKED){
+		mainForm.onMinimize();
+		return true;    	
+	} 
+}
+
+mainForm.onDestroy = function(){
+	if(mainForm.tray){
+		mainForm.tray.delete()
+	}
+}
+
+import process;
+import win.ui.menu;
+mainForm.wndproc = {
+	[0xACCF/*_WM_TRAYMESSAGE*/ ] = function(hwnd,message,wParam,lParam){
+		if( lParam = 0x205/*_WM_RBUTTONUP*/ ){
+			win.setForeground(mainForm.hwnd)
+			mainForm.popmenu = win.ui.popmenu(mainForm);//创建弹出菜单
+			mainForm.popmenu.add('五笔设置',function(id){
+				tbs.selIndex = 4;
+				mainForm.show();
+			});
+			mainForm.popmenu.add('超级热键',function(id){
+				tbs.selIndex = 3;
+				mainForm.show(); 
+			});
+			mainForm.popmenu.add();
+			
+			mainForm.popmenu.add('管理系统码表',function(id){
+				tbs.selIndex = 1;
+				tbs.selForm.showLex();
+				mainForm.show();
+			});
+			
+			mainForm.popmenu.add('管理用户短语词库',function(id){
+				tbs.selIndex = 1;
+				tbs.selForm.showPhrase();
+				mainForm.show();
+			});
+			
+			mainForm.popmenu.add();
+			mainForm.popmenu.add('字根反查',function(id){
+				tbs.selIndex = 2;
+				mainForm.show();
+				publish("spellingFocus")
+			});
+			
+			mainForm.popmenu.add('查看字根键位图',function(id){
+				publish("showEtymon");
+				mainForm.show();
+			});
+			mainForm.popmenu.add();
+			
+			mainForm.popmenu.add('打开本软件源代码',function(id){
+				process.openUrl("https://github.com/aardio/wubi-lex")
+			});
+			mainForm.popmenu.add('打开官网: wubi.aardio.com',function(id){
+				process.openUrl("http://wubi.aardio.com")
+			});
+			mainForm.popmenu.add();
+			
+			mainForm.popmenu.add('退出',function(id){
+				win.quitMessage();
+			});
+			
+			var pt = ::POINT();
+			::User32.GetCursorPos(pt);
+			mainForm.popmenu.popup(pt.x,pt.y,true)
+		}
+		elseif( lParam = 0x202/*_WM_LBUTTONUP*/ ) {
+			mainForm.show();
+			win.setForeground(mainForm.hwnd);
+			
+			if(tbs.selIndex = 2){
+				publish("spellingFocus")
+			}
+		} 	
+	}
+}
+	
+subscribe("spellingHotkeyChange",function(...){
+	if(#config.hotkey.spelling){
+		if(mainForm.hkSpellingId){
+			mainForm.unreghotkey(mainForm.hkSpellingId)
+			mainForm.hkSpellingId = null;
+		}
+		
+		mainForm.hkSpellingId = mainForm.reghotkey( function(id,mod,vk){ 
+			var hwndForeground = win.getForeground()
+			if(hwndForeground == mainForm.hwnd){
+				mainForm.onMinimize();
+			}
+			else {
+				tbs.selIndex = 2;
+				mainForm.show();
+				win.setForeground(mainForm.hwnd);
+					
+				publish("spellingFocus");	
+			} 
+
+		},config.hotkey.spelling[1],config.hotkey.spelling[2])    	
+	}
+} )
+publish("spellingHotkeyChange");
+
+subscribe("showEtymon",function(...){
+	tbs.selIndex = 5;
+	tbs.selForm.showEtymon();
+} )
+
+mainForm.tabs = tbs;
+
+mainForm.enableDpiScaling();
+if(_ARGV.tray){ 
+	mainForm.modifyStyleEx(0x40000/*_WS_EX_APPWINDOW*/,0x80/*_WS_EX_TOOLWINDOW*/)	
+	mainForm.setTimeout( 
+		function(){
+			mainForm.tray = win.util.tray(mainForm)  
+		},3000
+	); 	
+}
+else {
+	mainForm.show();
+}
+
+return win.loopMessage(); 

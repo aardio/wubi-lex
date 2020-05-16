@@ -1,0 +1,22 @@
+﻿//weightData 词频数据
+namespace wubi.weightData;
+
+var path = ..io.appData("/aardio/std/wubi/word-weight2.txt");
+getPath = function(){ 
+	if(!..io.exist(path)){
+		
+		import sevenZip.lzma.httpFile;
+		sevenZip.lzma.httpFile.saveFromUrl("http://wubi.aardio.com/download/word-weight.lzma"
+			,path)
+			
+		if(!..io.exist(path)){  
+			return null,"加载微软词频文件时遇到网络错误";
+		}
+	} 
+	
+	return path;
+}
+
+/**intellisense(wubi.weightData)
+getPath() = 返回微软词频数据文件路径
+end intellisense**/

@@ -1,0 +1,41 @@
+﻿import config;
+import process;
+import com;
+
+namespace app;
+
+systemStartup = function(taskName,description,path,arguments,workdir){
+	var schedule = ..com.CreateObject("Schedule.Service");
+	schedule.Connect();
+			
+	var root = schedule.GetFolder("\") 
+	if(!taskName) taskName = ..io._exefile;
+	try{ root.DeleteTask( taskName ); }
+	if(!path){return;}
+		
+	var taskDef = schedule.NewTask(0);
+	taskDef.registrationInfo.Author = "Administrator";
+	taskDef.registrationInfo.Description = description;
+	taskDef.principal.LogonType = schedule.TASK_LOGON_SERVICE_ACCOUNT;
+	taskDef.principal.RunLevel = schedule.TASK_RUNLEVEL_HIGHEST 
+		
+	taskDef.settings.StartWhenAvailable = true;
+	taskDef.settings.Enabled = true 
+	taskDef.settings.Hidden = false
+	
+	var tg = taskDef.triggers.Create(schedule.TASK_TRIGGER_LOGON);
+	tg.Enabled = true;                    
+    tg.Repetition.StopAtDurationEnd = false;
+    tg.ExecutionTimeLimit = "PT0S"
+	
+	var act = taskDef.actions.Create( schedule.TASK_ACTION_EXEC )
+	act.Path = ..io.fullpath(path)
+	act.Arguments = ..process.joinArguments(arguments);
+	act.WorkingDirectory = workdir || ..io.splitpath(path).dir;
+		
+	root.RegisterTaskDefinition(taskName, taskDef, schedule.TASK_CREATE_OR_UPDATE,"","", schedule.TASK_LOGON_INTERACTIVE_TOKEN); 
+}
+
+/**intellisense(app)
+systemStartup() = 
+end intellisense**/

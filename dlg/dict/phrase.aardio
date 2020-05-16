@@ -1,0 +1,260 @@
+//RUNAS//
+import fonts.fontAwesome;
+import win.ui.menu;
+import win.ui;
+/*DSG{{*/
+var winform = win.form(text="五笔短语词库";right=977;bottom=602;acceptfiles=1;bgcolor=16777215)
+winform.add(
+btnHelp={cls="plus";text="格式说明";left=512;top=570;right=605;bottom=587;align="left";color=3947580;db=1;dr=1;font=LOGFONT(h=-13);iconColor=2960685;iconStyle={align="left";font=LOGFONT(h=-16;name='FontAwesome')};iconText='\uF059';notify=1;paddingLeft=20;z=5};
+btnLoad={cls="plus";text="读取系统短语";left=614;top=558;right=769;bottom=594;align="left";db=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-16;name='FontAwesome');padding={left=6}};iconText='\uF093';notify=1;tabstop=1;textPadding={left=25};z=2};
+btnSave={cls="plus";text="安装到系统短语";left=780;top=558;right=936;bottom=594;align="left";db=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-16;name='FontAwesome');padding={left=6}};iconText='\uF17A ';notify=1;tabstop=1;textPadding={left=25};z=3};
+editPhrase={cls="edit";left=13;top=12;right=957;bottom=554;db=1;dl=1;dr=1;dt=1;edge=1;font=LOGFONT(h=-16);hscroll=1;multiline=1;vscroll=1;z=1};
+lbTip={cls="plus";text="可以直接拖拽文本格式短语文件（*.txt）到这里";left=17;top=565;right=478;bottom=594;color=3947580;db=1;dl=1;dr=1;font=LOGFONT(h=-15;name='FontAwesome');transparent=1;z=4}
+)
+/*}}*/
+
+import wubi.phrase;
+import win.versionEx;
+winform.btnLoad.oncommand = function(id,event){
+	winform.lbTip.text = "";
+	
+	if( !win.versionEx.isWin10ReleaseLater("1703") ){
+		return winform.msgboxErr("仅支持 Win10 1703以上版本的五笔短语词库")
+	}
+	
+	var wubiUdpPath = wubi.phrase.getWubiUdpPrimaryPath() 
+	if(!wubiUdpPath){
+		return winform.msgboxErr("系统短语词库为空");
+	}	
+	
+	if(winform.editPhrase.modified){
+		if(!winform.msgAsk('编辑框内短语已修改且未保存,\n按确定继续操作(不保存修改内容)')){
+			return ; 
+		}
+	}
+	
+	winform.editPhrase.text="";
+	winform.btnLoad.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'} 
+	thread.invoke( function(winform){
+		import wubi.phrase;
+		var data,err = wubi.phrase.loadFromSystem();
+		if(!data){
+			winform.msgboxErr(err)	
+		}
+		else {
+			winform.editPhrase.text = data 
+			winform.editPhrase.modified = false;
+		}
+		 
+		winform.btnLoad.disabledText = null;
+	},winform)
+}
+
+winform.btnSave.oncommand = function(id,event){
+	config.phrase.editorText = winform.editPhrase.text;
+	config.phrase.save();
+	
+	if( !win.version.isWin10ReleaseLater("1703") ){
+		return winform.msgboxErr("仅支持 Win10 1703以上版本的五笔短语词库")
+	}
+	
+	var str = string.trim(winform.editPhrase.text);
+	if(!#str){
+		winform.editPhrase.text = wubi.phrase.default;
+		winform.msgbox("短语内容不能为空")
+		return;
+	}
+	
+	winform.lbTip.text = "";
+	winform.btnSave.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
+	winform.editPhrase.setFocus();
+
+	thread.invoke(function(phraseText,winform){
+		import tsfUtil;
+		import key.ime;
+		
+		var ret,err = tsfUtil.intallPhrase(phraseText,winform);
+		if(!ret){ 
+			winform.lbTip.text =err:"安装短语遇到未知错误"
+		}
+		else {
+			winform.lbTip.text = "更新成功,如果不能输入请按 WIN + 空格键 切换一下输入法即可";
+			key.ime.changeRequest(0x4090409); 
+		}
+		
+		winform.btnSave.disabledText = null; 
+	},winform.editPhrase.text,winform)
+}
+
+var loadPhraseFromFile = function(winform,path){
+	import fsys;
+	import wubi.phrase;
+	import fsys.codepage;
+	
+	if(winform.editPhrase.modified){
+		if(!winform.msgAsk('编辑框内短语已修改且未保存,\n按确定继续操作(不保存修改内容)')){
+			return ; 
+		}
+	}
+	
+	winform.lbTip.text = "";
+	
+	if(..fsys.isDir(path)){
+		return winform.msgboxErr("请指定文件而不是目录路径")
+	}
+	
+	var file = ..io.open(path,"rb");
+	if(!file){
+		return winform.msgboxErr("打开文件失败")
+	}
+		
+	if(file.read(8)=="mschxudp"){
+		file.close();
+		winform.editPhrase.text = wubi.phrase.load(path)
+	}	
+	
+	winform.editPhrase.text = ..fsys.codepage.load(path);
+	winform.editPhrase.modified = false;
+}
+
+winform.editPhrase.busy = function(busy,text){
+	if(busy){
+		winform.lbTip.text = text : "";
+		winform.lbTip.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
+		winform.editPhrase.readonly = true;
+	}
+	else {
+		winform.lbTip.disabledText = null;
+		winform.lbTip.text = text : "" 
+		winform.editPhrase.readonly = false; 
+	}
+}
+
+import fsys.dlg;
+winform.editPhrase.enablePopMenu({
+	{ /*---分隔线---*/ }; 
+	
+	{ "使用系统码表造词( 词语用空格或换行分开 )";
+			function(id){
+				
+				thread.invoke( 
+					function(winform){
+						winform.editPhrase.busy(true,"正在造词");
+						
+						import wubi.lexFile;
+						var lexFile = wubi.lexFile(lexPath)
+						if(lexFile.isEmpty()){
+							winform.editPhrase.showErrorTip("","系统码表不能为空")
+							winform.editPhrase.busy(false);
+							return;
+						}
+						
+						var result = {}
+						var selText = winform.editPhrase.selText;
+						var push = ..table.push;
+						
+						var imeVer,formation = lexFile.getVersion();
+						if(imeVer=="zhengma"){
+							if(!formation){
+								winform.msgErr("郑码造词必须选定专用的构词码表")
+								winform.editPhrase.busy(false,"郑码造词必须选定专用的构词码表");
+								return;
+							}
+							
+							for txt in string.gmatch(selText,":+") { 
+								
+								var code = lexFile.combineCodeZhengma(txt);
+								if(code){
+									push(result,code + '\t' + txt);
+								}
+							} 
+						} 
+						else {
+							for txt in string.gmatch(selText,":+") { 
+								
+								var code = lexFile.combineCode(txt);
+								if(code){
+									push(result,code + '\t' + txt);
+								}
+							}
+						} 
+						
+						result = ..string.join(result,'\r\n');
+						
+						winform.editPhrase.busy(false);
+						winform.editPhrase.selText = result;
+					},winform
+				)
+			} ; lambda()!winform.editPhrase.canCopy() ? 1/*_MF_GRAYED*/ : 0
+		};
+	
+	{ /*---分隔线---*/ };
+	{
+		"保存短语文件";
+		function(id){
+			var path = fsys.dlg.save("*.phrase.txt|*.phrase.txt||","保存短语到文本文件",,winform)
+			if(path){
+				string.save(path,winform.editPhrase.text )
+				winform.editPhrase.modified = false;
+			}
+		} 
+	};
+	{
+		"加载短语文件";
+		function(id){
+			var path = fsys.dlg.open("*.phrase.txt|*.phrase.txt;*.txt","自文本文件加载短语",,winform)
+			if(path) thread.invoke(loadPhraseFromFile,winform,path)
+		} 
+	};
+	{ /*---分隔线---*/ };
+	{
+		"恢复到范例";
+		function(id){
+			winform.editPhrase.text = wubi.phrase.default;
+			winform.editPhrase.modified = false;
+		} 
+	};
+	
+})
+
+import fsys;
+import process.admin;
+process.admin.enableDropMsg(winform.hwnd) 
+winform.onDropFiles = function(files){
+	thread.invoke(loadPhraseFromFile,winform,files[1])
+}
+
+import style;
+winform.btnLoad.skin(style.button);
+winform.btnSave.skin(style.primaryButton);
+
+winform.editPhrase.limit = 0;
+winform.editPhrase.text = config.phrase.editorText ? config.phrase.editorText : wubi.phrase.default;
+winform.editPhrase.modified = false;
+
+winform.onDestroy = function(){
+    config.phrase.editorText = winform.editPhrase.text;
+    
+}
+
+winform.editPhrase.translateAccelerator = function(msg){ 
+    var vk = msg.wParam;
+ 	if( vk == 0x9/*_VK_TAB*/ ){
+		if( msg.message == 0x100/*_WM_KEYDOWN*/) {
+			winform.editPhrase.selText = '\t'; 
+			return true;
+		}
+	}	
+}
+
+winform.btnHelp.oncommand = function(id,event){
+	var phraseHelp = winform.loadForm("\dlg\dict\phraseHelp.aardio");
+	phraseHelp.doModal()
+}
+
+winform.btnHelp.skin(style.plainButton)
+
+winform.enableDpiScaling();
+winform.show();
+win.loopMessage();
+return winform;

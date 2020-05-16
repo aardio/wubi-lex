@@ -1,0 +1,22 @@
+﻿//candidateWindow 候选窗口
+import win;
+import winex;
+
+namespace wubi.candidateWindow;
+
+getHwnd = function(){
+	var hCandidateWindowHost = ..winex.find("Microsoft.IME.UIManager.CandidateWindow.Host");
+	if(hCandidateWindowHost){
+		return ..winex.findEx(hCandidateWindowHost , ,"Microsoft\.IME\.CandidateWindow\.View");
+	}	
+}
+
+isVisible = function(){
+	var hwnd = getHwnd();
+	if(hwnd){return ..win.isVisible(hwnd)}
+}
+
+/**intellisense(wubi.candidateWindow)
+getHwnd() = 获取输入法候选窗口句柄
+isVisible() = 输入法候选窗口是否打开状态
+end intellisense**/

@@ -1,0 +1,362 @@
+﻿//lexContents 码表目录
+import config;
+import win.inputBox;
+import inet.downBox;
+import sevenZip.lzma;
+import app.lexNetContents;
+import fsys;
+
+namespace app.lexContents;
+
+newFile = function(winform,lexName,defaultLexName){
+	while(true){
+		if(#lexName && ..fsys.path.validName(lexName) && (!..config.lex.files[lexName])){
+			break;
+		}
+		
+		var inputBox = ..win.inputBox(winform)
+		inputBox.text = "wubiLex - 保存码表"
+		inputBox.info.text = "请为码表指定一个友好名称"
+		inputBox.input.text = lexName : defaultLexName : "";
+		
+		lexName = inputBox.doModal()
+		if(!lexName){
+			return;
+		}
+		
+		if(!#lexName){
+			winform.msgErr(`请指定存储名称`)
+			continue;
+		}
+			
+
+		if(!..fsys.path.validName(lexName)){
+			winform.msgErr(`名称不能包含空格、回车、换行、以及 / : * ? " < > ] 等字符`)
+			continue ;
+		}
+			
+		if(..config.lex.files[lexName]){
+			winform.msgErr(`此名称已经存在，请重新指定`)
+			continue ;
+		}
+		break ;
+	}	
+		
+	var lexPath = ..io.appData("/aardio/std/wubi/lex/"+lexName+".lex");
+	..io.createDir(..io.appData("/aardio/std/wubi/lex/")) 
+	..io.remove(lexPath);
+	
+	..config.lex.files[lexName] = lexPath;
+	..table.push(..config.lex.names,lexName);
+	..config.saveAll();	
+	
+	return lexPath,lexName;
+}
+
+remove = function(lexName){
+	..table.removeByValue(..config.lex.names,lexName);
+	
+	var path = ..config.lex.files[lexName];
+	if(path && (! ..string.startWith(path,"http://",true)) ){
+		if(..io.exist(path)){
+			..io.remove(path)
+		}	
+	}
+	
+	..config.lex.files[lexName] = null;
+	..config.lex.save();
+}
+
+removeByIndex = function(idx){
+	var lexName  = ..config.lex.names[idx]; 
+	return lexName ? remove(lexName);
+}
+
+updatePath = function(lexName,path){
+	if(..config.lex.files[lexName]){
+			..config.lex.files[lexName] = path;
+		..config.saveAll();   	
+	}
+}
+
+valid = function(lexName){
+	var lexPath = ..config.lex.files[lexName];
+	if(!lexPath) return;
+	
+	var valid = ( ..string.startWith(lexPath,"http://",true)	|| ..io.exist(lexPath) )
+	if(!valid){
+		remove(lexName);
+	}
+	
+	return lexPath;
+}
+
+getPathByIndex = function(idx){
+	if(!idx) return ..wubi.lexFile.path();
+	var lexName = ..config.lex.names[idx];
+	if(lexName) return  ..config.lex.files[lexName];	
+}
+
+getNameByIndex = function(idx){
+	return ..config.lex.names[idx]; 	
+}
+
+isUrl = function(lexName){
+	if(type(lexName)==type.number){
+		lexName = ..config.lex.names[lexName]
+	}
+
+	var url = lexName ? ..config.lex.files[lexName]; 
+	return url && ..string.startWith(url,"http://",true);
+}
+
+downloadByIndex = function(idx,winform){
+	var lexName  = ..config.lex.names[idx]; 
+	return lexName ? download(lexName,winform);
+}
+
+download = function(lexName,winform){
+	var url = ..config.lex.files[lexName]; 
+	
+	if( url && ..string.startWith(url,"http://",true) ){
+		var downBox = ..inet.downBox(winform,"下载码表:" + lexName,1000) 
+		var lexPath = ..io.appData("/aardio/std/wubi/lex/"+lexName+".lex");
+		..io.createDir(..io.appData("/aardio/std/wubi/lex/"))
+		
+		if((..string.endWith(url,".lex.lzma",true))){
+			downBox.endProc = function(){
+				downBox.text = "正在解压缩:" + lexName + ".lex"; 
+			
+				var processed = 0;
+				var step = downBox.contentLength / 1000;
+				downBox.progress.setProgressRange(1,1000);  
+				downBox.progress.hide = false;
+				
+				var peekMsg = ..win.peekPumpMessage;
+				var ret = ..sevenZip.lzma.decodeFile(lexPath + ".lzma",lexPath,function(inProcessed,outProcessed){ 
+					if( (peekMsg()!==null) && downBox.continueModal ){
+							processed = processed + inProcessed; 
+							downBox.progress.progressPos = processed / step;
+					}
+					else {
+						return true;
+					}
+				} ); 
+				
+				if(!ret){
+					downBox.complete = false;
+					downBox.endModal(); 
+					return;
+				}  
+			}			
+		}
+
+	
+		if( downBox.download(url,lexPath + ".lzma") ){
+			
+			var file = ..io.open(lexPath,"rb");
+			if(!file){
+				winform.msgErr(`错误的码表文件`);
+				return;
+			}
+			
+			if( file.read(#"imscwubi")!=="imscwubi"){
+				winform.msgErr(`错误的码表文件`);
+				file.close();
+				return;
+			}
+		
+			file.close(); 
+			..config.lex.files[lexName] = lexPath;
+			..config.lex.save();
+			return lexPath;
+		}
+	}
+}
+
+clear = function(){
+	for(idx=#..config.lex.names;1;-1){ 
+		removeByIndex(idx);
+	}
+	
+	..config.saveAll();
+}
+
+isEmpty = function(){
+	return !#..config.lex.names;
+}
+
+loadDefault = function(){
+	var config = ..config;
+	if(!#config.lex.names){
+		
+		var tab = ..app.lexNetContents.getTable();
+		
+		for i,cfg in ..table.eachIndex(tab){
+			var items = cfg.items;
+			if(items[1]){
+				config.lex.files[items[1].name] = items[1].url;
+				..table.push(config.lex.names,items[1].name);
+			}
+			
+			if(items[2]){
+				config.lex.files[items[2].name] = items[2].url;
+				..table.push(config.lex.names,items[2].name);
+			}
+		}
+		 
+		config.saveAll();
+	}
+}
+
+addFile = function(winform,inputPath,lexName){
+	if(!inputPath || ..fsys.isDir(inputPath)){ return; }
+	
+	var lexDefaultLexName = lexName;
+	if(!lexDefaultLexName){
+		lexDefaultLexName = ..string.match(inputPath,"([^\\\/]+)\.\w+$");
+	}
+	
+	var lexPath,lexName = newFile(winform,lexName,lexDefaultLexName);
+	winform.publish("beforeAddLexFile")
+	
+	if( ..string.startWith(inputPath,"http://",true) ){
+		updatePath(lexName,inputPath);
+		winform.publish("afterLexListUpdated");
+	}
+	elseif(..string.endWith(inputPath,".txt",true) || ..string.endWith(inputPath,".yaml",true)){
+		..win.invoke(
+			function(winform,inputPath,lexPath){
+				import wubi.lexFile;
+				var wubiLex = wubi.lexFile(inputPath)
+				if(!wubiLex){
+					winform.msgErr(`错误的码表文件`)
+					return;
+				}
+				wubiLex.saveLex(lexPath)	
+				winform.publish("afterLexListUpdated");
+				
+			},winform,inputPath,lexPath
+		)
+	}
+	elseif(..string.endWith(inputPath,".json",true)){
+		..win.invoke(
+			function(winform,inputPath,lexPath){ 
+				import web.json;
+				var str = string.load(inputPath);
+				var data = web.json.parse(str); 
+				
+				if(#data){ 
+					if(type(data[1])!=type.table 
+						|| type(data[1][1])!=type.string
+						|| !string.match(data[1][1],"^[a-z]+$")
+						){
+						winform.msgErr("JSON文件未包含五笔码表")
+						
+						winform.editLex.readonly = false;
+						winform.btnConvert.disabledText = null;
+						return;
+					}
+					else {
+						import wubi.lexFile;
+						var wubiLex = wubi.lexFile(""); 
+						wubiLex.setTableData(data);  
+						wubiLex.saveLex(lexPath)
+						winform.publish("afterLexListUpdated");
+					}
+				}
+				else {
+					winform.msgErr("JSON文件未包含五笔码表")	
+				}
+				
+			},winform,inputPath,lexPath
+		)
+	}
+	elseif(..string.endWith(inputPath,".csv",true)){
+		..win.invoke(
+			function(winform,inputPath,lexPath){ 
+				import string.database;
+				import fsys.codepage;
+				var db = string.database(',','"');
+				var str = fsys.codepage.load(inputPath);
+				var data = db.parse(str); 
+				
+				if(#data){ 
+					if(type(data[1])!=type.table 
+						|| type(data[1][1])!=type.string
+						|| !string.match(data[1][1],"^[a-z]+$")
+						){
+						winform.msgErr("CSV文件未包含五笔码表")
+						
+						winform.editLex.readonly = false;
+						winform.btnConvert.disabledText = null;
+						return;
+					}
+					else {
+						import wubi.lexFile;
+						var wubiLex = wubi.lexFile(""); 
+						wubiLex.setTableData(data);  
+						wubiLex.saveLex(lexPath)
+						winform.publish("afterLexListUpdated");
+					}
+				}
+				else {
+					winform.msgErr("CSV文件未包含五笔码表")	
+				}
+				
+			},winform,inputPath,lexPath
+		)
+	}
+	elseif(..string.endWith(inputPath,".lex.lzma",true)){
+		..sevenZip.lzma.decodeFile(inputPath,lexPath);
+		var file = ..io.open(lexPath,"rb");
+		if(!file){
+			winform.msgErr(`错误的码表文件`)
+			return;
+		}
+		
+		if( file.read(#"imscwubi")!=="imscwubi"){
+			file.close();
+			winform.msgErr(`错误的码表文件`)
+			return;
+		}
+		
+		file.close();
+		winform.publish("afterLexListUpdated");
+	}
+	else {
+		var file = ..io.open(inputPath,"rb");
+		if(!file){
+			winform.msgErr(`错误的码表文件`)
+			return;
+		}
+		
+		if( file.read(#"imscwubi")!=="imscwubi"){
+			file.close();
+			winform.msgErr(`错误的码表文件`)
+			return;
+		}
+		
+		file.close()
+		
+		..fsys.copy(inputPath,lexPath);
+		winform.publish("afterLexListUpdated");
+	} 
+}
+
+/**intellisense(app.lexContents)
+newFile(.(winform,lexName) = 创建新的码表文件\n可选用lexName指定默认名称
+updatePath(.(lexName,path) = 更新码表配置中的文件路径
+remove(.(lexName) = 移除指定名称的码表 
+removeByIndex(.(idx) = 使用索引移除码表
+valid(.(lexName) = 检测码表是否有效
+getPathByIndex(.(idx) = 使用索引返回码表文件路径
+getNameByIndex(.(idx) = 使用名称返回码表名称
+download(.(lexName,winform) = 如果码表路径是一个网址，则下载码表
+downloadByIndex(.(idx,winform) = 如果码表路径是一个网址，则下载码表
+isUrl(.(lexName) = 码表路径是否网址,\n参数也可以是索引
+clear() = 清空码表文件
+isEmpty() = 码表目录是否为空
+loadDefault() = 如果码表文件列表为空，加载默认列表
+addFile(.(winform,inputPath,lexName) = 清加码表\n可选用lexName指定默认名称
+end intellisense**/

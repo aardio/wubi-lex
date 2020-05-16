@@ -1,0 +1,146 @@
+import win.ui;
+import fonts.fontAwesome;
+/*DSG{{*/
+var winform = win.form(text="wubiLex - 帮助";right=977;bottom=602;bgcolor=16777215;border="dialog frame")
+winform.add(
+keyboardShortcuts={cls="plus";left=69;top=50;right=925;bottom=437;align="left";border={color=-4144960;radius=8;width=1};db=1;dl=1;dr=1;dt=1;font=LOGFONT(h=-15);textPadding={left=10;top=10;right=10;bottom=10};valign="top";z=1};
+lbAbout={cls="plus";text="关于 wubiLex ( Win10 微软五笔助手 ) :";left=39;top=447;right=381;bottom=478;align="left";db=1;dl=1;font=LOGFONT(h=-16);iconColor=2960685;iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome')};iconText='\uF059';textPadding={left=30};z=3};
+lbGitHub={cls="plus";text="开源代码:";left=318;top=483;right=408;bottom=514;align="right";db=1;dl=1;font=LOGFONT(h=-16);iconColor=2960685;z=7};
+lbKeyboardShortcuts={cls="plus";text="微软五笔使用技巧( 建议大家更新Win10到较新的版本 ) :";left=39;top=12;right=587;bottom=43;align="left";dl=1;dr=1;dt=1;font=LOGFONT(h=-16);iconColor=2960685;iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome')};iconText='\uF11C  ';textPadding={left=30};z=2};
+lbWebSite={cls="plus";text="官网:";left=80;top=483;right=143;bottom=514;align="right";db=1;dl=1;font=LOGFONT(h=-16);iconColor=3947580;z=5};
+lnkGitHub={cls="plus";text="https://github.com/aardio/wubi-lex";left=421;top=487;right=690;bottom=511;align="left";color=8388608;db=1;dl=1;dr=1;font=LOGFONT(h=-16);notify=1;textPadding={left=5};z=4};
+lnkVersion={cls="plus";text="正在检查新版本";left=102;top=558;right=463;bottom=589;align="left";color=8388608;db=1;dl=1;font=LOGFONT(h=-16);iconColor=2960685;iconStyle={align="left";font=LOGFONT(h=-16;name='FontAwesome')};iconText='\uF021';notify=1;paddingLeft=20;z=8};
+lnkWebSite={cls="plus";text="wubi.aardio.com";left=147;top=487;right=287;bottom=511;align="left";color=8388608;db=1;dl=1;font=LOGFONT(h=-16);iconColor=2960685;notify=1;textPadding={left=5};z=6};
+plus={cls="plus";text="自动更新 :";left=39;top=523;right=381;bottom=554;align="left";db=1;dl=1;font=LOGFONT(h=-16);iconColor=2960685;iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome')};iconText='\uF05A';textPadding={left=30};z=9};
+winver={cls="edit";text="当前系统版本：";left=495;top=577;right=927;bottom=598;align="right";bgcolor=16777215;color=5921370;readonly=1;z=10}
+)
+/*}}*/
+
+winform.keyboardShortcuts.text = /*
+1、Win键 + 空格键：切换输入法。
+
+2、按Alt + Shift键：切换中文/英文键盘。
+
+3、短按Shift键（或Ctrl + Space）：切换五笔中英文输入模式（ 并自动切换到小写 ）。
+英文模式、或中文模式下切换到英文标点后可按 Shift + 空格键 切换全角/半角输入。
+中文模式可使用小键盘输入小数点（不是句号）。
+
+4、五笔编码自第二码开始可使用Z键通配任意编码（ 首码除外 ）
+
+6、输入候选窗打开状态，按tab鍵，再按空格键就可打开「表情与符号面板」。
+注意面板有一个「保持打开」的按钮，也可以按 WIN + . 键打开系统符号面板。
+
+7、输入时，按回车取消输入，按空格取首个候选词，
+按分号键 ( ; ) 取第二个候选词，按引号键（'）取第三个候选词。
+
+8、输入时，按 -，+ 键对候选词翻页。
+*/
+
+import style;
+winform.lnkGitHub.skin(style.link)
+winform.lnkWebSite.skin(style.link)
+winform.lnkVersion.skin(style.link)
+
+import process;
+winform.lnkGitHub.oncommand = function(id,event){
+	process.openUrl("https://github.com/aardio/wubi-lex")
+}
+
+winform.lnkWebSite.oncommand = function(id,event){
+	process.openUrl("http://wubi.aardio.com/")
+}
+
+import fsys.update.dlMgr;
+winform.lnkVersion.oncommand = function(id,event){
+	if(_STUDIO_INVOKED){
+		winform.msgboxErr("请先发布软件!")
+		return;
+	}
+	
+	
+	var dlMgr = fsys.update.dlMgr("http://wubi.aardio.com/update/"
+		, ..io.appData("/aardio/std/wubi/app/update") //路径要和 main.aardio 中一致
+		);
+		
+	dlMgr.onConfirmDownload = function(isUpdated,appVersion,latestVersion,description){ 
+		dlMgr[["latestVersion"]] = latestVersion;
+		dlMgr[["updateDescription"]] = description;
+		
+		if(!isUpdated){
+			winform.lnkVersion.disabledText = null;
+			winform.lnkVersion.text = "已经是最新版本";
+		}
+		return isUpdated; 
+	} 
+	
+	dlMgr.onEnd = function(updater,saveDir,appDir,mainPath){ 
+		if(updater){
+			globalUpdateInfo = {
+				version = dlMgr[["latestVersion"]];
+				description = dlMgr[["updateDescription"]];
+			}; 
+		}
+		else {
+			globalUpdateInfo = null;
+		}
+		
+		winform.lnkVersion.disabledText = null;
+		publish("wubiLexUpdated");
+	};
+	
+	dlMgr.onError = function(err,filename){
+		winform.lnkVersion.disabledText = null;
+		winform.lnkVersion.text = err;
+	}
+	
+	winform.lnkVersion.text = globalUpdateInfo[["version"]] ? "正在启动自动更新" : "正在检查新版本";
+	winform.lnkVersion.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
+	if(dlMgr.startUpdate()){
+		win.quitMessage();
+	}
+}
+
+import win.ui.tooltip;
+var tooltipCtrl = win.ui.tooltip( winform );
+tooltipCtrl.addTool(winform.lnkVersion,"点击检测更新" );
+
+var updateVersion = function(){
+	if(#globalUpdateInfo[["version"]]){
+		winform.lnkVersion.text = "点这里重新启动软件更新到新版本：" + globalUpdateInfo[["version"]]
+		winform.lnkVersion.disabledText = null;
+		
+		if(#globalUpdateInfo[["description"]]){
+			tooltipCtrl.addTool(winform.lnkVersion,globalUpdateInfo[["description"]] )
+		}
+	}
+	else {
+		winform.lnkVersion.text = "已经是最新版本";
+	} 
+}
+
+subscribe("wubiLexUpdated",updateVersion);
+updateVersion();
+
+import win.versionEx;
+var winver  = win.versionEx.name;
+if(win.versionEx.csdVersion){
+	winver = winver + " " + win.versionEx.csdVersion;
+}
+if(win.versionEx.releaseId){
+	winver = winver + " Version( " + win.versionEx.releaseId + " )";
+}
+
+if(win.versionEx.buildNumber){
+    var buildNumber = win.versionEx.buildNumber;
+    if(win.versionEx.updateBuildRevision){
+    	buildNumber = buildNumber + "." + win.versionEx.updateBuildRevision;
+    }
+	winver = winver + " / OS Build( " + buildNumber + " )";
+}
+
+winform.winver.text = "当前系统版本：" + winver;
+
+winform.enableDpiScaling();
+winform.show();
+win.loopMessage();
+return winform;

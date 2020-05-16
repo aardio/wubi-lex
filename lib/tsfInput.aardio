@@ -1,0 +1,41 @@
+﻿//tsfInput 语言
+namespace tsfInput;
+	
+var bcp47langs = ..raw.loadDll("bcp47langs.dll",,"stdcall,unicode")	
+var winstring = ..raw.loadDll("api-ms-win-core-winrt-string-l1-1-0.dll",,"stdcall,unicode")
+
+class hString{
+	ctor(){ };
+	pointer handle;
+	@_meta;
+}
+hString._meta = {
+	_tostring = function(){
+		var size ={INT value}
+		var s = winstring.WindowsGetStringRawBufferP(owner.handle,size)	
+		if(s) return ..string.fromUnicode(s,,size.value);
+	} 
+}
+
+getUserLanguages = function(){
+	var hstr = hString()
+	bcp47langs.GetUserLanguages(';'#,hstr);
+	return ..string.split( tostring(hstr),';')	
+}
+
+getUserLanguageInputMethods = function(lang){
+	if(!#sepChar) sepChar = ';';
+	
+	var hstr = hString()
+	bcp47langs.GetUserLanguageInputMethods(lang,';'#,hstr);
+	return ..string.split( tostring(hstr),';')		
+}
+
+getInputMethods = function(){
+	var result = {}
+	var langs = getUserLanguages();
+	for i,lang in ..table.eachIndex(langs){
+		result[lang] = getUserLanguageInputMethods(lang)
+	}
+	return result;
+}

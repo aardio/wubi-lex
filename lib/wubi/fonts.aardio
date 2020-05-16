@@ -1,0 +1,33 @@
+﻿//fonts 字根字体
+import fonts;
+namespace wubi.fonts;
+	
+var etymonFontPath = ..io.appData("/aardio/std/wubi/fonts/wubi-lex-etymon-v5.otf") 
+
+install = function(plusCtrl,pxSize){
+    plusCtrl.onEtymonFontInstalled = function(){
+    	fontFamily = ..fonts.addFamily(etymonFontPath,"wubiLexEtymon"); 
+    	plusCtrl.setFont(h=-(pxSize:30);name='wubiLexEtymon');
+    }
+    
+	if(!..io.exist(etymonFontPath)){
+		..thread.invoke( 
+			function(plusCtrl,etymonFontPath){
+				import sevenZip.lzma.httpFile;
+				if( sevenZip.lzma.httpFile.saveFromUrl(
+					"http://wubi.aardio.com/download/spelling/fonts/wubi-lex-etymon-v5.lzma"
+					,etymonFontPath) ){
+						plusCtrl.onEtymonFontInstalled();
+					}
+			},plusCtrl,etymonFontPath
+		)
+	}
+	else {
+		plusCtrl.onEtymonFontInstalled();
+	}
+}
+
+/**intellisense(wubi.fonts)
+install(.(ctrl,pxSize) = 安装字体到参数指定的控件\n字体参考 https://github.com/yanhuacuo/qingg 进行了增删修改\n大部分字根已改为普通文本
+end intellisense**/
+

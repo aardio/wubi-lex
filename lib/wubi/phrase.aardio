@@ -1,0 +1,402 @@
+﻿//phrase 短语
+import fsys;
+import tsfUtil;
+import fsys.file;
+
+namespace wubi.phrase;
+	
+var push = ..table.push;
+
+loadMap = function(wubiUdpPath){
+
+	if( ! ..io.exist(wubiUdpPath) ){
+		return null,"短语词库为空";
+	}	
+		
+	var file = ..io.open(wubiUdpPath,"rb");
+	if(!file){
+		return null, "不支持当前版本的短语词库格式"
+	}
+	
+	if(!file.size()){ 
+		file.close();
+		return null, "短语词库内容为空" 	
+	}
+	
+	if(file.read(8)!="mschxudp"){
+		file.close();
+		return null, "不支持当前版本的短语词库格式" 	
+	}
+	
+	var header = file.read({
+		int magic=0x00600002;
+		int version;
+		int phraseOffsetStart;
+		int phraseStart;
+		int phraseEnd;
+		int count;
+		int timestamp;
+		BYTE reserved[28];
+	})
+	if(!header){
+		return null,"短语词库格式错误"
+	}
+	
+	file.seek("set",header.phraseOffsetStart)
+	if(!header.count){ 
+		file.close();
+		return null,"短语词库内容为空"
+	}
+	
+	var phraseOffsets = file.read({int array[]={length=header.count}})[["array"]];
+	if(!phraseOffsets){
+		return null,"短语词库格式错误"
+	}
+	push(phraseOffsets, header.phraseEnd - header.phraseStart);
+	
+	var lines = {};
+	
+	var phraseMap  = {};
+	reduce(phraseOffsets,function(prevOffset,nextOffset){
+		
+		var phrase  = file.read({
+			word cbSize = 16;
+			word cbSize2 = 16;
+			word offset;
+			byte candidate;
+			byte unknown = 6;
+			byte unknown2 = 0;
+			byte deleted = 0;
+			WORD reserved;
+			INT reserved2; 
+		})
+		
+		if(phrase.cbSize!==16){ 
+			file.close();
+			return null,"不支持当前版本的短语词库格式";
+		}
+		
+		
+		var code = file.readUnicode( (phrase.offset-phrase.cbSize) / 2);  
+		var textLen = (nextOffset- prevOffset - phrase.offset)/2;
+		if(textLen<0){
+			return nextOffset;
+		}
+		
+		var text = file.readUnicode(textLen);
+		
+		if(!phrase.deleted){
+			if(!phraseMap[code]){
+				phraseMap[code] = {{text;phrase.candidate;textLen-1}}	
+			}
+			else {
+				push(phraseMap[code],{text;phrase.candidate;textLen-1});
+			} 
+		}
+		
+		return nextOffset;
+	})
+	
+	file.close(); 
+	
+	return phraseMap;
+};
+
+findCodeFromMap = function(phraseMap,txt){
+	for(code,phrases in phraseMap){ 
+		for(i=1;#phrases;1){
+		 	var p = phrases[i];
+			if(p[1]===txt){
+				return code;
+			}
+		}
+	}	
+}
+
+loadMapFromSystem = function(){
+	var path = getWubiUdpPrimaryPath();
+	if(path){
+		return loadMap(path);
+	}
+} 
+
+load = function(path){
+	var phraseMap,err = loadMap(path);
+	if(!phraseMap) return null,err;
+	
+	var codeList = {}
+	for(code,phrases in phraseMap){ 
+		push(codeList,code);
+	}
+	..table.sort(codeList);
+	
+	var len = ..string.len;
+	var sort = ..table.sort;
+	var join = ..string.join;
+	var indexOf = ..string.indexOf;
+	var replace = ..string.replace;
+	var lines = {};
+
+	for(i=1;#codeList;1){ 
+		var code = codeList[i];
+		var phrases = phraseMap[code]; 
+		
+		sort(phrases,lambda(b)owner[2]<b[2]);
+		if(#phrases>1){
+			var chars = {}
+			for(i=1;#phrases;1){
+		 		var p = phrases[i];
+		 		if(p[2]!=i || (p[3]>2) ){ 
+		 			break
+		 		}
+		 		chars[i] = replace(p[1],' ',"%20")  
+			}
+			
+			if(#phrases == #chars){
+				var txt = replace(join(chars," "),'\n',"%0A");
+				txt = replace(txt,'\t',"%09")
+		 		push(lines,code,'\t$[',txt,']\r\n');
+		 		continue
+			}
+		}
+		 
+		for(i=1;#phrases;1){
+			var p = phrases[i];
+			if(!p[1]){
+				continue
+			}
+			var txt = replace(p[1],'\n',"%0A");
+			txt = replace(txt,' ',"%20") 
+			txt = replace(txt,'\t',"%09")
+			push(lines,code,'\t',txt,'\t',p[2],'\r\n');
+		}
+	}
+	
+	
+	return ..string.join(lines);
+}
+
+loadFromSystem = function(){
+	var path = getWubiUdpPrimaryPath();
+	if(path){
+		return load(path);
+	}
+} 
+
+saveToSystem = function(phraseText){
+	if(!#phraseText){
+		return null,"输入文本为空"; 
+	}
+	
+	var wubiUdpPath1 = ..io.getSpecial(0x1a /*_CSIDL_APPDATA*/,"\Microsoft\InputMethod\Chs\ChsWubiEUDPv1.lex")
+	var wubiUdpPath = ..io.getSpecial(0x1a /*_CSIDL_APPDATA*/,"\Microsoft\InputMethod\Chs\ChsWubiEUDPv2.lex")
+	
+	for(i=1;10;1){
+		..process.kill("ctfmon.exe")
+		..process.kill("ChsIME.exe")
+		
+		if(wubiUdpPath1)..fsys.delete(wubiUdpPath1 )  
+		if(wubiUdpPath)..fsys.delete(wubiUdpPath )
+		if((!..io.exist(wubiUdpPath1)) && (!..io.exist(wubiUdpPath)) ){ break; }  
+		
+		sleep(1000)
+	}
+	
+	var file = ..io.open(wubiUdpPath1,"w+b");
+	if(!file){ 
+		return null,"写入系统短语词库失败"; 
+	}
+	file.close();
+		
+	file = ..io.open(wubiUdpPath,"w+b");
+	if(!file){ 
+		return null,"写入系统短语词库失败"; 
+	}
+	
+	var phraseArray = {}
+	var lineIndex = 0;
+	var trim = ..string.trim;
+	var match = ..string.match;
+	var split = ..string.split;
+	var indexOf = ..string.indexOf;
+	
+	phraseText = ..string.replace( phraseText,"\/\*.+?\*\/",""); 
+
+	var orderMap = {}
+	for line in ..string.lines(phraseText) {
+		lineIndex++;
+		
+		line = trim(line);
+		if(!#line){continue;} 
+
+		var code,order,phrase = match(line,"([a-z]+)\s*\=\s*(\d+)\s*\,\s*(.+)");
+		if(code && phrase && order ){
+			push(phraseArray,{code;phrase;order});
+		}
+		else {
+			code,phrase = match(line,"([a-z]+)\s*\=\s*(.+)");
+			if(code && phrase  ){
+				order = null;
+			}
+			elseif(match(line,"\s+\d+$")){
+				code,phrase,order = match(line,"([a-z]+)\s+(.+?)\s+(\d+)$") 
+			}
+			else {
+				order = null;
+				code,phrase = match(line,"([a-z]+)\s+(.+)");
+				if(!(code && phrase ) ){
+					phrase,code = match(line,"^([^\s]\S*)\s+([a-z]{1,4})[\s\d]*$")
+				}
+			}
+				
+			if(code && phrase){
+				if(!order){
+					var arr = match(phrase,"^\$\[(.+)\]$");
+					if(#arr){
+						arr = indexOf(arr," ") ? split(arr," ") : split(arr);
+						for(i=1;#arr;1){
+							push(phraseArray,{code;arr[i];i}); 
+						}
+						
+						orderMap[code] = #arr;
+					}
+					else {
+						order = (orderMap[code]:0) + 1;
+					}
+				}
+				
+				if(order){
+					orderMap[code] = order;
+					push(phraseArray,{code;phrase;order});	
+				}	
+			}	
+		}
+	}
+	
+	..table.sort(phraseArray,lambda(next) owner[1]<next[1]);
+	var phraseStart = 64+4*#phraseArray;
+	file.write({
+		BYTE proto[8] = "mschxudp";
+		int magic=0x00600002;
+		int version=1;
+		int phraseOffsetStart=64;
+		int phraseStart=64+4*#phraseArray;
+		int phraseEnd;
+		int count=#phraseArray;
+		int timestamp=tonumber(..time());
+		BYTE reserved[28];
+	})
+		
+	file.seek("cur", 4*#phraseArray)
+	var phraseOffsets = {} 
+
+	var replace = ..string.replace;
+	for(i=1;#phraseArray;1){
+		push(phraseOffsets,file.seek()-phraseStart);
+		
+		var phrase = phraseArray[i];
+		file.write({
+			word cbSize = 16;
+			word cbSize2 = 16;
+			word offset = 16 + (#phrase[1]+1)*2;
+			byte candidate = phrase[3] ? tonumber(phrase[3]) : 1;
+			byte unknown = 6;
+			byte unknown2 = 0;
+			byte deleted = 0;
+			WORD reserved;
+			INT reserved2;  
+		})
+	
+		file.write(..string.toUnicode(phrase[1]))
+		file.write('\0\0')
+		
+		var txt = replace(phrase[2],"@%0A",'\n')
+		txt = replace(txt,"@%09",'\t') 
+		txt = replace(txt,"@%20",' ')
+		file.write(..string.toUnicode(txt))
+		file.write('\0\0')
+	} 
+	
+	file.seek("set",64)
+	if(#phraseOffsets)file.write({int offsets[]=phraseOffsets}) 
+	
+	file.seek("set",24)
+	file.write({int size=file.size()})
+	
+	file.close();
+	
+	..fsys.copy(wubiUdpPath,wubiUdpPath1);
+	return true;	
+}
+
+getWubiUdpPrimaryPath = function(){
+	var wubiUdpPath1 = ..io.getSpecial(0x1a /*_CSIDL_APPDATA*/,"\Microsoft\InputMethod\Chs\ChsWubiEUDPv1.lex")
+	var wubiUdpPath2 = ..io.getSpecial(0x1a /*_CSIDL_APPDATA*/,"\Microsoft\InputMethod\Chs\ChsWubiEUDPv2.lex")
+	
+	if(!..io.exist(wubiUdpPath2)) return wubiUdpPath1;
+	if(!..io.exist(wubiUdpPath1)) return wubiUdpPath2;	
+	
+	var file1 = ..fsys.file(wubiUdpPath1,"rb")
+	if(!file1) return wubiUdpPath2;
+	
+	var file2 = ..fsys.file(wubiUdpPath2,"rb");
+	if(!file2){
+		file1.close();
+		return wubiUdpPath1;
+	}
+	
+	var tm1 = file1.getTime();
+	var tm2 = file2.getTime();	
+	
+	var path = tm1.write>tm2.write ? wubiUdpPath1 : wubiUdpPath2;
+	file1.close();
+	file2.close();
+	return path;
+}
+
+default = /**
+aar=aardio
+zzrq=2,%yyyy%年%MM%月%dd%日
+zzsj=2,%yyyy%年%MM%月%dd%日 %HH%:%mm%:%ss%
+z=$[「」『』〖〗《》〈〉〔〕【】≮≯≤≥]
+zzkh=$[「」『』〖〗《》〈〉〔〕【】≮≯≤≥]
+zzbd=$[．· …… … ～ ── ─ ‖ ∵ ∴ ☆ ★ ○ ● ◎ ◇ ◆ □ ■ △ ▲ ※ 〓]
+zzfh=$[☹☺☻✔✘☑☒✎✍☚☛☜☞☝☟✈✂✄♀♂✉☎☏✆☠☢☣☭☯☆★✧✦]
+zzsx=$[.%‰√×÷＋－＜＝＞±∈∏∑∕∝∞∟∠∣∥∧∨∩∪∫∮∴∵∷∽≈≌≒≠≡≤≥≦≧≮≯⊕⊙⊥⊿]
+zzjt=$[→↑←↓↖↗↘↔↕↰↱↲↳↴↵↶↷↼↽↾↿⇀⇁⇂⇃↹↺↻⇄⇅⇆⇇⇈⇉⇊⇋⇌⇍⇎⇏⇐⇑⇒⇓⇔⇕⇖⇗⇘⇙⇚⇛⇜⇝⇞⇟⇠⇡⇢⇣⇤⇥⇦⇧⇨⇩⇪]
+zzys=$[①②③④⑤⑥⑦⑧⑨⑩⓪]
+zzsz=$[❶❷❸❹❺❻❼❽❾❿]
+zzdl=$[ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ]
+zzxl=$[ⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹ]
+zzds=$[⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛]
+zzzm=$[ⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ]
+zzzs=$[㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩]
+zzqx=$[☀☁☂☃☼♨☄๑]
+zzts=$[℃°♂♀§№＃＆＠＼＾＿￣]
+zzxx=$[αβγδεζηθικλμνξοπρστυφχψω]
+zzzy=$[ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ]
+zzry=$[あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん]
+zzrz=$[がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽゃゅょ]
+zzpj=$[アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン]
+zzpz=$[ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポャュョ]
+zzpy=$[āáǎàōóǒòêēéěèīíǐìǖǘǚǜüūúǔù]
+zzey=$[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩъыьЭЮЯ]
+zzxe=$[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]
+zzfy=$[ÀÉÈÊÎÏÙÛÇàâäéèêëìîïôöùûüœç]
+zzdz=$[子丑寅卯辰巳午未申酉戌亥]
+zzbg=$[乾☰ 兑☱ 离☲ 震☳ 巽☴ 坎☵ 艮☶ 坤☷ ⚊ ⚋]
+zzxq=$[♔♕♖♗♘♙♚♛♜♝♞♟]
+zzpk=$[♠♡♢♣♤♥♦♧]
+zzwx=$[♩♪♫♬♭♮♯]
+**/
+
+/**intellisense(wubi.phrase)
+loadFromSystem() = 加载系统短语
+load(.(wubiUdpPath) =  加载短语, \n成功返回文本格式短语数据,\n失败返回null,错误信息
+saveToSystem(.(phraseText) = 保存短语, \n成功返回true,\n失败返回null,错误信息
+getWubiUdpPrimaryPath() = 返回系统短语文件路径
+default = 默认短语
+loadMapFromSystem() = 加载系统短语映射表
+loadMap(.(wubiUdpPath) =  加载短语映射表, \n成功返回文本格式短语数据,\n失败返回null,错误信息
+findCodeFromMap(.(map,txt) = 在短语映射表中查找编码
+end intellisense**/

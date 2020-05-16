@@ -1,0 +1,224 @@
+import fsys;
+import fsys.lnk;
+import process;
+import process.cache;
+import wubi.candidateWindow;
+import win.dlg.message;
+import key.hotkey;
+import winex;
+import fonts.fontAwesome;
+import win.ui;
+/*DSG{{*/
+var winform = win.form(text="设置";right=984;bottom=589;bgcolor=16777215)
+winform.add(
+btnHelp={cls="plus";text="aardio 语法";left=825;top=63;right=934;bottom=85;align="left";color=3947580;dr=1;dt=1;font=LOGFONT(h=-13);iconColor=2960685;iconStyle={align="left";font=LOGFONT(h=-16;name='FontAwesome')};iconText='\uF059';notify=1;paddingLeft=20;z=5};
+btnReset={cls="plus";text='\uF0E2   恢复到范例';left=619;top=529;right=765;bottom=565;bgcolor=14935259;db=1;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;tabstop=1;z=7};
+btnSave={cls="plus";text='\uF0C7   保存';left=777;top=529;right=923;bottom=565;bgcolor=11580047;db=1;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;tabstop=1;z=6};
+chkDecimalPoint={cls="plus";text='\uF0C8 数字后自动转换小数点（ . ）与数值分隔符（ , 或 _ ）';left=32;top=55;right=617;bottom=86;align="left";dl=1;dt=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;z=2};
+chkEnableHotkey={cls="plus";text='\uF0C8 启用超级热键';left=33;top=23;right=473;bottom=54;align="left";dl=1;dt=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;z=3};
+editTable={cls="edit";left=33;top=97;right=951;bottom=498;db=1;dl=1;dr=1;dt=1;edge=1;hscroll=1;multiline=1;vscroll=1;z=4};
+lbTip={cls="static";left=39;top=523;right=594;bottom=574;db=1;dl=1;dr=1;transparent=1;z=1}
+)
+/*}}*/
+
+import style;
+winform.chkDecimalPoint.skin(style.checkBox);
+winform.chkEnableHotkey.skin(style.checkBox);
+
+import config
+import wubi.hotkey;
+if(!config.hotkey.editTable){
+	config.hotkey.editTable = wubi.hotkey.default; 
+} 
+winform.bindConfig( config.hotkey,{
+	edit = "text";
+	radiobutton = "checked";
+	checkbox = "checked";
+	combobox = "selIndex";
+	plus ={
+		["^chk"] = "checked";
+		["^edit"] = "text";
+	};
+} );
+
+winform.chkEnableHotkey.oncommand = function(id,event){
+	winform.chkDecimalPoint.disabled = !winform.chkEnableHotkey.checked
+}
+
+winform.btnSave.skin(style.primaryButton)
+
+import wubi.chineseNumber;
+import string.chineseNumber;
+var hotkeyMgr;
+winform.btnSave.oncommand = function(id,event){
+    config.hotkey.save();
+    
+    if(!winform.chkEnableHotkey.checked){
+    	if(hotkeyMgr){
+    		hotkeyMgr.close();
+    	    hotkeyMgr= null;
+    	}
+    	
+    	return;
+    }
+    
+	if(!hotkeyMgr){
+		hotkeyMgr =  key.hotkey(winform)
+	} 
+	else {
+		hotkeyMgr.clear();
+	} 
+	
+	var code = "{" + winform.editTable.text + "}"
+	var keyTable
+	try{
+		keyTable = eval(code)
+	}
+	catch(e){
+		var msgDlg = win.dlg.message(winform)
+		msgDlg.err('超级热键配置代码错误:\n'+e) 
+	}
+	
+	if(type(keyTable)==type.table){
+		for k,v in table.eachName(keyTable){ 
+			hotkeyMgr.regStr(k,v);
+		} 
+	}
+	
+	var prevAlphaKeys = {};
+	var curentAlphaKeys = {};
+	key.hotkey.lastAlphaKeys = function(){ 
+		var keys = prevAlphaKeys;
+		if(#curentAlphaKeys>=5){
+			..table.pop(curentAlphaKeys,1);
+			keys = curentAlphaKeys;
+		}
+		curentAlphaKeys = {};
+		prevAlphaKeys = keys;
+		
+		var str = ..string.pack(keys);
+		str = ..string.match(str,"[A-Z]+$");
+		if(#str) return str;
+	}
+	
+	if(winform.chkDecimalPoint.checked){ 
+		hotkeyMgr.onKeyDown = function(vk){
+			var prev = hotkeyMgr.prevKeyCode;
+			if(key.getStateX("CTRL"))return;
+			if(key.getStateX("ALT"))return;
+			if(key.getStateX("SHIFT")){
+				if(vk==0xBD/*_VK_OEM_MINU*/){
+					if(prev){ 
+						if( (prev>='0'# && prev<='9'# ) 
+							|| (prev>=0x60/*_VK_NUMPAD0*/ && prev<=0x69/*_VK_NUMPAD9*/ ) ){ 
+							key.sendString("_");
+        					return true;
+        				}	
+					}		
+				}
+				return;
+			}
+			
+			if(vk!=0xA0/*_VK_LSHIFT*/ && vk!=0xA1/*_VK_RSHIFT*/) hotkeyMgr.prevKeyCode = vk;
+			if(vk==190/*_VK_OEM_PERIOD*/){
+				if(prev){
+					if( (prev>='0'# && prev<='9'# ) 
+						|| (prev>=0x60/*_VK_NUMPAD0*/ && prev<=0x69/*_VK_NUMPAD9*/ ) ){ 
+						key.sendString(".");
+        				return true;
+        			}	
+				}		
+			}
+			elseif(vk==188/*_VK_OEM_COMMA*/){
+				if(prev){
+					if( (prev>='0'# && prev<='9'# ) 
+						|| (prev>=0x60/*_VK_NUMPAD0*/ && prev<=0x69/*_VK_NUMPAD9*/ ) ){ 
+						key.sendString(",");
+        				return true;
+        			}	
+				}		
+			}
+			elseif( vk>='A'# && vk<='Z'# ){
+				..table.push(curentAlphaKeys,vk);
+			}
+			elseif(#curentAlphaKeys)  {
+				prevAlphaKeys = curentAlphaKeys;
+				curentAlphaKeys = {};
+			} 
+		}
+	}
+	else {
+		hotkeyMgr.onKeyDown = function(vk){
+			if(key.getStateX("CTRL")) return;
+			if(key.getStateX("ALT")) return;
+			if(key.getStateX("SHIFT")) return;
+			 
+			if( vk>='A'# && vk<='Z'# ){
+				..table.push(curentAlphaKeys,vk);
+			}
+			elseif(#curentAlphaKeys) {
+				prevAlphaKeys = curentAlphaKeys;
+				curentAlphaKeys = {};
+			}  
+		}
+	}
+}
+
+import fsys.dlg;
+winform.editTable.enablePopMenu({
+	{ /*---分隔线---*/ };
+	{
+		"保存到代码文件";
+		function(id){
+			var path = fsys.dlg.save("*.aardio|*.aardio||","保存到代码文件",,winform)
+			if(path){
+				string.save(path,winform.editTable.text )
+				winform.editTable.modified = false;
+			}
+		} 
+	};
+	{
+		"加载代码文件";
+		function(id){
+			var path = fsys.dlg.open("*.aardio|*.aardio","加载代码文件",,winform)
+			if(path) winform.editTable.text = string.load(path)
+		} 
+	};
+	{ /*---分隔线---*/ };
+	{
+		"恢复到范例";
+		function(id){
+			winform.editTable.text = wubi.hotkey.default;
+			winform.editTable.modified = false;
+		} 
+	};
+})
+
+winform.btnReset.skin(style.button)
+winform.btnReset.oncommand = function(id,event){
+	winform.editTable.text = wubi.hotkey.default;
+	winform.editTable.modified = false;
+}
+winform.editTable.modified = false;
+
+winform.chkEnableHotkey.oncommand();
+winform.btnSave.oncommand();
+if(_ARGV.tray){  
+	winform.setTimeout( 
+		function(){
+			winform.btnSave.oncommand();
+		},3000
+	); 	
+}
+
+import process;
+winform.btnHelp.oncommand = function(id,event){
+	process.openUrl("http://www.aardio.com");
+}
+
+winform.btnHelp.skin(style.plainButton);
+
+winform.enableDpiScaling();
+winform.show();
+win.loopMessage();
+return winform;
