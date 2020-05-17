@@ -3,14 +3,14 @@ import win.ui;
 /*DSG{{*/
 var winform = win.form(text="wubilex 码表编辑 - 重新计算权重";right=651;bottom=318;bgcolor=16777215;border="none";exmode="none";max=false;min=false;mode="popup")
 winform.add(
-bk={cls="bk";left=0;top=0;right=653;bottom=29;bgcolor=12632256;z=6};
-btnOpenFile={cls="plus";text='\uF115';left=540;top=87;right=577;bottom=106;color=2960685;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;z=4};
-btnUpdate={cls="plus";text='\uF0C7 更新码表';left=290;top=255;right=492;bottom=291;bgcolor=11580047;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;tabstop=1;z=1};
-chkReorder={cls="plus";text='\uF0C8 允许重新计算同一编码内候选词顺序';left=151;top=159;right=530;bottom=192;align="left";dl=1;dr=1;font=LOGFONT(h=-15;name='FontAwesome');notify=1;z=3};
-editFilePath={cls="plus";left=154;top=78;right=533;bottom=109;align="left";border={bottom=1;color=-16744448};dl=1;dr=1;editable=1;font=LOGFONT(h=-15);tabstop=1;textPadding={top=8;bottom=1};z=2};
+bk={cls="bk";left=0;top=0;right=653;bottom=29;bgcolor=12632256;z=5};
+btnOpenFile={cls="plus";text='\uF115';left=540;top=87;right=577;bottom=106;color=2960685;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;z=3};
+btnUpdate={cls="plus";text="保存码表";left=319;top=249;right=454;bottom=285;align="left";bgcolor=11580047;db=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-16;name='FontAwesome');padding={left=15}};iconText='\uF0C7';notify=1;tabstop=1;textPadding={left=39};z=7};
+chkReorder={cls="plus";text="允许重新计算同一编码内候选词顺序";left=151;top=159;right=530;bottom=192;align="left";dl=1;dr=1;font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=2};
+editFilePath={cls="plus";left=154;top=78;right=533;bottom=109;align="left";border={bottom=1;color=-16744448};dl=1;dr=1;editable=1;font=LOGFONT(h=-15);tabstop=1;textPadding={top=8;bottom=1};z=1};
 plusCodeTable={cls="plus";left=154;top=42;right=533;bottom=73;align="left";border={bottom=1;color=-16744448};color=10789024;dl=1;dr=1;font=LOGFONT(h=-15);tabstop=1;textPadding={top=8;bottom=1};z=10};
-static={cls="static";text="词频文件请使用UTF-8编码，每行一个词条，前面是词，后面是权重(1到65535之间的数值，权重越小排序越前)，中间使用制表符分开。";left=154;top=124;right=567;bottom=163;color=5921370;transparent=1;z=7};
-static2={cls="static";text="词频文件:";left=45;top=87;right=145;bottom=112;align="right";dl=1;font=LOGFONT(h=-15);transparent=1;z=5};
+static={cls="static";text="词频文件请使用UTF-8编码，每行一个词条，前面是词，后面是权重(1到65535之间的数值，权重越小排序越前)，中间使用制表符分开。";left=154;top=124;right=586;bottom=163;color=5921370;transparent=1;z=6};
+static2={cls="static";text="词频文件:";left=45;top=87;right=145;bottom=112;align="right";dl=1;font=LOGFONT(h=-15);transparent=1;z=4};
 static3={cls="static";text="不勾选则持单个编码内候选词顺序不变，否则使用新的权重重新排序。";left=154;top=193;right=567;bottom=238;color=5921370;transparent=1;z=8};
 static4={cls="static";text="当前码表:";left=45;top=51;right=145;bottom=76;align="right";dl=1;font=LOGFONT(h=-15);transparent=1;z=9}
 )

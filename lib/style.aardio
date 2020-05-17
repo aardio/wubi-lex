@@ -34,7 +34,7 @@ namespace style{
 				active = 0xFF00FF00;
 				disabled = 0xEE666666;
 			}
-			text = '\uF14a'/*_FA_CHECK_SQUARE*/
+			iconText = '\uF14a'/*_FA_CHECK_SQUARE*/
 		} 	
 	};
 	radio ={
@@ -44,7 +44,7 @@ namespace style{
 			active = 0xFF00FF00;
 		}
 		checked = {  
-			text = '\uF058'/*_FA_CHECK_CIRCLE*/
+			iconText = '\uF058'/*_FA_CHECK_CIRCLE*/
 		} 	
 	};
 	link = {
