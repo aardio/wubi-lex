@@ -223,6 +223,7 @@ saveToSystem = function(phraseText){
 	phraseText = ..string.replace( phraseText,"\/\*.+?\*\/",""); 
 
 	var orderMap = {}
+	var multiline = false;
 	for line in ..string.lines(phraseText) {
 		lineIndex++;
 		
@@ -231,21 +232,57 @@ saveToSystem = function(phraseText){
 
 		var code,order,phrase = match(line,"([a-z]+)\s*\=\s*(\d+)\s*\,\s*(.+)");
 		if(code && phrase && order ){
+			orderMap[code] = order;
 			push(phraseArray,{code;phrase;order});
+			multiline = false;
 		}
-		else {
-			code,phrase = match(line,"([a-z]+)\s*\=\s*(.+)");
-			if(code && phrase  ){
-				order = null;
+		else { 
+			code,order,phrase = match(line,"([a-z]+)\,(\d+)\=#?(.*)");
+			if(code && phrase && order ){
+				orderMap[code] = order;
+				phrase = ..string.replace(phrase,"$(\a+)",{
+					year = "%yyyy%";
+					year_yy = "%yy%";
+					month_mm = "%MM%";
+					month = "%M%"; 
+					day = "%dd%"; 
+					day_dd = "%dd%"; 
+					fullhour = "%HH%"; 
+					minute = "%mm%";
+					second = "%ss%";
+				})
+				
+				if(phrase[1]!='$'#){
+					push(phraseArray,{code;phrase;order});
+					multiline = !#phrase;
+					
+					continue;	
+				}
+				else {
+					order = null;
+				}
 			}
-			elseif(match(line,"\s+\d+$")){
-				code,phrase,order = match(line,"([a-z]+)\s+(.+?)\s+(\d+)$") 
-			}
-			else {
-				order = null;
-				code,phrase = match(line,"([a-z]+)\s+(.+)");
-				if(!(code && phrase ) ){
-					phrase,code = match(line,"^([^\s]\S*)\s+([a-z]{1,4})[\s\d]*$")
+			
+			else{
+				code,phrase = match(line,"([a-z]+)\s*\=\s*(.*)");
+				if(code && phrase  ){
+					order = null;
+					multiline = !#phrase;
+				}
+				elseif(multiline) {
+					var last = phraseArray[#phraseArray]
+					last[2] = ..string.concat(last[2],#last[2]?'\n':'',line);
+					continue;
+				}
+				elseif(match(line,"\s+\d+$")){
+					code,phrase,order = match(line,"([a-z]+)\s+(.+?)\s+(\d+)$") 
+				}
+				else {
+					order = null;
+					code,phrase = match(line,"([a-z]+)\s+(.+)");
+					if(!(code && phrase ) ){
+						phrase,code = match(line,"^([^\s]\S*)\s+([a-z]{1,4})[\s\d]*$")
+					}
 				}
 			}
 				
