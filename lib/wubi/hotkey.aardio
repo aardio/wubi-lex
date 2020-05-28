@@ -12,29 +12,42 @@ default = /*******
     key.ime.changeRequest(0x4090409)
     key.ime.changeRequest(0x8040804)
 };
+
 //大写金额(可输入数学表达式)、日期、时间
 ["Ctrl+$"] = function(){  
     wubi.chineseNumber().show();
 };
+
+//把斜杠“/”改为顿号
+["/"] = function(){
+    if( !key.ime.getOpenStatus() ) return true; 
+    key.sendString("、")
+};
+
 //以下代码自/*......*/移出后生效
 /*
+
 //按`date输入大写的当前日期
 ["~date"] = function(){ 
     var zh = string.chineseNumber('〇一二三四五六七八九');
     key.sendString(zh.date()); //改为 zh.time() 输出大写的当前时间
 }; 
+
 //增加音量
 ["Ctrl+F6"] = function(){
     key.press("VOLUME_UP");
 }
+
 //降低音量
 ["Ctrl+F7"] = function(){
     key.press("VOLUME_DOWN");
 }
+
 //切换静音
 ["Ctrl+F8"] = function(){
     key.press("VOLUME_MUTE");
 }
+
 //按~重复输入五笔编码
 ["~"] = function(){
     if(key.ime.getOpenStatus()){
@@ -43,15 +56,18 @@ default = /*******
     }
     key.send("~");
 }
+
 //运行计算器
 ["~calc"] = function(){
     process.execute("calc.exe")
 };
+
 //运行word
 ["~word"] = function(){
     var word = com.CreateObject("Word.Application")
     if(word)word.Visible = true; 
 };
+
 //打开或关闭拼音混输
 ["Ctrl+,"] = function(){  
     import win.reg;
@@ -62,6 +78,7 @@ default = /*******
     key.ime.changeRequest(0x4090409)
     key.ime.changeRequest(0x8040804)
 };
+
 //运行QQ
 ["Ctrl+Q,Q"] = function(){
     import process 
@@ -69,6 +86,7 @@ default = /*******
     qqpath  = fsys.lnk.search( {"qq.exe";"QQScLauncher.exe";"QQProtect.exe"} )   
     process.execute( qqpath )
 };
+
 //取消次选键
 [","] = function(){
     if( wubi.candidateWindow.isVisible() ){
@@ -76,19 +94,11 @@ default = /*******
     } 
     else key.send(",")
 };
+
 //按 shift + back 变 ctrl + z，因为这时候shift是按下状态，所以可以先发一个key.up("SHIFT")弹起shift键
 ["SHIFT+BACK"] = function(){
     key.up("SHIFT")
     key.combine("CTRL","Z")
-};
-//把斜杠“/”改为顿号
-["/"] = function(){
-    if( key.ime.getOpenStatus() ){
-        key.send("、")
-    }
-    else {
-        key.send("/")
-    }
 };
 
 //发送字符串

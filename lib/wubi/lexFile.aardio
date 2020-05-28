@@ -446,17 +446,17 @@ class lexFile{
 		} 
 	}
 	spelling = function(word){
-		var max;
+		var codes = {};
 		for(code,words in this.outputMap){
 			for(i=1;#words;1){
 				var str = words[i]
 				if(word===str){
-					if( #code === 4 ) return code;
-					if(#code>#max)max = code;
+					..table.push(codes,code); 
 				} 
 			} 
 		} 
-		return max;
+		..table.sort(codes,lambda(b)#owner>#b)
+		return codes;
 	}
 	filter = function(f){
 		var push = ..table.push;

@@ -14,7 +14,7 @@ winform.add(
 btnHelp={cls="plus";text="aardio 语法";left=825;top=63;right=934;bottom=85;align="left";color=3947580;dr=1;dt=1;font=LOGFONT(h=-13);iconColor=2960685;iconStyle={align="left";font=LOGFONT(h=-16;name='FontAwesome')};iconText='\uF059';notify=1;paddingLeft=20;z=5};
 btnReset={cls="plus";text='\uF0E2   恢复到范例';left=619;top=529;right=765;bottom=565;bgcolor=14935259;db=1;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;tabstop=1;z=7};
 btnSave={cls="plus";text='\uF0C7   保存';left=777;top=529;right=923;bottom=565;bgcolor=11580047;db=1;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;tabstop=1;z=6};
-chkDecimalPoint={cls="plus";text="数字后自动转换小数点（ . ）与数值分隔符（ , 或 _ ）";left=32;top=55;right=617;bottom=86;align="left";dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8';notify=1;textPadding={left=24};z=2};
+chkDecimalPoint={cls="plus";text="数字后自动转换小数点（ . ）与数值分隔符（ , _  : ）";left=32;top=55;right=617;bottom=86;align="left";dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8';notify=1;textPadding={left=24};z=2};
 chkEnableHotkey={cls="plus";text="启用超级热键";left=33;top=23;right=473;bottom=54;align="left";dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8';notify=1;textPadding={left=24};z=3};
 editTable={cls="edit";left=33;top=97;right=951;bottom=498;db=1;dl=1;dr=1;dt=1;edge=1;hscroll=1;multiline=1;vscroll=1;z=4};
 lbTip={cls="static";left=39;top=523;right=594;bottom=574;db=1;dl=1;dr=1;transparent=1;z=1}
@@ -116,6 +116,15 @@ winform.btnSave.oncommand = function(id,event){
         				}	
 					}		
 				}
+				elseif(vk==186/*_VK_SEMICOLON*/){
+					if(prev){ 
+						if( (prev>='0'# && prev<='9'# ) 
+							|| (prev>=0x60/*_VK_NUMPAD0*/ && prev<=0x69/*_VK_NUMPAD9*/ ) ){ 
+							key.sendString(":");
+        					return true;
+        				}	
+					}
+				} 
 				return;
 			}
 			

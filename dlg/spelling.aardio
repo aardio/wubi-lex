@@ -36,12 +36,12 @@ keyZ={cls="plus";left=308;top=466;right=352;bottom=503;ah=1;align="right";aw=1;b
 lbInk={cls="static";text="手写输入:";left=743;top=156;right=863;bottom=173;dr=1;dt=1;transparent=1;z=15};
 menuItem={cls="plus";text="下拉列表项模板1";left=361;top=183;right=631;bottom=228;align="right";bgcolor=11525002;border={left=1;right=1;bottom=1;color=-3546113};tabstop=1;textPadding={right=20};z=5};
 menuItem2={cls="plus";text="下拉列表项模板2";left=361;top=228;right=631;bottom=273;align="right";bgcolor=11525002;border={left=1;right=1;bottom=1;color=-3546113};tabstop=1;textPadding={right=20};z=11};
-plusCode={cls="plus";left=265;top=232;right=499;bottom=282;align="right";dl=0.25;dr=0.52;dt=1;font=LOGFONT(h=-37);textPadding={right=10};z=9};
+plusCode={cls="plus";left=265;top=232;right=499;bottom=282;align="right";dl=0.25;dr=0.52;dt=1;font=LOGFONT(h=-37);iconColor=32768;iconStyle={align="left";font=LOGFONT(h=-15);valign="bottom"};textPadding={right=5};z=9};
 plusDownloadSpellingGif={cls="plus";text='\uF019  下载拆字详解图库';left=745;top=468;right=984;bottom=504;bgcolor=11580047;db=1;dr=1;font=LOGFONT(h=-16;name='FontAwesome');hide=1;notify=1;tabstop=1;z=17};
 plusEtymon={cls="plus";text="字根图";left=885;top=572;right=981;bottom=594;align="left";db=1;dr=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=9}};iconText='\uF0E8';notify=1;tabstop=1;textPadding={left=25};z=40};
 plusHotkey={cls="plus";text="设置热键";left=788;top=572;right=884;bottom=594;align="left";db=1;dr=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=9}};iconText='\uF11C ';notify=1;tabstop=1;textPadding={left=25};z=39};
 plusSpellingGif={cls="plus";left=499;top=232;right=719;bottom=288;dl=0.48;dt=1;repeat="scale";z=22};
-plusTitle={cls="plus";text="根据当前安装的系统码表反查上面输入的汉字";left=302;top=195;right=727;bottom=228;aw=1;color=5921370;dt=1;z=19};
+plusTitle={cls="plus";text="根据当前安装的系统码表反查上面输入的汉字";left=302;top=195;right=727;bottom=228;aw=1;color=5921370;dt=1;iconStyle={align="right";font=LOGFONT(h=-13);valign="bottom"};z=19};
 plusWubiTable={cls="plus";left=163;top=520;right=854;bottom=553;clip=1;color=5921370;db=0.08;dl=1;dr=1;font=LOGFONT(h=-16);z=2};
 txtSpelling={cls="edit";left=311;top=303;right=688;bottom=359;align="center";bgcolor=16777215;color=255;dl=0.3;dr=0.34;dt=1;font=LOGFONT(h=-21);z=3}
 )
@@ -109,13 +109,13 @@ var searchSpelling = win.debounce(function(str){
 	}
 	
 	winform.plusTitle.text = "拼音：" + string.conv.pinyin(str,,true);	
-	var code = winform.systemLex.spelling(str) 
-	if(!code && winform.systemPhraseMap){
-		code = wubi.phrase.findCodeFromMap(winform.systemPhraseMap,str);
+	var codes = winform.systemLex.spelling(str) 
+	if(!#codes && winform.systemPhraseMap){
+		codes = { wubi.phrase.findCodeFromMap(winform.systemPhraseMap,str) };
 	}
 	
-	if(code){
-		code = string.upper(code);
+	if(#codes){
+		var code = string.upper(..table.shift(codes));
 		winform.plusCode.text = code;
 			
 		if(#code<=4){
@@ -130,6 +130,10 @@ var searchSpelling = win.debounce(function(str){
 				ctrl.checked = true; 
 			}	
 		} 
+		
+		if(#codes){
+			winform.plusCode.text = winform.plusCode.text + " , " + ..string.upper( codes[#codes] ) ;
+		}
 	}
 	else {
 		winform.plusCode.text =  "缺少编码";
