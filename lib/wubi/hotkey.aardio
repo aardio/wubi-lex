@@ -18,14 +18,14 @@ default = /*******
     wubi.chineseNumber().show();
 };
 
+//以下代码自/*......*/移出后生效
+/*
+
 //把斜杠“/”改为顿号
 ["/"] = function(){
     if( !key.ime.getOpenStatus() ) return true; 
     key.sendString("、")
 };
-
-//以下代码自/*......*/移出后生效
-/*
 
 //按`date输入大写的当前日期
 ["~date"] = function(){ 

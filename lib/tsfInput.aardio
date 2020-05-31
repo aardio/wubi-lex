@@ -3,6 +3,7 @@ namespace tsfInput;
 	
 var bcp47langs = ..raw.loadDll("bcp47langs.dll",,"stdcall,unicode")	
 var winstring = ..raw.loadDll("api-ms-win-core-winrt-string-l1-1-0.dll",,"stdcall,unicode")
+var input = ..raw.loadDll("input.dll","","stdcall,unicode")
 
 class hString{
 	ctor(){ };
@@ -39,3 +40,18 @@ getInputMethods = function(){
 	}
 	return result;
 }
+
+enablePinyin = function(enabled){ 
+	input.InstallLayoutOrTipW("0804:{81D4E9C9-1D3B-41BC-9E6C-4B40BF79E35E}{FA550B04-5AD7-411F-A5AC-CA038EC515D7}",!enabled?1:0 )
+}
+
+enableWubi = function(enabled){ 
+	input.InstallLayoutOrTipW("0x0804:{6A498709-E00B-4C45-A018-8F9E4081AE40}{82590C13-F4DD-44F4-BA1D-8667246FDF8E}",!enabled?1:0 )
+}
+
+
+/**intellisense(tsfInput)
+enablePinyin(.(enabled) = 是否启用微软拼音
+enableWubi(.(enabled) = 是否启用微软五笔
+getInputMethods() = 返回所有启用的输入法
+end intellisense**/

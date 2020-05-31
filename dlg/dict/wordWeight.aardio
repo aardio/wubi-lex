@@ -1,11 +1,12 @@
 import fonts.fontAwesome;
 import win.ui;
 /*DSG{{*/
-var winform = win.form(text="wubilex 码表编辑 - 重新计算权重";right=651;bottom=318;bgcolor=16777215;border="none";exmode="none";max=false;min=false;mode="popup")
+var winform = win.form(text="wubilex 码表编辑 - 重新计算权重";right=651;bottom=335;bgcolor=16777215;border="none";exmode="none";max=false;min=false;mode="popup")
 winform.add(
 bk={cls="bk";left=0;top=0;right=653;bottom=29;bgcolor=12632256;z=5};
 btnOpenFile={cls="plus";text='\uF115';left=540;top=87;right=577;bottom=106;color=2960685;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;z=3};
-btnUpdate={cls="plus";text="保存码表";left=319;top=249;right=454;bottom=285;align="left";bgcolor=11580047;db=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-16;name='FontAwesome');padding={left=15}};iconText='\uF0C7';notify=1;tabstop=1;textPadding={left=39};z=7};
+btnUpdate={cls="plus";text="重新计算权重";left=320;top=266;right=484;bottom=302;align="left";bgcolor=11580047;db=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-16;name='FontAwesome');padding={left=15}};iconText='\uF0C7';notify=1;tabstop=1;textPadding={left=39};z=7};
+chkFixedSingleChar={cls="plus";text="同一编码首个候选词为单字时不重新排序";left=151;top=216;right=530;bottom=249;align="left";dl=1;dr=1;font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=11};
 chkReorder={cls="plus";text="允许重新计算同一编码内候选词顺序";left=151;top=159;right=530;bottom=192;align="left";dl=1;dr=1;font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=2};
 editFilePath={cls="plus";left=154;top=78;right=533;bottom=109;align="left";border={bottom=1;color=-16744448};dl=1;dr=1;editable=1;font=LOGFONT(h=-15);tabstop=1;textPadding={top=8;bottom=1};z=1};
 plusCodeTable={cls="plus";left=154;top=42;right=533;bottom=73;align="left";border={bottom=1;color=-16744448};color=10789024;dl=1;dr=1;font=LOGFONT(h=-15);tabstop=1;textPadding={top=8;bottom=1};z=10};
@@ -17,9 +18,11 @@ static4={cls="static";text="当前码表:";left=45;top=51;right=145;bottom=76;al
 /*}}*/
 
 import style;
-winform.chkReorder.skin(style.checkBox)
 winform.btnUpdate.skin(style.primaryButton)
 winform.btnOpenFile.skin(style.plainButton)
+winform.chkReorder.skin(style.checkBox)
+winform.chkFixedSingleChar.skin(style.checkBox)
+winform.chkFixedSingleChar.checked = true;
 
 import win.ui.simpleWindow;
 win.ui.simpleWindow( winform );
@@ -54,7 +57,7 @@ winform.btnUpdate.oncommand = function(id,event){
 			if(winform.lexTextData){
 				wubiLex = wubi.lexFile( "" );
 				wubiLex.addText(winform.lexTextData);
-				wubiLex.loadWordWeight(weightFilePath,winform.chkReorder.checked) 
+				wubiLex.loadWordWeight(weightFilePath,winform.chkReorder.checked,winform.chkFixedSingleChar.checked) 
 				winform.btnUpdate.disabledText = null;
 				winform.endModal(wubiLex.tostring())
 			}
@@ -65,7 +68,7 @@ winform.btnUpdate.oncommand = function(id,event){
 					return;	
 				}
 				wubiLex = wubi.lexFile( winform.lexFilePath ); 
-				wubiLex.loadWordWeight(weightFilePath,winform.chkReorder.checked)
+				wubiLex.loadWordWeight(weightFilePath,winform.chkReorder.checked,winform.chkFixedSingleChar.checked)
 				wubiLex.saveLex( winform.lexFilePath );
 				winform.btnUpdate.disabledText = null;
 				winform.endModal(true)

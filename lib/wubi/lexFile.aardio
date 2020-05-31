@@ -558,7 +558,8 @@ class lexFile{
 		file.close();
 		return true;
 	};
-	loadWordWeight  = function(filePath,reorder){
+	loadWordWeight  = function(filePath,reorder,fixedSingleChar){
+		var strlen = ..string.len;
 		var match = ..string.match;
 		var wordWeight = {};
 		for(line in ..io.lines(filePath)){
@@ -572,6 +573,7 @@ class lexFile{
 		var inputCodes = this.inputCodes;
 		var outputMap = this.outputMap;
 		var codeWeight = {};
+		
 		for(i=#inputCodes;1;-1){
 			var code = inputCodes[i]  
 			var words = outputMap[code]
@@ -582,7 +584,7 @@ class lexFile{
 				codeWeight[code] = weight;
 			}
 			
-			if(!reorder){
+			if(!reorder || (fixedSingleChar && strlen(words[1])==1) ){
 				weight[ words[1] ] = wordWeight[words[1]] : 0xF36B;
 				
 				for(i=2;#words;1){

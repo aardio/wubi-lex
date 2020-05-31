@@ -11,15 +11,16 @@ btnSave={cls="plus";text="保存码表";left=802;top=560;right=937;bottom=596;al
 btnSearch={cls="plus";text='\uF002';left=604;top=569;right=633;bottom=592;color=3947580;db=1;dr=1;font=LOGFONT(h=-16;name='FontAwesome');iconColor=2960685;notify=1;z=6};
 btnSimplified={cls="plus";text="精简码表";left=659;top=560;right=794;bottom=596;align="left";bgcolor=11580047;db=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-16;name='FontAwesome');padding={left=15}};iconText='\uF03A';notify=1;tabstop=1;textPadding={left=39};z=8};
 ddAppendToSystem={cls="plus";text="追加到系统码表";left=803;top=597;right=974;bottom=628;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=9}};iconText='\uF271';notify=1;tabstop=1;textPadding={left=26};z=19};
-ddChar1={cls="plus";text="仅保留单字";left=659;top=373;right=876;bottom=404;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=10};
-ddChar2={cls="plus";text="仅保留单字、双字词";left=659;top=404;right=876;bottom=435;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=9};
-ddGb2312={cls="plus";text="仅保留 GB2312 常用汉字";left=659;top=497;right=876;bottom=528;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=12};
+ddChar1={cls="plus";text="仅保留单字";left=659;top=343;right=876;bottom=374;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=10};
+ddChar2={cls="plus";text="仅保留单字、双字词";left=659;top=374;right=876;bottom=405;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=9};
+ddChar4={cls="plus";text="仅保留不多于四字的词";left=659;top=405;right=876;bottom=436;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=20};
+ddGb2312={cls="plus";text="仅保留 GB2312 常用汉字";left=659;top=498;right=876;bottom=529;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=12};
 ddSaveAs={cls="plus";text="存为新码表";left=803;top=690;right=974;bottom=721;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=9}};iconText='\uF016';notify=1;tabstop=1;textPadding={left=26};z=16};
 ddSaveToCurrent={cls="plus";text="存为当前选中码表";left=803;top=659;right=974;bottom=690;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=9}};iconText='\uF022';notify=1;tabstop=1;textPadding={left=26};z=18};
 ddSaveToSystem={cls="plus";text="存为系统码表";left=803;top=628;right=974;bottom=659;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=9}};iconText='\uF17A ';notify=1;tabstop=1;textPadding={left=26};z=17};
-ddSimplified={cls="plus";text="一字一码 ( 出简不出全 )";left=659;top=435;right=876;bottom=466;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=13};
-ddSimplized={cls="plus";text="移除繁体字";left=659;top=528;right=876;bottom=559;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=11};
-ddUnique={cls="plus";text="一码一词 ( 不限单字 )";left=659;top=466;right=876;bottom=497;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=15};
+ddSimplified={cls="plus";text="一字一码 ( 出简不出全 )";left=659;top=436;right=876;bottom=467;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=13};
+ddSimplized={cls="plus";text="移除繁体字";left=659;top=529;right=876;bottom=560;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=11};
+ddUnique={cls="plus";text="一码一词 ( 不限单字 )";left=659;top=467;right=876;bottom=498;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=15};
 editLex={cls="edit";left=281;top=59;right=969;bottom=556;db=1;dl=1;dr=1;dt=1;edge=1;font=LOGFONT(h=-16);multiline=1;vscroll=1;z=1};
 editSearch={cls="plus";left=330;top=566;right=595;bottom=590;align="right";border={bottom=1;color=-8355712};db=1;dl=1;dr=1;editable=1;font=LOGFONT(h=-16);z=14};
 lbTip={cls="plus";left=410;top=15;right=946;bottom=49;align="left";color=2960685;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText="  ";textPadding={left=24};z=5};
@@ -473,7 +474,7 @@ winform.editLex.translateAccelerator = function(msg){
 winform.btnSave.skin(style.button);
 
 import win.ui.tabs;
-var menu = win.ui.tabs(winform.ddChar1,winform.ddChar2
+var menu = win.ui.tabs(winform.ddChar1,winform.ddChar2,winform.ddChar4
 	,winform.ddSimplized,winform.ddUnique,winform.ddGb2312,winform.ddSimplified)
 menu.skin( style.dropdown );
 menu.initPopup();
@@ -535,6 +536,36 @@ winform.ddChar2.oncommand = function(){
 			wubiLex.filter(
 				function(txt,code){
 					return lenStr(txt)<=2;
+				}
+			)
+				
+			statistics = wubiLex.statistics();
+			winform.editLex.text = wubiLex.tostring(); 
+			sleep(100)
+			
+			winform.btnSimplified.busy(false,string.format("总编码数：%d 重码数：%d",statistics.totalTxt,statistics.coincidentTxt ));
+		},winform
+	)	
+}
+
+winform.ddChar4.oncommand = function(){
+	if(!#winform.editLex.text){
+		winform.msgErr("要转换的码表内容不能为空!")
+		return;
+	}
+			
+	thread.invoke( 
+		function(winform){
+			winform.btnSimplified.busy(true);
+			
+			import wubi.lexFile;
+			var wubiLex = wubi.lexFile("");
+			wubiLex.addText(winform.editLex.text);
+			
+			var lenStr = ..string.len;				
+			wubiLex.filter(
+				function(txt,code){
+					return lenStr(txt)<=4;
 				}
 			)
 				
@@ -1092,6 +1123,12 @@ var createMenuItems = function(){
 			{ "仅保留单字、双字词";
 				function(id){
 					winform.ddChar2.oncommand();
+				} 
+			};
+			
+			{ "仅保留不多于四字的词";
+				function(id){
+					winform.ddChar4.oncommand();
 				} 
 			};
 			

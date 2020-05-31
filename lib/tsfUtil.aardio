@@ -23,6 +23,7 @@ namespace tsfUtil{
 			..key.ime.changeRequest(0x4090409,hwnd)
 		}
 	
+		input.InstallLayoutOrTipW("0409:00000409",0 )
 		input.InstallLayoutOrTip("0x0804:{6A498709-E00B-4C45-A018-8F9E4081AE40}{82590C13-F4DD-44F4-BA1D-8667246FDF8E}",0 )
 
 		var srvMgr = ..service.manager();
