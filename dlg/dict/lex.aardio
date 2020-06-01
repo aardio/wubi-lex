@@ -23,7 +23,7 @@ ddSimplized={cls="plus";text="移除繁体字";left=659;top=529;right=876;bottom
 ddUnique={cls="plus";text="一码一词 ( 不限单字 )";left=659;top=467;right=876;bottom=498;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=15};
 editLex={cls="edit";left=281;top=59;right=969;bottom=556;db=1;dl=1;dr=1;dt=1;edge=1;font=LOGFONT(h=-16);multiline=1;vscroll=1;z=1};
 editSearch={cls="plus";left=330;top=566;right=595;bottom=590;align="right";border={bottom=1;color=-8355712};db=1;dl=1;dr=1;editable=1;font=LOGFONT(h=-16);z=14};
-lbTip={cls="plus";left=410;top=15;right=946;bottom=49;align="left";color=2960685;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText="  ";textPadding={left=24};z=5};
+lbTip={cls="plus";left=410;top=15;right=946;bottom=49;align="left";color=2960685;font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText="  ";textPadding={left=24};z=5};
 listbox={cls="listbox";left=11;top=59;right=275;bottom=595;db=1;dl=1;dt=1;edge=1;font=LOGFONT(h=-16);items={};vscroll=1;z=4}
 )
 /*}}*/

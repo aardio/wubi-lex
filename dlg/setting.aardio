@@ -3,32 +3,34 @@ import win.ui;
 /*DSG{{*/
 var winform = win.form(text="设置";right=984;bottom=589;bgcolor=16777215)
 winform.add(
-btnOpenIcon={cls="plus";text='\uF115';left=815;top=406;right=844;bottom=429;color=2960685;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;z=17};
-btnSave={cls="plus";text='\uF0C7   更新设置';left=636;top=536;right=838;bottom=572;bgcolor=11580047;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;tabstop=1;z=4};
-btnSelectFont={cls="plus";text='\uF031';left=571;top=451;right=600;bottom=474;color=2960685;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;z=21};
-chkDefaultModeEn={cls="plus";text="默认英文模式（ 可短按 Shift 键切换，WIN10 20H1以上版本可自定义快捷键 )";left=156;top=126;right=769;bottom=157;align="left";dl=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=2};
-chkEnableMsPinyin={cls="plus";text="启用微软拼音输入法";left=582;top=492;right=786;bottom=523;align="left";dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=26};
-chkEnableMsWubi={cls="plus";text="启用微软五笔输入法";left=378;top=492;right=582;bottom=523;align="left";dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=25};
-chkEnableSystemRun={cls="plus";text="允许开机启动 wubiLex （ 启动时不再需要确认管理权限，建议开启 ）";left=156;top=291;right=732;bottom=322;align="left";dl=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=12};
-chkEnableWubiUdp={cls="plus";text="允许自定义短语";left=156;top=238;right=412;bottom=269;align="left";dl=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=6};
-chkHalfWidthInputModeByDefault={cls="plus";text="英文标点默认使用半角输入模式（ 可按 Shift + 空格键 切换 ）";left=156;top=163;right=741;bottom=194;align="left";dl=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=14};
-chkUseEnglishPunctuationsInChineseInputMode={cls="plus";text="中文输入时使用英文标点（ WIN10 20H1以上版本支持 Ctrl + . 切换 ）";left=156;top=201;right=730;bottom=232;align="left";dl=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=15};
-chkWubiAutoFinalize={cls="plus";text="四码唯一时自动上屏（ 拼音混输时不建议开启 ）";left=156;top=88;right=596;bottom=119;align="left";dl=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=11};
-editMaxCandidates={cls="plus";left=768;top=442;right=810;bottom=471;align="left";border={bottom=1;color=-16744448};dr=1;font=LOGFONT(h=-16);notify=1;tabstop=1;textPadding={top=6;bottom=1};z=23};
-editWubiDescription={cls="plus";left=284;top=347;right=565;bottom=380;align="left";border={bottom=1;color=-16744448};dl=1;dr=1;editable=1;font=LOGFONT(h=-16);tabstop=1;textPadding={top=6;bottom=1};z=10};
-editWubiFont={cls="plus";left=284;top=438;right=573;bottom=471;border={bottom=1;color=-16744448};dl=1;dr=1;editable=1;font=LOGFONT(h=-16);notify=1;tabstop=1;textPadding={top=6;bottom=1};z=8};
-editWubiIcon={cls="plus";left=284;top=393;right=810;bottom=426;align="left";border={bottom=1;color=-16744448};dl=1;dr=1;editable=1;font=LOGFONT(h=-16);tabstop=1;textPadding={top=6;bottom=1};z=7};
-plus={cls="plus";left=160;top=328;right=684;bottom=338;border={bottom=1;color=-4144960};dl=1;dr=1;z=24};
-plus2={cls="plus";left=160;top=68;right=684;bottom=78;border={bottom=1;color=-4144960};dl=1;dr=1;z=13};
-plus3={cls="plus";left=160;top=268;right=684;bottom=278;border={bottom=1;color=-4144960};dl=1;dr=1;z=16};
-plusOpenHotkeys={cls="plus";text='\uF11C   打开系统输入法热键设置';left=361;top=536;right=601;bottom=572;bgcolor=14935259;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;tabstop=1;z=9};
-plusOpenMsSetting={cls="plus";text='\uF17A   打开系统五笔设置';left=149;top=536;right=350;bottom=572;bgcolor=14935259;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;tabstop=1;z=5};
-radioPinyinMixDisable={cls="plus";text="纯五笔输入";left=156;top=7;right=318;bottom=38;align="left";dl=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF111 ';notify=1;textPadding={left=24};z=1};
-radioPinyinMixEnable={cls="plus";text="五笔拼音混输";left=156;top=41;right=318;bottom=72;align="left";dl=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF111 ';notify=1;textPadding={left=24};z=3};
-static={cls="static";text="输入法显示名称:";left=135;top=361;right=275;bottom=388;align="right";dl=1;font=LOGFONT(h=-16;name='FontAwesome');transparent=1;z=18};
-static2={cls="static";text="输入法显示图标:";left=135;top=407;right=275;bottom=434;align="right";dl=1;font=LOGFONT(h=-16;name='FontAwesome');transparent=1;z=19};
-static3={cls="static";text="候选词字体:";left=135;top=453;right=275;bottom=480;align="right";dl=1;font=LOGFONT(h=-16;name='FontAwesome');transparent=1;z=20};
-static4={cls="static";text="候选词每页显示数:";left=617;top=453;right=758;bottom=480;align="right";dr=1;font=LOGFONT(h=-16;name='FontAwesome');transparent=1;z=22}
+bk={cls="bk";left=1;top=549;right=992;bottom=591;bgcolor=14935259;db=1;dl=1;dr=1;z=1};
+btnOpenIcon={cls="plus";text='\uF115';left=815;top=411;right=844;bottom=434;color=2960685;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;z=18};
+btnSave={cls="plus";text='\uF0C7   更新设置';left=636;top=497;right=838;bottom=533;bgcolor=11580047;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;tabstop=1;z=5};
+btnSelectFont={cls="plus";text='\uF031';left=571;top=456;right=600;bottom=479;color=2960685;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;z=22};
+chkDefaultModeEn={cls="plus";text="默认英文模式（ 可短按 Shift 键切换，WIN10 20H1以上版本可自定义快捷键 )";left=156;top=131;right=769;bottom=162;align="left";dl=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=3};
+chkEnableMsPinyin={cls="plus";text="启用微软拼音输入法";left=471;top=555;right=661;bottom=586;align="left";db=1;dr=1;font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=27};
+chkEnableMsWubi={cls="plus";text="启用微软五笔输入法";left=276;top=555;right=466;bottom=586;align="left";db=1;dr=1;font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=26};
+chkEnableSystemRun={cls="plus";text="允许开机启动 wubiLex （ 启动时不再需要确认管理权限，建议开启 ）";left=156;top=296;right=732;bottom=327;align="left";dl=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=13};
+chkEnableWubiUdp={cls="plus";text="允许自定义短语";left=156;top=243;right=412;bottom=274;align="left";dl=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=7};
+chkHalfWidthInputModeByDefault={cls="plus";text="英文标点默认使用半角输入模式（ 可按 Shift + 空格键 切换 ）";left=156;top=168;right=741;bottom=199;align="left";dl=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=15};
+chkUsKeyboard={cls="plus";text="启用英文键盘";left=665;top=555;right=807;bottom=586;align="left";db=1;dr=1;font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=28};
+chkUseEnglishPunctuationsInChineseInputMode={cls="plus";text="中文输入时使用英文标点（ WIN10 20H1以上版本支持 Ctrl + . 切换 ）";left=156;top=206;right=730;bottom=237;align="left";dl=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=16};
+chkWubiAutoFinalize={cls="plus";text="四码唯一时自动上屏（ 拼音混输时不建议开启 ）";left=156;top=93;right=596;bottom=124;align="left";dl=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=12};
+editMaxCandidates={cls="plus";left=768;top=447;right=810;bottom=476;align="left";border={bottom=1;color=-16744448};dr=1;font=LOGFONT(h=-16);notify=1;tabstop=1;textPadding={top=6;bottom=1};z=24};
+editWubiDescription={cls="plus";left=284;top=352;right=565;bottom=385;align="left";border={bottom=1;color=-16744448};dl=1;dr=1;editable=1;font=LOGFONT(h=-16);tabstop=1;textPadding={top=6;bottom=1};z=11};
+editWubiFont={cls="plus";left=284;top=443;right=573;bottom=476;border={bottom=1;color=-16744448};dl=1;dr=1;editable=1;font=LOGFONT(h=-16);notify=1;tabstop=1;textPadding={top=6;bottom=1};z=9};
+editWubiIcon={cls="plus";left=284;top=398;right=810;bottom=431;align="left";border={bottom=1;color=-16744448};dl=1;dr=1;editable=1;font=LOGFONT(h=-16);tabstop=1;textPadding={top=6;bottom=1};z=8};
+plus={cls="plus";left=160;top=333;right=684;bottom=343;border={bottom=1;color=-4144960};dl=1;dr=1;z=25};
+plus2={cls="plus";left=160;top=73;right=684;bottom=83;border={bottom=1;color=-4144960};dl=1;dr=1;z=14};
+plus3={cls="plus";left=160;top=273;right=684;bottom=283;border={bottom=1;color=-4144960};dl=1;dr=1;z=17};
+plusOpenHotkeys={cls="plus";text='\uF11C   打开系统输入法热键设置';left=361;top=497;right=601;bottom=533;bgcolor=14935259;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;tabstop=1;z=10};
+plusOpenMsSetting={cls="plus";text='\uF17A   打开系统五笔设置';left=149;top=497;right=350;bottom=533;bgcolor=14935259;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;tabstop=1;z=6};
+radioPinyinMixDisable={cls="plus";text="纯五笔输入";left=156;top=12;right=318;bottom=43;align="left";dl=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF111 ';notify=1;textPadding={left=24};z=2};
+radioPinyinMixEnable={cls="plus";text="五笔拼音混输";left=156;top=46;right=318;bottom=77;align="left";dl=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF111 ';notify=1;textPadding={left=24};z=4};
+static={cls="static";text="输入法显示名称:";left=135;top=366;right=275;bottom=393;align="right";dl=1;font=LOGFONT(h=-16;name='FontAwesome');transparent=1;z=19};
+static2={cls="static";text="输入法显示图标:";left=135;top=412;right=275;bottom=439;align="right";dl=1;font=LOGFONT(h=-16;name='FontAwesome');transparent=1;z=20};
+static3={cls="static";text="候选词字体:";left=135;top=458;right=275;bottom=485;align="right";dl=1;font=LOGFONT(h=-16;name='FontAwesome');transparent=1;z=21};
+static4={cls="static";text="候选词每页显示数:";left=617;top=458;right=758;bottom=485;align="right";dr=1;font=LOGFONT(h=-16;name='FontAwesome');transparent=1;z=23}
 )
 /*}}*/
 
@@ -43,6 +45,7 @@ winform.chkHalfWidthInputModeByDefault.skin(style.checkBox)
 winform.chkUseEnglishPunctuationsInChineseInputMode.skin(style.checkBox)
 winform.chkEnableMsWubi.skin(style.checkBox)
 winform.chkEnableMsPinyin.skin(style.checkBox)
+winform.chkUsKeyboard.skin(style.checkBox)
 winform.btnSave.skin(style.primaryButton)
 winform.btnOpenIcon.skin( style.plainButton )
 winform.plusOpenMsSetting.skin(style.button)
@@ -191,18 +194,7 @@ winform.btnSave.oncommand = function(id,event){
 	
 	if(winform.chkEnableMsWubi.checked){
 		tsfInput.enableWubi(true);	
-		tsfUtil.reset()
-		key.ime.changeRequest(0x4090409); 
-	}
-	else {
-		tsfInput.enableWubi(false);	
-	}
-	
-	if(winform.chkEnableMsPinyin.checked){
-		tsfInput.enablePinyin(true); 
-	}
-	else {
-		tsfInput.enablePinyin(false);	
+		tsfUtil.reset();
 	}
 		
 	if(!_STUDIO_INVOKED){
@@ -299,23 +291,36 @@ tooltipCtrl.addTool(winform.btnSelectFont,"点这里选择候选词显示字体"
 tooltipCtrl.addTool(winform.btnOpenIcon,"点这里选择输入法显示图标" )
 tooltipCtrl.addTool(winform.editWubiFont.editBox,"清空则恢复默认字体")
 
-var imes = tsfInput.getInputMethods()
-if(imes){
-	if( table.find(imes["zh-Hans-CN"],"0804:{6A498709-E00B-4C45-A018-8F9E4081AE40}{82590C13-F4DD-44F4-BA1D-8667246FDF8E}")){
-		winform.chkEnableMsWubi.checked = true;
-	}	
-	if( table.find(imes["zh-Hans-CN"],"0804:{81D4E9C9-1D3B-41BC-9E6C-4B40BF79E35E}{FA550B04-5AD7-411F-A5AC-CA038EC515D7}")){
-		winform.chkEnableMsPinyin.checked = true;
+winform.updateTsfStatus = function(){
+	var imStatus = tsfInput.getStatus();
+	if(imStatus){
+		winform.chkEnableMsWubi.checked = imStatus.wubi;
+		winform.chkEnableMsPinyin.checked = imStatus.pinyin;
+		winform.chkUsKeyboard.checked = imStatus.en;;
 	}	
 }
+winform.updateTsfStatus();
 
 subscribe("wubi.system.lex.changed",function(...){
-    winform.chkEnableMsWubi.checked = true;
+	winform.updateTsfStatus();
 })
 
 subscribe("wubi.system.phrase.changed",function(...){
-    winform.chkEnableMsWubi.checked = true;
+	winform.updateTsfStatus();
 })
+
+winform.chkEnableMsPinyin.oncommand = function(id,event){
+	tsfInput.enablePinyin(winform.chkEnableMsPinyin.checked);
+}
+
+winform.chkEnableMsWubi.oncommand = function(id,event){
+	tsfInput.enableWubi(winform.chkEnableMsWubi.checked);
+	winform.btnSave.disabled = !winform.chkEnableMsWubi.checked;	
+}
+
+winform.chkUsKeyboard.oncommand = function(id,event){
+	tsfInput.enableUsKeyboard(winform.chkUsKeyboard.checked);	
+}
 
 winform.enableDpiScaling();
 winform.show();
