@@ -68,6 +68,11 @@ winform.btnSave.oncommand = function(id,event){
 	winform.lbTip.text = "";
 	winform.btnSave.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
 	winform.editPhrase.setFocus();
+	
+	var regSettings = win.reg("HKEY_CURRENT_USER\Software\Microsoft\InputMethod\Settings\CHS"); 
+	regSettings.setDwValue("Enable Wubi EUDP",1);
+	regSettings.close();
+	publish("wubi.setting.eudp.changed",true);
 
 	thread.invoke(function(phraseText,winform){
 		import tsfUtil;

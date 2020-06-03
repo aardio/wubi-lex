@@ -309,6 +309,10 @@ subscribe("wubi.system.phrase.changed",function(...){
 	winform.updateTsfStatus();
 })
 
+subscribe("wubi.setting.eudp.changed",function(eudp){
+	winform.chkEnableWubiUdp.checked = eudp
+} )
+
 winform.chkEnableMsPinyin.oncommand = function(id,event){
 	tsfInput.enablePinyin(winform.chkEnableMsPinyin.checked);
 }

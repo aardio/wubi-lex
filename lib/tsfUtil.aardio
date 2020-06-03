@@ -111,6 +111,12 @@ namespace tsfUtil{
 				return false,"已取消操作";
 			}
 			phraseText = lexFile.removePhrase();
+			
+			import win.reg;
+			var regSettings = win.reg("HKEY_CURRENT_USER\Software\Microsoft\InputMethod\Settings\CHS"); 
+			regSettings.setDwValue("Enable Wubi EUDP",1);
+			regSettings.close();
+			winform.publish("wubi.setting.eudp.changed",true);
 		}
 		
 		if(appendMode){
