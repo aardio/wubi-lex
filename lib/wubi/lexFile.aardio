@@ -513,6 +513,8 @@ class lexFile{
 			var words = this.outputMap[code]
 			
 			var newWords = f(code,words)
+			if(!newWords) continue;
+			
 			if(!#newWords){
 				if(newWords){
 					this.outputMap[code] = null;
@@ -1293,7 +1295,7 @@ end intellisense**/
 /**intellisense(!wubiLexFile)
 saveLex(.(filePath) = 输出微软二进制码表 *.lex 文件
 saveTxt(.(filePath,reverse) = 输出文本格式码表 *.txt 文件\n参数@filePath指定输出文件路径,\n@reverse参数可省略,如果为true则输出时文本在前字母在后
-add(.(inputCode,word) = 添加编码\n参数code为表示按键的字母串，长度不能大于4，\nstr为输入文本
+add(.(inputCode,word,weight) = 添加编码\n参数@code为表示按键的字母串，长度不能大于4，\n@word为输入文本,@weight可省略
 addLex(.(lexFileObject) = 追加@lexFileObject参数指定的wubi.lexFile对象到当前码表
 addText(.(txt) = 使用文本格式添加多个编码,\n每一行都必须由表示按键的字母串、制表符或空格、要输入的文本组成，\n字母组成的键名在行首，后面跟一个空格以及要输入的字符串,\n如果一组键名对应多个输入文本,文本间用空格分开,\n兼容键名在行尾的格式
 clear() = 清空数据
