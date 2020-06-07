@@ -14,9 +14,10 @@
 			<file name="wordWeight.aardio" path="dlg\dict\wordWeight.aardio" comment="dlg\dict\wordWeight.aardio"/>
 		</folder>
 		<folder name="help" path="dlg\help" comment="dlg\help" local="false" embed="false">
-			<file name="tips.aardio" path="dlg\help\tips.aardio" comment="dlg\help\help.aardio"/>
 			<file name="etymon.aardio" path="dlg\help\etymon.aardio" comment="dlg\help\etymon.aardio"/>
 			<file name="help.aardio" path="dlg\help\help.aardio" comment="dlg\help\help.aardio"/>
+			<file name="sys.aardio" path="dlg\help\sys.aardio" comment="dlg\help\sys.aardio"/>
+			<file name="wubi.aardio" path="dlg\help\wubi.aardio" comment="dlg\help\wubi.aardio"/>
 		</folder>
 	</folder>
 </project>

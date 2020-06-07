@@ -5,8 +5,9 @@ winform = win.form(text="wubiLex - 词库";right=1039;bottom=602;bgcolor=1579315
 winform.add(
 custom={cls="custom";left=62;top=0;right=1040;bottom=603;bgcolor=16777215;db=1;dl=1;dr=1;dt=1;z=3};
 navBar={cls="bkplus";left=0;top=-1;right=62;bottom=602;bgcolor=11829830;db=1;dl=1;dt=1;z=1};
-navEtymon={cls="plus";text="字根";left=0;top=102;right=62;bottom=182;bkBottom=3;bkLeft=7;bkRight=8;bkTop=2;border={color=-65536};color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={font=LOGFONT(h=-29;name='FontAwesome');padding={bottom=20}};iconText='\uF0E8';notify=1;textPadding={bottom=10};valign="bottom";x=0.5;y=0.2;z=4};
-navLex={cls="plus";text="帮助";left=0;top=21;right=62;bottom=101;bkBottom=3;bkLeft=7;bkRight=8;bkTop=2;border={color=-65536};color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={font=LOGFONT(h=-29;name='FontAwesome');padding={bottom=20}};iconText='\uF0F6';notify=1;textPadding={bottom=10};valign="bottom";x=0.5;y=0.2;z=2}
+navEtymon={cls="plus";text="字根";left=0;top=104;right=62;bottom=184;bkBottom=3;bkLeft=7;bkRight=8;bkTop=2;border={color=-65536};color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={font=LOGFONT(h=-29;name='FontAwesome');padding={bottom=20}};iconText='\uF0E8';notify=1;textPadding={bottom=10};valign="bottom";x=0.5;y=0.2;z=4};
+navLex={cls="plus";text="帮助";left=0;top=21;right=62;bottom=101;bkBottom=3;bkLeft=7;bkRight=8;bkTop=2;border={color=-65536};color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={font=LOGFONT(h=-29;name='FontAwesome');padding={bottom=20}};iconText='\uF0F6';notify=1;textPadding={bottom=10};valign="bottom";x=0.5;y=0.2;z=2};
+navSystem={cls="plus";text="技巧";left=0;top=187;right=62;bottom=267;bkBottom=3;bkLeft=7;bkRight=8;bkTop=2;border={color=-65536};color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={font=LOGFONT(h=-29;name='FontAwesome');padding={bottom=20}};iconText='\uF17A ';notify=1;textPadding={bottom=10};valign="bottom";x=0.5;y=0.2;z=5}
 )
 /*}}*/
 
@@ -14,6 +15,7 @@ import win.ui.tabs;
 var tbs = win.ui.tabs( 
 	winform.navLex,
 	winform.navEtymon,
+	winform.navSystem
 );
 
 tbs.skin({
@@ -31,8 +33,9 @@ tbs.skin({
 	}
 })
 
-tbs.loadForm(1,"\dlg\help\tips.aardio" );
+tbs.loadForm(1,"\dlg\help\wubi.aardio" );
 tbs.loadForm(2,"\dlg\help\etymon.aardio" );
+tbs.loadForm(3,"\dlg\help\sys.aardio" );
 tbs.selIndex = 1;
 
 winform.showEtymon = function(){
