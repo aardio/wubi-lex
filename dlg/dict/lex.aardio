@@ -422,6 +422,7 @@ var updateSystemLexVersion = function(){
 	winform.listbox.updateSystemLexVersion = function(ver){
 		winform.listbox.systemLexName = "系统码表( " + ver + " )"
 		winform.listbox.reloadLexList(); 
+		..globalSystemWubiVersion = ver;
 	}
 	
 	thread.invoke( 

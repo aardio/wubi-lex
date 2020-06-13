@@ -5,7 +5,7 @@ import win.ui;
 /*DSG{{*/
 mainForm = win.form(cls="AARDIO_WUBI_FORM";text="wubiLex ( Win10 五笔助手 )";right=1040;bottom=642;bgcolor=15793151;border="none")
 mainForm.add(
-caption={cls="bkplus";text="wubiLex 9.8.3";left=35;top=12;right=153;bottom=30;color=15780518;dl=1;dt=1;font=LOGFONT(h=-16);z=5};
+caption={cls="bkplus";text="wubiLex 9.8.4";left=35;top=12;right=153;bottom=30;color=15780518;dl=1;dt=1;font=LOGFONT(h=-16);z=5};
 custom={cls="custom";left=0;top=40;right=1040;bottom=643;bgcolor=16777215;db=1;dl=1;dr=1;dt=1;z=1};
 logo={cls="bkplus";text='\uF0AD';left=6;top=9;right=35;bottom=34;color=15780518;dl=1;dt=1;font=LOGFONT(h=-18;name='FontAwesome');z=4};
 stripHelp={cls="plus";text="帮助";left=554;top=5;right=648;bottom=40;align="left";color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome');padding={left=12;top=3}};iconText='\uF06A';notify=1;paddingLeft=1;paddingRight=1;paddingTop=3;textPadding={left=38};x=0.5;y=0.2;z=8};
@@ -102,6 +102,7 @@ mainForm.onDestroy = function(){
 
 import process;
 import win.ui.menu;
+import key;
 mainForm.wndproc = {
 	[0xACCF/*_WM_TRAYMESSAGE*/ ] = function(hwnd,message,wParam,lParam){
 		if( lParam = 0x205/*_WM_RBUTTONUP*/ ){
@@ -130,7 +131,24 @@ mainForm.wndproc = {
 			});
 			
 			mainForm.popmenu.add();
-			mainForm.popmenu.add('字根反查',function(id){
+			
+			var hotkey = "";
+			if(config.hotkey.spelling[[1]] && config.hotkey.spelling[[2]] ){
+				var mod = config.hotkey.spelling[[1]];
+				var keys = {}
+				if( mod   & 2/*_MOD_CONTROL*/ ){
+					table.push(keys,"Ctrl");
+				}
+				if( mod   & 1/*_MOD_ALT*/ ){
+					table.push(keys,"Alt");
+				}
+				if( mod   & 4/*_MOD_SHIFT*/ ){
+					table.push(keys,"Shift");
+				}
+				table.push(keys,key.getName(config.hotkey.spelling[[2]]));
+				hotkey = '\t' + string.join(keys," + ");
+			}
+			mainForm.popmenu.add('字根反查' + hotkey,function(id){
 				tbs.selIndex = 2;
 				mainForm.show();
 				publish("spellingFocus")
@@ -144,7 +162,11 @@ mainForm.wndproc = {
 			 
 			import tsfInput;
 			var imStatus = tsfInput.getStatus();
-			var id = mainForm.popmenu.add('启用微软五笔',function(id){
+			var wubiVersion = ""
+			if(..globalSystemWubiVersion){
+				wubiVersion = " ( 码表：" + ..globalSystemWubiVersion + " )"
+			}
+			var id = mainForm.popmenu.add('启用微软五笔'+wubiVersion,function(id){
 				tsfInput.enableWubi(!imStatus.wubi);
 			});
 			mainForm.popmenu.check(id,imStatus.wubi,0/*_MF_BYCOMMAND*/);

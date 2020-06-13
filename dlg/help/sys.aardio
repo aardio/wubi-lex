@@ -1,11 +1,11 @@
 import win.ui;
 import fonts.fontAwesome;
 /*DSG{{*/
-var winform = win.form(text="wubiLex - 技巧";right=977;bottom=602;bgcolor=16777215;border="dialog frame")
+var winform = win.form(text="wubiLex - WIN10 使用技巧";right=977;bottom=602;bgcolor=16777215;border="dialog frame")
 winform.add(
-btnHelp={cls="plus";text="下载仅 6.5MB、且永久免费的 aardio 可以快速编写桌面软件扩展系统功能";left=299;top=557;right=893;bottom=584;align="left";color=3947580;db=1;dl=1;dr=1;font=LOGFONT(h=-16);iconColor=2960685;iconStyle={align="left";font=LOGFONT(h=-16;name='FontAwesome')};iconText='\uF05A';notify=1;paddingLeft=20;z=3};
-keyboardShortcuts={cls="plus";left=69;top=50;right=925;bottom=545;align="left";border={color=-4144960;radius=8;width=1};db=1;dl=1;dr=1;dt=1;font=LOGFONT(h=-17);textPadding={left=10;top=10;right=10;bottom=10};valign="top";z=1};
-lbKeyboardShortcuts={cls="plus";text="WIN10 使用技巧:";left=39;top=12;right=587;bottom=43;align="left";dl=1;dr=1;dt=1;font=LOGFONT(h=-16);iconColor=2960685;iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome')};iconText='\uF11C  ';textPadding={left=30};z=2}
+btnHelp={cls="plus";text="下载仅 6.5MB、且永久免费的 aardio 可以快速编写桌面软件扩展系统功能";left=355;top=575;right=905;bottom=604;align="left";color=3947580;db=1;dl=1;dr=1;font=LOGFONT(h=-13);iconColor=2960685;iconStyle={align="left";font=LOGFONT(h=-16;name='FontAwesome')};iconText='\uF05A';notify=1;paddingLeft=20;z=3};
+keyboardShortcuts={cls="plus";left=12;top=15;right=966;bottom=574;align="left";border={color=-4144960;radius=8;width=1};db=1;dl=1;dr=1;dt=1;font=LOGFONT(h=-15);textPadding={left=10;top=10;right=10;bottom=10};valign="top";z=1};
+lbKeyboardShortcuts={cls="plus";text="WIN10 使用技巧:";left=51;top=2;right=218;bottom=24;align="left";dl=1;dr=1;dt=1;font=LOGFONT(h=-16);iconColor=2960685;iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome')};iconText='\uF11C  ';textPadding={left=30};z=2}
 )
 /*}}*/
 
@@ -14,22 +14,29 @@ winform.keyboardShortcuts.text = /*
 02、按 Win + D 最小化所有程序并返回桌面。
 03、按 Win + . 可打开系统自带表情符号面板。
 04、按 Win + Shift + S 可以打开系统自带截图工具，截图键不会导致右键菜单关闭。
-05、按 Win + S 或 Win + Q 可快速打开WIN10搜索窗口。
-06、按 Win + E：打开文件资源管理器
-07、按 Win + R：打开运行对话框
-08、按 Win + R 然后输入 drivers 后回车，可以快速打开hosts文件所在的etc目录。
-09、按 Win + L：锁定计算机
-10、资源管理器或者浏览器按 Ctrl + L 可快速切换到地址栏输入
-11、在资源管理器地址栏直接输入 cmd 等命令，可直接在当前目录打开命令行窗口。
-12、在命令行窗口可以按 tab 键自动完成输入。
-13、在命令行窗口可以按 F7 可以显示历史记录。
-14、在资源管理器按住 Shift 键点右键可以显示隐藏选项，例如：“复制为路径”。
-15、按 Ctrl + Shift + Esc 可直接打开任务管理器。
-16、按 Alt + 空格键 可以打开窗口系统菜单，再按M可以移动窗口。
-17、按 Ctrl + W  或 ALT + F4，或 ALT + 空格 + C 都可以快速关闭窗口
-18、在弹出的错误对话框上按 Ctrl + C 可以复制内容。
-19、连续按 Win + → 或 ← 窗口可以切换屏幕左、屏幕右、屏幕中间。
-20、连续按 Win +  ↑ 或 ↓ 当前窗口可以切换最大化、屏幕中间、最小化状态。 
+05、按 Win + G 可以打开系统自带录屏工具
+06、按 Win 弹出开始菜单后直接打字可打开搜索窗口（ 或按 Win + S ）。
+07、按 Win + E：打开文件资源管理器。
+08、按 Win + R：打开运行对话框。
+09、按 Win + R 然后输入 drivers 后回车，可以快速打开hosts文件所在的etc目录。
+10、按 Win + L：锁定计算机。
+11、资源管理器或者浏览器按 Ctrl + L 可快速切换到地址栏输入。
+12、在资源管理器地址栏直接输入 cmd 等命令后回车，可在当前目录打开命令行窗口。
+13、在資源管理器地址栏输入 control 后回车可以打开控制面板。
+14、按 Win + R后输入 control 并回车也可以打开控制面板。
+15、資源管理器右键点选一个或多个图片，可在弹出菜单中直接旋转图片。
+16、在命令行窗口可以按 tab 键自动完成输入。
+17、在命令行窗口可以按 F7 可以显示历史记录。
+18、在资源管理器按住 Shift 键点右键可以显示隐藏选项，例如：“复制为路径”。
+19、按 Ctrl + Shift + Esc 可直接打开任务管理器。
+20、按 Alt + 空格键 可以打开窗口系统菜单，再按M可以移动窗口。
+21、按 Ctrl + W  或 ALT + F4，或 ALT + 空格 + C 都可以快速关闭窗口。
+22、在弹出的错误对话框上按 Ctrl + C 可以复制内容。
+23、连续按 Win + → 或 ← 窗口可以切换屏幕左、屏幕右、屏幕中间。
+24、连续按 Win +  ↑ 或 ↓ 当前窗口可以切换最大化、屏幕中间、最小化状态。
+25、按 Win + 数字键可以切换到任务栏的第 n 个程序。
+26、按 Win + V 可以查看剪贴板历史（ 按 Win + I 打开 设置/系统/剪贴板 可以关闭此功能 ）。
+27、在记事本中直接打开网址可以读取HTML源码。
 */
 
 import style;
