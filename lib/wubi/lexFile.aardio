@@ -97,7 +97,12 @@ class lexFile{
 					}
 					else {
 						push(outputMap[code],words); 
-						codeWeight[code][words] = weight;
+						if(!codeWeight[code]){
+							codeWeight[code] = {[words]=weight};
+						}
+						else {
+							codeWeight[code][words] = weight;
+						} 
 					};
 					
 					continue;
@@ -613,15 +618,15 @@ class lexFile{
 		
 		var outputMap = this.outputMap;
 		var inputCodes = this.inputCodes;
-		
-		for(i=#inputCodes;1;1){
+		 
+		for(i=#inputCodes;1;-1){
 			var code = inputCodes[i]  
 			var words = outputMap[code]
 			
 			var newText = {}
 			var multiCharacterWord;
-			for(i=1;#texts){
-				var txt = texts[i];
+			for(i=1;#words){
+				var txt = words[i];
 				var l = len(txt);
 				if(l>1){ 
 					if( !multiCharacterWord  ) {
@@ -632,7 +637,7 @@ class lexFile{
 				else{ push(newText,txt) }
 			}
 			
-			this.outputMap[code] = newWords;
+			this.outputMap[code] = newText;
 		}	
 	}
 	simplified = function(){
