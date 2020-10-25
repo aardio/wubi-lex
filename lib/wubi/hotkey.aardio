@@ -2,7 +2,12 @@
 namespace wubi.hotkey;
 
 default = /*******
-//中文模式下按 Ctrl+. 切换中英文标点模式
+/* 大写金额(可输入数学表达式)、日期、时间  */
+["Ctrl+$"] = function(){  
+    wubi.chineseNumber().show();
+};
+
+/* 中文模式下按 Ctrl+. 切换中英文标点模式 */
 ["Ctrl+."] = function(){  
     import win.reg;
     var reg = win.reg("HKEY_CURRENT_USER\Software\Microsoft\InputMethod\Settings\CHS");
@@ -13,26 +18,36 @@ default = /*******
     key.ime.changeRequest(0x8040804)
 };
 
-//大写金额(可输入数学表达式)、日期、时间
-["Ctrl+$"] = function(){  
-    wubi.chineseNumber().show();
+/* 
+["Ctrl+Shift+Delete"] = function(){ 
+    //异步执行
+    return function(){
+    	key.combine("CTRL","SHIFT","DELETE")
+    	win.delay(800);
+    	key.press("ENTER");
+    	win.delay(500);
+    	key.pressEx("CTRL","W")    	
+    }
 };
+*/
 
-//以下代码自/*......*/移出后生效
 /*
-
 //把斜杠“/”改为顿号
 ["/"] = function(){
     if( !key.ime.getOpenStatus() ) return true; 
     key.sendString("、")
 };
+*/
 
+/*
 //按`date输入大写的当前日期
 ["~date"] = function(){ 
     var zh = string.chineseNumber('〇一二三四五六七八九');
     key.sendString(zh.date()); //改为 zh.time() 输出大写的当前时间
 }; 
+*/
 
+/*
 //增加音量
 ["Ctrl+F6"] = function(){
     key.press("VOLUME_UP");
@@ -47,27 +62,34 @@ default = /*******
 ["Ctrl+F8"] = function(){
     key.press("VOLUME_MUTE");
 }
+*/
 
-//按~重复输入五笔编码
-["~"] = function(){
-    if(key.ime.getOpenStatus()){
-        var keys = key.hotkey.lastAlphaKeys();
-        if(keys){ return key.send(keys); }  
-    }
-    key.send("~");
-}
-
+/*
 //运行计算器
 ["~calc"] = function(){
     process.execute("calc.exe")
 };
+*/
 
+/*
 //运行word
 ["~word"] = function(){
     var word = com.CreateObject("Word.Application")
     if(word)word.Visible = true; 
 };
+*/
 
+/*
+//运行QQ
+["Ctrl+Q,Q"] = function(){
+    import process 
+    import fsys.lnk; 
+    qqpath  = fsys.lnk.search( {"qq.exe";"QQScLauncher.exe";"QQProtect.exe"} )   
+    process.execute( qqpath )
+};
+*/
+
+/*
 //打开或关闭拼音混输
 ["Ctrl+,"] = function(){  
     import win.reg;
@@ -78,29 +100,27 @@ default = /*******
     key.ime.changeRequest(0x4090409)
     key.ime.changeRequest(0x8040804)
 };
+*/
 
-//运行QQ
-["Ctrl+Q,Q"] = function(){
-    import process 
-    import fsys.lnk; 
-    qqpath  = fsys.lnk.search( {"qq.exe";"QQScLauncher.exe";"QQProtect.exe"} )   
-    process.execute( qqpath )
-};
-
+/*
 //取消次选键
-[","] = function(){
+[";"] = function(){
     if( wubi.candidateWindow.isVisible() ){
-        key.send(" ,") 
+        key.send(" ;") 
     } 
-    else key.send(",")
+    else return true;
 };
+*/
 
+/*
 //按 shift + back 变 ctrl + z，因为这时候shift是按下状态，所以可以先发一个key.up("SHIFT")弹起shift键
 ["SHIFT+BACK"] = function(){
     key.up("SHIFT")
     key.combine("CTRL","Z")
 };
+*/
 
+/*
 //发送字符串
 key.sendString("这里是要发送的字符串")
 
@@ -127,5 +147,4 @@ if( wubi.candidateWindow.isVisible() ){}
 
 注意热键 ~hi 在按第一个~时不要按Shift键。
 */
-
 *******/

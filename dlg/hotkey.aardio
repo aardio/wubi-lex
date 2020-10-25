@@ -62,13 +62,11 @@ winform.btnSave.oncommand = function(id,event){
     	return;
     }
     
-	if(!hotkeyMgr){
-		hotkeyMgr =  key.hotkey(winform)
-	} 
-	else {
-		hotkeyMgr.clear();
-	} 
-	
+    if(hotkeyMgr){
+        hotkeyMgr.close();
+    }
+       
+	hotkeyMgr =  key.hotkey(winform)
 	var code = "{" + winform.editTable.text + "}"
 	var keyTable
 	try{
@@ -84,22 +82,8 @@ winform.btnSave.oncommand = function(id,event){
 			hotkeyMgr.regStr(k,v);
 		} 
 	}
-	
-	var prevAlphaKeys = {};
-	var curentAlphaKeys = {};
-	key.hotkey.lastAlphaKeys = function(){ 
-		var keys = prevAlphaKeys;
-		if(#curentAlphaKeys>=5){
-			..table.pop(curentAlphaKeys,1);
-			keys = curentAlphaKeys;
-		}
-		curentAlphaKeys = {};
-		prevAlphaKeys = keys;
-		
-		var str = ..string.pack(keys);
-		str = ..string.match(str,"[A-Z]+$");
-		if(#str) return str;
-	}
+
+	key.hotkey.lastAlphaKeys = function(){}
 	
 	if(winform.chkDecimalPoint.checked){ 
 		hotkeyMgr.onKeyDown = function(vk){
@@ -147,28 +131,6 @@ winform.btnSave.oncommand = function(id,event){
         			}	
 				}		
 			}
-			elseif( vk>='A'# && vk<='Z'# ){
-				..table.push(curentAlphaKeys,vk);
-			}
-			elseif(#curentAlphaKeys)  {
-				prevAlphaKeys = curentAlphaKeys;
-				curentAlphaKeys = {};
-			} 
-		}
-	}
-	else {
-		hotkeyMgr.onKeyDown = function(vk){
-			if(key.getStateX("CTRL")) return;
-			if(key.getStateX("ALT")) return;
-			if(key.getStateX("SHIFT")) return;
-			 
-			if( vk>='A'# && vk<='Z'# ){
-				..table.push(curentAlphaKeys,vk);
-			}
-			elseif(#curentAlphaKeys) {
-				prevAlphaKeys = curentAlphaKeys;
-				curentAlphaKeys = {};
-			}  
 		}
 	}
 }

@@ -207,7 +207,7 @@ winform.btnSave.oncommand = function(id,event){
 		}	
 	}
 
-	winform.msgOk('更新成功，如果不能输入或设置未生效，\n请按 Alt + Shift 来回切换一下输入法即可');
+	winform.msgOk('更新成功，如果不能输入或设置未生效，\n请按 Alt + Shift 来回切换一下输入法即可',2000);
 	winform.btnSave.disabledText = null;
 }
 winform.chkEnableSystemRun.checked = config.settings.systemStartup;

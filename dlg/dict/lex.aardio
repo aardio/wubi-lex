@@ -36,7 +36,6 @@ import sevenZip.lzma;
 import config;
 import app.lexContents;
 import win.dlg.message;
-win.dlg.message.install();
 
 winform.lbTip.busy = function(busy,text){
 	if(busy){
