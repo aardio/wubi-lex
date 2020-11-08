@@ -316,7 +316,7 @@ class lexFile{
 		
 		var push = ..table.push;
 		var append = ..table.append;
-		var mixin = ..table.mixin;
+		var assign = ..table.assign;
 		
 		for(i=1;#inputCodes2;1){
 			var code = inputCodes2[i]  
@@ -331,7 +331,7 @@ class lexFile{
 				append(outputMap[code],words) 
 			}
 			
-			codeWeight[code] = mixin(codeWeight[code]:{},codeWeight2[code])
+			codeWeight[code] = assign(codeWeight[code]:{},codeWeight2[code])
 		}
 	};
 	saveLex = function(filePath){ 
@@ -547,13 +547,13 @@ class lexFile{
 		var inputCodes = this.inputCodes;
 		var outputMap = this.outputMap;
 		var codeWeight = this.codeWeight;
-		var mixin = ..table.mixin;
+		var assign = ..table.assign;
 		for(i=#inputCodes;1;-1){
 			var code = inputCodes[i];  
 			var words = outputMap[code];
 		
 			var weight = codeWeight[code];
-			if(weight){mixin(wordWeight,weight); }
+			if(weight){assign(wordWeight,weight); }
 		}
 		
 		var file,err = ..io.open(filePath,"w+t");
