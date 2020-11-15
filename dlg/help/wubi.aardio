@@ -50,76 +50,41 @@ winform.lnkWebSite.oncommand = function(id,event){
 	process.openUrl("http://wubi.aardio.com/")
 }
 
-import fsys.update.dlMgr;
-winform.lnkVersion.oncommand = function(id,event){
-	if(_STUDIO_INVOKED){
-		winform.msgboxErr("请先发布软件!")
-		return;
-	}
-	
-	
-	var dlMgr = fsys.update.dlMgr("http://wubi.aardio.com/update/"
-		, ..io.appData("/aardio/std/wubi/app/update") //路径要和 main.aardio 中一致
-		);
-		
-	dlMgr.onConfirmDownload = function(isUpdated,appVersion,latestVersion,description){ 
-		dlMgr[["latestVersion"]] = latestVersion;
-		dlMgr[["updateDescription"]] = description;
-		
-		if(!isUpdated){
-			winform.lnkVersion.disabledText = null;
-			winform.lnkVersion.text = "已经是最新版本";
-		}
-		return isUpdated; 
-	} 
-	
-	dlMgr.onEnd = function(updater,saveDir,appDir,mainPath){ 
-		if(updater){
-			globalUpdateInfo = {
-				version = dlMgr[["latestVersion"]];
-				description = dlMgr[["updateDescription"]];
-			}; 
-		}
-		else {
-			globalUpdateInfo = null;
-		}
-		
-		winform.lnkVersion.disabledText = null;
-		publish("wubiLexUpdated");
-	};
-	
-	dlMgr.onError = function(err,filename){
-		winform.lnkVersion.disabledText = null;
-		winform.lnkVersion.text = err;
-	}
-	
-	winform.lnkVersion.text = globalUpdateInfo[["version"]] ? "正在启动自动更新" : "正在检查新版本";
-	winform.lnkVersion.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
-	if(dlMgr.startUpdate()){
-		win.quitMessage();
-	}
-}
-
 import win.ui.tooltip;
 var tooltipCtrl = win.ui.tooltip( winform );
 tooltipCtrl.addTool(winform.lnkVersion,"点击检测更新" );
 
-var updateVersion = function(){
-	if(#globalUpdateInfo[["version"]]){
-		winform.lnkVersion.text = "点这里重新启动软件更新到新版本：" + globalUpdateInfo[["version"]]
-		winform.lnkVersion.disabledText = null;
-		
-		if(#globalUpdateInfo[["description"]]){
-			tooltipCtrl.addTool(winform.lnkVersion,globalUpdateInfo[["description"]] )
-		}
+import fsys.update.simpleMain;
+fsys.update.simpleMain.onStatusChanged(function(version,description,status){
+	/*注意此回调可捕获到调用前或调用后的更新状态变更*/
+	if(status=="ready"){
+		winform.lnkVersion.disabledText = null;	
+		winform.lnkVersion.text = "点这里重新启动软件更新到新版本：" + version
+		tooltipCtrl.addTool(winform.lnkVersion,description);
 	}
-	else {
-		winform.lnkVersion.text = "已经是最新版本";
+	elseif(status=="complete"){
+		winform.lnkVersion.text = "已更新到最新版本:" + version;
+		tooltipCtrl.addTool(winform.lnkVersion,description);
 	} 
-}
+	elseif(status=="latest"){
+		winform.lnkVersion.disabledText = null;
+		winform.lnkVersion.text = "已经是最新版本";
+		
+	} 
+	elseif(status=="failed"){
+		winform.lnkVersion.disabledText = null;
+		winform.msgErr(description);
+	}
+})
 
-subscribe("wubiLexUpdated",updateVersion);
-updateVersion();
+winform.lnkVersion.oncommand = function(id,event){ 
+	
+	winform.lnkVersion.text = fsys.update.simpleMain.getReadyStatusInfo() ? "正在启动自动更新" : "正在检查新版本";
+	winform.lnkVersion.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
+	if(fsys.update.simpleMain.checkUpdate(true)){
+		win.quitMessage();
+	}
+}
 
 import win.versionEx;
 var winver  = win.versionEx.name;
