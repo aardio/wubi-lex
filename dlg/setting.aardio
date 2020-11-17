@@ -109,7 +109,7 @@ if(!reg.queryValue("EnableFixedCandidateCountMode")){
 }
 reg.close();
 
-import app;
+import sys.runAsTask;
 import config;
 import win.reg;
 import tsfUtil;
@@ -198,12 +198,14 @@ winform.btnSave.oncommand = function(id,event){
 	}
 		
 	if(!_STUDIO_INVOKED){
+		var task = sys.runAsTask("wubiLex( 五笔助手 ) 启动任务","用于微软五笔的辅助工具。");
 		config.settings.systemStartup = winform.chkEnableSystemRun.checked;
+		
 		if(winform.chkEnableSystemRun.checked){
-			app.systemStartup("wubiLex( 五笔助手 ) 启动任务","用于微软五笔的辅助工具。",io._exepath,"/tray")
+			task.register("/tray");
 		}
 		else {
-			app.systemStartup("wubiLex( 五笔助手 ) 启动任务",null);
+			task.delete();
 		}	
 	}
 
