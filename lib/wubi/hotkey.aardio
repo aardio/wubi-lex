@@ -7,7 +7,19 @@ default = /*******
     wubi.chineseNumber().show();
 };
 
-/* 中文模式下按 Ctrl+. 切换中英文标点模式 */
+/* 切换鼠标左右键，经常换左右手耍鼠标是好习惯 */
+["Ctrl+SHIFT+RIGHT"] = function(){  
+   ::User32.SwapMouseButton(!::User32.GetSystemMetrics(23));
+}
+
+/* 关掉大写键屏幕提示 
+["CAPSLOCK"] = function(){  
+   key.press("CAPSLOCK");
+}
+*/
+
+/* 
+//中文模式下按 Ctrl+. 切换中英文标点模式 ,WIN2004以上系统已经默认支持
 ["Ctrl+."] = function(){  
     import win.reg;
     var reg = win.reg("HKEY_CURRENT_USER\Software\Microsoft\InputMethod\Settings\CHS");
@@ -17,6 +29,7 @@ default = /*******
     key.ime.changeRequest(0x4090409)
     key.ime.changeRequest(0x8040804)
 };
+*/
 
 /* 
 ["Ctrl+Shift+Delete"] = function(){ 
