@@ -1,6 +1,7 @@
 //chineseNumber 大写数值
 import win.ui;
 import fonts.fontAwesome;
+import winex.accObject;
 import win.ui.tabs;
 
 namespace wubi;
@@ -132,7 +133,19 @@ class chineseNumber{
 	
 	var hwnd = ..win.getForeground();
 	..win.setOwner(this.hwnd,hwnd);
-	..win.center(this.hwnd,hwnd);  
+	
+	var x,y,cx,cy
+	var accObject = ..winex.accObject.focus();
+	if(accObject){ 
+		x,y,cx,cy = accObject.location();  
+	}
+	
+	if(x&&y&&cx&cy){
+		this.setPos(x+cx/2,y+cy/2);	
+	}
+	else {
+		..win.center(this.hwnd,hwnd);
+	}
 	
 	var width,height = ..win.getScreen();
 	var x,y,cx,cy = this.getPos();
@@ -142,7 +155,6 @@ class chineseNumber{
 	}
 	
 	this.oldFocus = ..win.getFocus();
-	
 	this.show() 
 	..win.setTopmost(this.hwnd)
 	this.dropdown.editBox.setFocus();

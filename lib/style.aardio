@@ -73,6 +73,12 @@ namespace style{
 			default = 0x00FFFFFF;
 			hover= 0xFF8ADBAF;
 		};
+		checked = {
+			foreground={
+				default = 0x6600FF00;
+				hover= 0xFF8ADBAF;
+			};
+		}
 	};
 	dropdown = {
 		background={

@@ -6,7 +6,7 @@ winform.add(
 editInput={cls="plus";left=271;top=146;right=694;bottom=181;border={bottom=1;color=-16744448};clip=1;dl=1;dr=1;dt=1;editable="edit";font=LOGFONT(h=-16);tabstop=1;textPadding={top=6;bottom=1};z=9};
 etymonImage={cls="plus";left=132;top=208;right=249;bottom=327;db=1;dl=1;dr=0.76;dt=1;repeat="scale";z=42};
 hotkey={cls="hotkey";left=631;top=573;right=771;bottom=593;clip=1;db=1;dr=1;edge=1;hide=1;z=2};
-inkEdit={cls="atlax";text="InkEd.InkEdit";left=728;top=183;right=1028;bottom=470;dr=1;dt=1;edge=1;z=15};
+inkEdit={cls="atlax";text="InkEd.InkEdit";left=725;top=181;right=1031;bottom=470;dr=1;dt=1;edge=1;z=15};
 keyA={cls="plus";left=276;top=418;right=320;bottom=455;ah=1;align="right";aw=1;bgcolor=12712703;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="A";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=24};
 keyB={cls="plus";left=468;top=466;right=512;bottom=503;ah=1;align="right";aw=1;bgcolor=14085631;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="B";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=37};
 keyC={cls="plus";left=380;top=466;right=424;bottom=503;ah=1;align="right";aw=1;bgcolor=14085631;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="C";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=35};
@@ -124,12 +124,24 @@ var searchSpelling = win.debounce(function(str){
 				showEtymonImage(winform.wubiVersion,code[[1]]);
 			}
 			
-			var numbers = {"①";"②";"③";"④";} 
-			for(i=#code;1;-1){ 
-				var ctrl = winform[ "key" + code[[i]] ];
-				ctrl.text = numbers[i];
-				ctrl.checked = true; 
-			}	
+			var numbers = {"①";"②";"③";"④";}
+			winform.reduce(
+				{"①";"②";"③";"④";},
+				function(value,index){ 
+					if(value && (index <= #code)){
+						if(index > 1 ){
+							winform[ "key" + code[[index-1]] ].checked = false;
+						}
+					
+						var ctrl = winform[ "key" + code[[index]] ];
+						ctrl.text = value;
+						ctrl.checked = true; 
+						return 500;
+					}
+					
+					winform[ "key" + code[[#code]] ].checked = false;
+				} 
+			) 
 		} 
 		
 		if(#codes){
@@ -521,5 +533,8 @@ subscribe("spellingFocus",function(){
 	winform.editInput.setFocus();
 } )
 
-winform.enableDpiScaling();
+import win.ui.accelerator;
+win.ui.accelerator({
+	{ ctrl = true; vkey = 'W'#; oncommand = function(id,event){mainForm.hitMin() } }  
+},winform);
 win.loopMessage();
