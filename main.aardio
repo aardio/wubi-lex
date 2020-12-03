@@ -173,6 +173,13 @@ mainForm.wndproc = {
 			mainForm.popmenu.check(id,imStatus.en,0/*_MF_BYCOMMAND*/);  
 			
 			mainForm.popmenu.add();
+			mainForm.popmenu.add('打开屏幕键盘',function(id){
+				import process;
+				import fsys.wow64;
+				fsys.wow64.disableRedirection(
+				    lambda() process.execute("osk")
+				);
+			});
 			
 			var id = mainForm.popmenu.add('反转鼠标左右按键',function(id){
 				::User32.SwapMouseButton(!::User32.GetSystemMetrics(23));
