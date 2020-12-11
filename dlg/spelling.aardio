@@ -3,8 +3,8 @@ import win.ui;
 /*DSG{{*/
 var winform = win.form(text="五笔码表管理﻿工具";right=1040;bottom=602;bgcolor=16777215)
 winform.add(
-editInput={cls="plus";left=271;top=146;right=694;bottom=181;border={bottom=1;color=-16744448};clip=1;dl=1;dr=1;dt=1;editable="edit";font=LOGFONT(h=-16);tabstop=1;textPadding={top=6;bottom=1};z=9};
-etymonImage={cls="plus";left=132;top=208;right=249;bottom=327;db=1;dl=1;dr=0.76;dt=1;repeat="scale";z=42};
+editInput={cls="plus";left=254;top=146;right=694;bottom=181;border={bottom=1;color=-16744448};clip=1;dl=1;dr=1;dt=1;editable="edit";font=LOGFONT(h=-16);tabstop=1;textPadding={top=6;bottom=1};z=9};
+etymonImage={cls="plus";left=83;top=207;right=200;bottom=326;db=1;dl=1;dr=0.81;dt=1;repeat="scale";z=42};
 hotkey={cls="hotkey";left=631;top=573;right=771;bottom=593;clip=1;db=1;dr=1;edge=1;hide=1;z=2};
 inkEdit={cls="atlax";text="InkEd.InkEdit";left=725;top=181;right=1031;bottom=470;dr=1;dt=1;edge=1;z=15};
 keyA={cls="plus";left=276;top=418;right=320;bottom=455;ah=1;align="right";aw=1;bgcolor=12712703;border={color=-4144960;radius=8;width=1};color=255;font=LOGFONT(h=-16);iconColor=32896;iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=5;top=5};valign="top"};iconText="A";notify=1;textPadding={right=6;bottom=2};valign="bottom";z=24};
@@ -36,7 +36,7 @@ keyZ={cls="plus";left=292;top=466;right=336;bottom=503;ah=1;align="right";aw=1;b
 lbInk={cls="static";text="手写输入:";left=727;top=156;right=847;bottom=173;dr=1;dt=1;transparent=1;z=16};
 menuItem={cls="plus";text="下拉列表项模板1";left=345;top=183;right=615;bottom=228;align="right";bgcolor=11525002;border={left=1;right=1;bottom=1;color=-3546113};tabstop=1;textPadding={right=20};z=6};
 menuItem2={cls="plus";text="下拉列表项模板2";left=345;top=228;right=615;bottom=273;align="right";bgcolor=11525002;border={left=1;right=1;bottom=1;color=-3546113};tabstop=1;textPadding={right=20};z=12};
-plusCode={cls="plus";left=249;top=232;right=483;bottom=282;align="right";dl=0.24;dr=0.54;dt=1;font=LOGFONT(h=-37);iconColor=32768;textPadding={right=5};z=10};
+plusCode={cls="plus";left=221;top=232;right=483;bottom=282;align="right";dl=0.21;dr=0.54;dt=1;font=LOGFONT(h=-37);iconColor=32768;textPadding={right=5};z=10};
 plusDownloadSpellingGif={cls="plus";text='\uF019  下载拆字详解图库';left=729;top=476;right=968;bottom=512;bgcolor=11580047;db=1;dr=1;font=LOGFONT(h=-16;name='FontAwesome');hide=1;notify=1;tabstop=1;z=18};
 plusEtymon={cls="plus";text="字根图";left=869;top=572;right=965;bottom=594;align="left";db=1;dr=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=9}};iconText='\uF0E8';notify=1;tabstop=1;textPadding={left=25};z=41};
 plusHotkey={cls="plus";text="设置热键";left=772;top=572;right=868;bottom=594;align="left";db=1;dr=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=9}};iconText='\uF11C ';notify=1;tabstop=1;textPadding={left=25};z=40};
