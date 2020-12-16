@@ -53,13 +53,15 @@ import string.chineseNumber;
 var hotkeyMgr;
 winform.btnSave.oncommand = function(id,event){
     config.hotkey.save();
-    
+    winform.btnSave.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
     if(!winform.chkEnableHotkey.checked){
     	if(hotkeyMgr){
     		hotkeyMgr.close();
     	    hotkeyMgr= null;
     	}
     	
+    	win.delay(500);
+    	winform.btnSave.disabledText = null;
     	return;
     }
     
@@ -134,6 +136,9 @@ winform.btnSave.oncommand = function(id,event){
 			}
 		}
 	}
+	
+	win.delay(500);
+	winform.btnSave.disabledText = null;
 }
 
 import fsys.dlg;

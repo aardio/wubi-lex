@@ -1,5 +1,4 @@
 ﻿//lexNetContents 网络码表
-
 namespace app.lexNetContents{
 	
 	getTable = function(){
@@ -22,13 +21,17 @@ namespace app.lexNetContents{
 	update = function(){
 		..thread.invoke( 
 			function(){
+				import web.json;
 				import inet.http;
 				var http = inet.http();
 				http.disableCache();
 				
-				var bin = http.get("http://wubi.aardio.com/download/lex/_index.txt");
+				var bin = http.get("http://wubi.aardio.com/download/lex/index.json");
 				if(bin){
-					string.save(..io.appData("/aardio/std/wubi/lex-default.table"), bin) 
+					var tab = ..web.json.tryParse(bin);
+					if(type(tab)==type.table){
+						..string.save(..io.appData("/aardio/std/wubi/lex-default.table"), ..table.tostring(tab,true)) 	
+					} 
 				}
 			}
 		) 
@@ -93,12 +96,20 @@ namespace app.lexNetContents{
 			name = "五笔新世纪";
 			items = {  
 				{
-					name = "新世纪( 完整 )";
+					name = "新世纪GBK( 完整 )";
 					url = "http://wubi.aardio.com/download/lex/06.lex.lzma";
 				};
 				{
-					name = "新世纪( 单字 )";
+					name = "新世纪GBK( 单字 )";
 					url = "http://wubi.aardio.com/download/lex/06.min.lex.lzma";
+				};
+				{
+					name = "新世纪GB2312( 完整 )";
+					url = "http://wubi.aardio.com/download/lex/06.gb.lex.lzma";
+				};
+				{
+					name = "新世纪GB2312( 单字 )";
+					url = "http://wubi.aardio.com/download/lex/06.gb.min.lex.lzma";
 				};
 			}
 		};

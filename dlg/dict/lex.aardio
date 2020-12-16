@@ -1350,6 +1350,7 @@ winform.ddAppendToSystem.oncommand = function(id,event){
 }
 
 import style;
+import app.lexNetContents;
 winform.btnAddFile.oncommand = function(id,event){
 	var popmenu = win.ui.popmenu(winform);
 	popmenu.add('添加本地码表文件',function(id){
@@ -1388,11 +1389,15 @@ winform.btnAddFile.oncommand = function(id,event){
 	}
 
 	var x,y,cx,cy = winform.btnAddFile.getPos()
-	popmenu.popup(x,y+cy)
+	popmenu.popup(x,y+cy);
 	
 	app.lexNetContents.update();
 }
 
-winform.enableDpiScaling();
+winform.setTimeout( 
+	function(){
+		app.lexNetContents.update();	
+	},3000);
+	
 winform.show() 
 win.loopMessage();
