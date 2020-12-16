@@ -18,7 +18,7 @@ import tsfInput;
 namespace tsfUtil{
 
 	reset = function(proc){
-		// ..tsfInput.enableWubi(false);
+		..tsfInput.enableWubi(false);
 		
 		var srvMgr = ..service.manager();
 		srvMgr.startDisabled("TabletInputService");
