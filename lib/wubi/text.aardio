@@ -1,0 +1,19 @@
+﻿
+namespace wubi.text;
+
+var unhex  = ..string.unhex;
+var hex  = ..string.hex;
+var hexEncode = lambda(c) hex(c,"%");
+var replace = ..string.replace;
+encode = function(txt){
+	return replace(txt,"\s",hexEncode);
+}
+
+decode = function(txt){
+	return  unhex(txt,"%");
+}
+
+/**intellisense(wubi.text)
+encode(__) = 编码空白字符
+decode(__) = 解码码空白字符
+end intellisense**/

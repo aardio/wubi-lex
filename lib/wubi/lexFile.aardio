@@ -5,6 +5,7 @@ import string.builder;
 import string.database;
 import string.conv;	
 import wubi.phrase;
+import wubi.text;
 
 namespace wubi;
 
@@ -80,14 +81,12 @@ class lexFile{
 			var code,words,weight;
 			var codeWeight = this.codeWeight; 
             var descWeightMin = 0xFFFFFFFF;
+            var hexDecode = ..wubi.text.decode;
 			for line in ..string.lines(bin) {
 				var code,words,weight = match(line,"^([a-z]{1,4})\s+(\S*)\s+(\d+)\s*$")
 				if(words && code && (#weight) ){ 
 					weight = tonumber(weight);
-					
-					words = replace(words,"@%20",' ')
-					words = replace(words,"@%09",'\t') 
-					words = replace(words,"@%0A",'\n')
+					words = hexDecode(words);
 						
 					if(!outputMap[code]){
 						outputMap[code] = {words};
@@ -118,9 +117,7 @@ class lexFile{
 							codeWeight[code] = {};
 						}
 						
-						words = replace(words,"@%20",' ')
-						words = replace(words,"@%09",'\t') 
-						words = replace(words,"@%0A",'\n')
+						words = hexDecode(words);
 						push(outputMap[code],words); 
 						
 						weight = 0xFFFF-(tonumber(weight))
@@ -168,9 +165,7 @@ class lexFile{
 					
 					var strs = splitEx(words,"\s+");
 					for(i=1;#strs;1) {
-						var s = replace(strs[i],"@%20",' ')
-						s = replace(s,"@%09",'\t') 
-						s = replace(s,"@%0A",'\n')
+						var s = hexDecode(strs[i])
 						push(outputMap[code],s); 
 					}
 				} 
@@ -423,11 +418,12 @@ class lexFile{
 		
 		this.sort();
 		var toUnicode = ..string.toUnicode;
+		var hexEncode = ..wubi.text.encode;
 		for(i=1;#this.inputCodes;1){
 			var code = this.inputCodes[i]  
 			var texts = this.outputMap[code]
-			for(i=1;#texts;1){
-				var txt = texts[i]
+			for(j=1;#texts;1){
+				var txt = hexEncode(texts[j]);
 				if(!reverse){
 					file.write( toUnicode(code+'\t'+txt+'\n'))
 				}
@@ -837,11 +833,11 @@ class lexFile{
 				} 
 			}
 			
-			texts = outputMap[code]
+			texts = outputMap[code];
+			var hexEncode = ..wubi.text.encode;
+			
 			for(i=1;#texts;1){
-				var txt = replace(texts[i],'\n',"%0A"); 
-				txt = replace(txt,' ',"%20") 
-				txt = replace(txt,'\t',"%09")
+				var txt = hexEncode(texts[i]);
 				strBuilder.append(code+'='+txt+'\r\n'); 
 			}
 		
@@ -862,13 +858,14 @@ class lexFile{
 		var inputCodes = this.inputCodes;
 		
 		var newInputCodes = {}
+		var hexEncode = ..wubi.text.encode;
 		for(i=#inputCodes;1;-1){
 			var code = inputCodes[i]  
 			var words = outputMap[code]
 			
 			if(phraseMap[code]) {
 				for(i=1;#words;1){
-					var txt = replace(words[i],'\n',"%0A"); 
+					var txt = hexEncode(words[i]); 
 					strBuilder.append(code+'='+txt+'\r\n'); 
 				}
 				

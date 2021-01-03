@@ -2,6 +2,7 @@
 import fsys;
 import tsfUtil;
 import fsys.file;
+import wubi.text;
 
 namespace wubi.phrase;
 	
@@ -120,6 +121,7 @@ loadMapFromSystem = function(){
 	}
 } 
 
+var hexEncode = ..wubi.text.encode;
 load = function(path){
 	var phraseMap,err = loadMap(path);
 	if(!phraseMap) return null,err;
@@ -149,12 +151,11 @@ load = function(path){
 		 		if(p[2]!=i || (p[3]>2) ){ 
 		 			break
 		 		}
-		 		chars[i] = replace(p[1],' ',"%20")  
+		 		chars[i] = hexEncode(p[1])  
 			}
 			
 			if(#phrases == #chars){
-				var txt = replace(join(chars," "),'\n',"%0A");
-				txt = replace(txt,'\t',"%09")
+				var txt = join(chars," ");
 		 		push(lines,code,'\t$[',txt,']\r\n');
 		 		continue
 			}
@@ -165,9 +166,7 @@ load = function(path){
 			if(!p[1]){
 				continue
 			}
-			var txt = replace(p[1],'\n',"%0A");
-			txt = replace(txt,' ',"%20") 
-			txt = replace(txt,'\t',"%09")
+			var txt = hexEncode(p[1]);
 			push(lines,code,'\t',txt,'\t',p[2],'\r\n');
 		}
 	}
@@ -183,6 +182,7 @@ loadFromSystem = function(){
 	}
 } 
 
+var hexDecode = ..wubi.text.decode;
 saveToSystem = function(phraseText){
 	if(!#phraseText){
 		return null,"输入文本为空"; 
@@ -347,9 +347,7 @@ saveToSystem = function(phraseText){
 		file.write(..string.toUnicode(phrase[1]))
 		file.write('\0\0')
 		
-		var txt = replace(phrase[2],"@%0A",'\n')
-		txt = replace(txt,"@%09",'\t') 
-		txt = replace(txt,"@%20",' ')
+		var txt = hexDecode(phrase[2])
 		file.write(..string.toUnicode(txt))
 		file.write('\0\0')
 	} 

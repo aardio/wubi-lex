@@ -2,7 +2,7 @@ import win.ui;
 /*DSG{{*/
 var winform = win.form(text="短语格式说明";right=816;bottom=634;bgcolor=16777215;border="dialog frame";exmode="toolwindow";max=false;min=false;mode="popup")
 winform.add(
-edit={cls="edit";text='zzxx\t测试短语(可以包含空格、制表符等)\t1\r\nzzxx\t测试短语(可以使用%0A表示换行,%20表示空格,%09表示制表符)\t2';left=21;top=79;right=795;bottom=147;color=32768;edge=1;font=LOGFONT(h=-15);multiline=1;z=1};
+edit={cls="edit";text='zzxx\t测试短语(可以包含空格、制表符等)\t1\r\nzzxx\t测试短语(可以使用%0D表示回车,%0A表示换行,%20表示空格,%09表示制表符)\t2';left=21;top=79;right=795;bottom=147;color=32768;edge=1;font=LOGFONT(h=-15);multiline=1;z=1};
 edit2={cls="edit";text='zzxx,1=测试短语(可以包含空格、制表符等)\r\nzzsj=2,%yyyy%年%MM%月%dd%日 %HH%:%mm%:%ss%\r\nzzsj=2,%yy%年%M%月%d%日 %H%:%m%:%s%\r\n/*上面百分号包含的是时间变量，注意：在WIN10系统设置页修改短语会导致时间变量失效*/';left=21;top=202;right=795;bottom=298;autohscroll=false;color=32768;edge=1;font=LOGFONT(h=-15);multiline=1;z=4};
 edit3={cls="edit";text='zzxx=测试短语\r\nzzbd=$[．· …… … \uFF5E \u2500\u2500 \u2500 ‖ \u2235 \u2234 \u2606 \u2605 \u25CB \u25CF \u25CE \u25C7 \u25C6 \u25A1 \u25A0 \u25B3 \u25B2 ※ \u3013]\r\nzzkh=$[「」『』〖〗《》〈〉〔〕【】\u226E\u226F\u2264\u2265]\r\n/*必须使用wubiLex才能使用这种写法（WIN10系统短语设置页面并不支持）。*/';left=21;top=420;right=795;bottom=524;color=32768;edge=1;font=LOGFONT(h=-15);multiline=1;z=7};
 static={cls="static";text="每行表示一个短语配置，每行包含3个部份：按键 输出短语 候选词排列位置
