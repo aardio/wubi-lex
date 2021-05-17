@@ -2,6 +2,8 @@ import fsys;
 import fsys.lnk;
 import process;
 import process.cache;
+import process.popen;
+import process.batch;
 import wubi.candidateWindow;
 import win.dlg.message;
 import key.hotkey;

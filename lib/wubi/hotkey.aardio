@@ -25,58 +25,6 @@ default = /*******
 };
 */
 
-//按 WIN + N 启用或禁用夜灯
-["WIN+N"] = function(){  
-    //通过返回一个函数实现发出热键后异步执行代码,如果需要超过数秒延时的必须如下异步执行，不可阻塞键盘消息。
-    return function(){
-        import winex; 
-        import winex.accObject; 
-        import process;
-        
-        var pid = process.execute("ms-settings:nightlight");
-        win.delay(500)
-        
-        for hwnd,title,threadId,processId in winex.each( "ApplicationFrameWindow" ) {
-            var accObject = winex.accObject.fromWindow(hwnd)
-            if(accObject){
-                
-                var accText = accObject.find(
-                    name = "Night light settings";
-                    role = "text";
-                )
-                
-                if(!accText){
-                    continue
-                }
-        
-                var accButton = accText.parent().find(
-                    name = "Turn on now";
-                    role = "push button"; 
-                    state = "focusable"; 
-                )
-                if(accButton){
-                    accButton.takeFocus()
-                    accButton.doDefaultAction()
-                    
-                    break;
-                } 
-                
-                var accButton = accText.parent().find(
-                    name = "Turn off now";
-                    role = "push button"; 
-                    state = "focusable"; 
-                )
-                if(accButton){
-                    accButton.takeFocus()
-                    accButton.doDefaultAction()
-                    
-                    break;
-                }   
-            } 
-        }	
-    } 
-}
-
 /*
 //把斜杠“/”改为顿号
 ["/"] = function(){
@@ -168,7 +116,7 @@ default = /*******
 
 /*
 本程序已默认载入大量aardio库，可以在这里直接调用。
-例如可以方便地调用 PowerShell 的库 dotNet.ps;
+例如可以方便地调用命令行与PowerShell 的库 process.popen,process.batch 等。
 可以方便地调用 MSAA 接口的库  winex.accObject;
 ......这些库的用法请参考 aardio 文档。
 

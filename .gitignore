@@ -4,3 +4,4 @@
 /.build/update-maker.aardio
 dist/
 .build/default.init.aardio
+.build/mp.lock
