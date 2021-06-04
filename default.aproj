@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<project ver="10" name="wubiLex" libEmbed="true" icon="\app.ico" ui="win" output="wubiLex.exe" CompanyName="aardio" FileDescription="wubiLex ( Win10 五笔助手 )" LegalCopyright="Copyright (C) aardio 2021" ProductName="wubiLex ( Win10 五笔助手 )" InternalName="wubiLex.exe" FileVersion="9.9.9.0" ProductVersion="9.9.9.0" publishDir="/dist/" dstrip="false" local="false">
+<project ver="10" name="wubiLex" libEmbed="true" icon="\app.ico" ui="win" output="wubiLex.exe" CompanyName="aardio" FileDescription="wubiLex ( Win10 五笔助手 )" LegalCopyright="Copyright (C) aardio 2021" ProductName="wubiLex ( Win10 五笔助手 )" InternalName="wubiLex.exe" FileVersion="10.1.1.0" ProductVersion="10.1.1.0" publishDir="/dist/" dstrip="false" local="false">
 	<file name="main.aardio" path="main.aardio" comment="main.aardio"/>
 	<folder name="资源文件" path="res" embed="true" local="false"/>
-	<folder name="窗体文件" path="dlg" comment="目录" embed="true" local="false">
+	<folder name="窗体文件" path="dlg" comment="目录" embed="true" local="false" ignored="false">
 		<file name="hotkey.aardio" path="dlg\hotkey.aardio" comment="dlg\hotkey.aardio"/>
 		<file name="setting.aardio" path="dlg\setting.aardio" comment="dlg\setting.aardio"/>
 		<file name="spelling.aardio" path="dlg\spelling.aardio" comment="dlg\spelling.aardio"/>
@@ -13,11 +13,16 @@
 			<file name="phraseHelp.aardio" path="dlg\dict\phraseHelp.aardio" comment="dlg\dict\phraseHelp.aardio"/>
 			<file name="wordWeight.aardio" path="dlg\dict\wordWeight.aardio" comment="dlg\dict\wordWeight.aardio"/>
 		</folder>
-		<folder name="help" path="dlg\help" comment="dlg\help" local="false" embed="false">
+		<folder name="help" path="dlg\help" comment="dlg\help" local="false" embed="false" ignored="false">
 			<file name="etymon.aardio" path="dlg\help\etymon.aardio" comment="dlg\help\etymon.aardio"/>
 			<file name="help.aardio" path="dlg\help\help.aardio" comment="dlg\help\help.aardio"/>
 			<file name="sys.aardio" path="dlg\help\sys.aardio" comment="dlg\help\sys.aardio"/>
 			<file name="wubi.aardio" path="dlg\help\wubi.aardio" comment="dlg\help\wubi.aardio"/>
+		</folder>
+		<folder name="web" path="dlg\web" embed="true" comment="目录" local="false" ignored="false">
+			<file name="hanzi-writer.min.js" path="dlg\web\hanzi-writer.min.js" comment="dlg\web\hanzi-writer.min.js"/>
+			<file name="polyfill.min.js" path="dlg\web\polyfill.min.js" comment="dlg\web\polyfill.min.js"/>
+			<file name="writer.html" path="dlg\web\writer.html" comment="dlg\web\writer.html"/>
 		</folder>
 	</folder>
 </project>
