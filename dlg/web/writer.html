@@ -11,17 +11,15 @@
         text-align: center;
       }
     </style>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js">
-      (function(undefined) {}).call('object' === typeof window && window || 'object' === typeof self && self || 'object' === typeof global && global || {});
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@2.3.0/dist/hanzi-writer.min.js"></script>
+    <script src="polyfill.min.js"></script>
+    <script src="hanzi-writer.min.js"></script>
   </head>
   <body>
     <div id="character-target-div" onclick="writer.animateCharacter()" title="点击重新播放按标准笔顺书写的动画"></div>
     <script>
       var writer = HanziWriter.create("character-target-div", "", {
-        width: 90,
-        height: 90,
+        width: 100,
+        height: 100,
         padding: 5,
         strokeColor: "#337ab7",
         showOutline: true,
@@ -36,10 +34,13 @@
           return;
         }
 
-        writer.setCharacter(char);
-        setTimeout(function () {
-          writer.animateCharacter();
-        }, 1000);
+        writer.setCharacter(char).then(
+          function(){
+            setTimeout(function () {
+              writer.animateCharacter();
+            }, 1200);
+          }
+        ) 
       };
     </script>
     
