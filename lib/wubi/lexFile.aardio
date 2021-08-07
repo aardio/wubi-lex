@@ -84,6 +84,10 @@ class lexFile{
             var hexDecode = ..wubi.text.decode;
 			for line in ..string.lines(bin) {
 				var code,words,weight = match(line,"^([a-z]{1,4})\s+(\S*)\s+(\d+)\s*$")
+				if( !(words && code && (#weight) ) ){
+					code,weight,words = match(line,"([a-z]+)\s*\=\s*(\d+)\s*\,\s*(.+)");
+				}
+				
 				if(words && code && (#weight) ){ 
 					weight = tonumber(weight);
 					words = hexDecode(words);
@@ -109,6 +113,7 @@ class lexFile{
 				
 				var code,words = match(line,"^([a-z]{1,4})\s+(\S.*)\s*")
 				if( !(code && words) ){ 
+					
 					words,code,weight = match(line,"^(\S+)\s+([a-z]{1,4})\s+(\d+)\s*[a-z]*\s*$");
 					if(words && code && (#weight) ){
 						if(!outputMap[code]){
@@ -881,7 +886,7 @@ class lexFile{
 		strBuilder.free();
 		return ret;
 	} 
-	tostring = function(reverse,singleLine,sortWeight){
+	tostring = function(reverse,singleLine,sortWeight,toPhrase){
 		if(!#this.inputCodes){return "";} 
 		if(sortWeight===null){sortWeight=true;}
 		this.sort();
@@ -977,25 +982,55 @@ class lexFile{
 			}
 			else {
 				if(sortWeight){
-					var wordWeight;
-					for(i=1;#this.inputCodes;1){
-						var code = inputCodes[i];  
-						var texts = outputMap[code];
-						wordWeight = codeWeight[code];
-						
-						var weight = 0;
-						for(i=1;#texts;1){
-							if(wordWeight && wordWeight[ texts[i] ]){
-								weight = wordWeight[ texts[i] ];
+					if(!toPhrase){
+						var wordWeight;
+						for(i=1;#this.inputCodes;1){
+							var code = inputCodes[i];  
+							var texts = outputMap[code];
+							wordWeight = codeWeight[code];
+							
+							var weight = 0;
+							for(i=1;#texts;1){
+								if(wordWeight && wordWeight[ texts[i] ]){
+									weight = wordWeight[ texts[i] ];
+								}
+								else {
+									weight = weight + 1;
+								}
+								
+								var txt = replace(texts[i],"\s",urlEncode)
+								strBuilder.append(code+'\t'+txt+'\t'+weight+'\r\n');
 							}
-							else {
-								weight = weight + 1;
+						}; 
+					}
+					else {
+						var wordWeight;
+						for(i=1;#this.inputCodes;1){
+							var code = inputCodes[i];  
+							var texts = outputMap[code];
+							wordWeight = codeWeight[code];
+							
+							var weight = 0;
+							var sortTexts = {};
+							for(i=1;#texts;1){
+								if(wordWeight && wordWeight[ texts[i] ]){
+									weight = wordWeight[ texts[i] ];
+								}
+								else {
+									weight = weight + 1;
+								}
+								
+								var txt = replace(texts[i],"\s",urlEncode)
+								..table.push(sortTexts,{txt,weight});
 							}
 							
-							var txt = replace(texts[i],"\s",urlEncode)
-							strBuilder.append(code+'\t'+txt+'\t'+weight+'\r\n');
-						}
-					}; 	
+							..table.sort(sortTexts,lambda(b)owner[2]<b[2]);
+							for(i=1;#sortTexts;1){
+								strBuilder.append(code+'='+i+','+sortTexts[i][1]+'\r\n');
+							}
+						}; 
+					}
+						
 				}
 				else {
 					for(i=1;#this.inputCodes;1){
@@ -1135,6 +1170,10 @@ class lexFile{
 			return "zhengma";	
 		}
 		
+		if( this.test("aakk","啊") && this.test("hedn","鹤")){
+			return "xhyx";	
+		} 
+
 		if( this.test("qv","月") && this.test("ev","世")){
 			return "zhengma","formation";	
 		}
@@ -1304,7 +1343,7 @@ clear() = 清空数据
 find(__) = 反查编码，\n参数输入文本，返回匹配的编码，文本\n可选用第二个参数指定编码的最小长度
 getCode(__) = 返回指定编码的输出文本数组 
 getVersion() = 返回输入法类型，\n可能返回的值为"98","86","06"，06版本为新世纪编码
-tostring(.(reverse,singleLine) = 返回文本格式词库\n@reverse参数控制是否反转为词前码后\n@singleLine参数控制是否启用一码一行或一行多码
+tostring(.(reverse,singleLine,sortWeight,toPhrase) = 返回文本格式词库\n@reverse参数控制是否反转为词前码后\n@singleLine参数控制是否启用一码一行或一行多码
 filter(过滤函数) = @.filter(\n	function(txt,code){\n		return true;__/*遍历顺序已经按按键的字母序排序,\n返回true保留，返回false删除该词条*/\n	}\n)	
 statistics() = 返回统计数据
 simplified() = 出简不出全

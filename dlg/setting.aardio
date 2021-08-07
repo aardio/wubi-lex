@@ -69,6 +69,11 @@ winform.chkDefaultModeEn.checked = setting["Default Mode"];
 winform.chkEnableWubiUdp.checked = setting["Enable Wubi EUDP"];
 winform.chkUseEnglishPunctuationsInChineseInputMode.checked = setting["UseEnglishPunctuationsInChineseInputMode"];
 winform.chkHalfWidthInputModeByDefault.checked = setting["HalfWidthInputModeByDefault"];
+subscribe("wubi.system.lex.changed",function(){
+	var regSettings = win.reg("HKEY_CURRENT_USER\Software\Microsoft\InputMethod\Settings\CHS");
+	winform.radioPinyinMixDisable.checked = !regSettings.queryValue("PinyinMixEnable")
+	regSettings.close();
+} )
 
 if(winform.radioPinyinMixEnable.checked){
 	winform.chkWubiAutoFinalize.checked = setting["WubiAutoFinalizeForMixEnable"]

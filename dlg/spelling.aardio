@@ -42,7 +42,7 @@ plusDownloadSpellingGif={cls="plus";text='\uF019  下载拆字详解图库';left
 plusEtymon={cls="plus";text="字根图";left=869;top=572;right=965;bottom=594;align="left";db=1;dr=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=9}};iconText='\uF0E8';notify=1;tabstop=1;textPadding={left=25};z=41};
 plusHotkey={cls="plus";text="设置热键";left=772;top=572;right=868;bottom=594;align="left";db=1;dr=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=9}};iconText='\uF11C ';notify=1;tabstop=1;textPadding={left=25};z=40};
 plusSpeech={cls="plus";text='\uF130';left=673;top=149;right=702;bottom=176;clip=1;dr=1;dt=1;font=LOGFONT(h=-17;name='FontAwesome');notify=1;tabstop=1;valign="bottom";z=1};
-plusSpellingGif={cls="plus";left=483;top=232;right=703;bottom=288;dl=0.46;dt=1;repeat="scale";z=23};
+plusSpellingGif={cls="plus";left=483;top=232;right=703;bottom=288;color=16711680;dl=0.46;dt=1;font=LOGFONT(h=-21);repeat="scale";z=23};
 plusTitle={cls="plus";text="根据当前安装的系统码表反查上面输入的汉字";left=286;top=195;right=711;bottom=228;aw=1;color=5921370;dt=1;z=20};
 plusWubiTable={cls="plus";left=147;top=520;right=838;bottom=553;clip=1;color=5921370;db=0.08;dl=1;dr=1;font=LOGFONT(h=-16);z=3};
 txtSpelling={cls="edit";left=295;top=303;right=672;bottom=359;align="center";bgcolor=16777215;color=255;dl=0.28;dr=0.35;dt=1;font=LOGFONT(h=-21);multiline=1;z=4}
@@ -174,6 +174,19 @@ var searchSpelling = win.debounce(function(str){
 		winform.txtSpelling.text = spellingTable.find(str); 
 		return;
 	}
+	elseif(winform.wubiVersion=="xhyx"){
+		spelling = winform.txtSpelling.text; 
+		if(length===1){
+			var spelling = spellingTable.find(str); 
+			if(#spelling){
+				winform.txtSpelling.text = spelling;
+				if(string.len(spelling)>1){
+					winform.plusSpellingGif.text = string.left(spelling,1,true) ++ string.right(spelling,1,true);
+				} 
+			}
+		}
+		return;
+	}
 	elseif(spellingTable){
 			
 			winform.txtSpelling.text = spellingTable.find(str); 
@@ -211,7 +224,7 @@ var searchSpelling = win.debounce(function(str){
 				}
 			}	
 	}
-	
+	 
 	var getSpellingGifPath = function(char){
 		var path = io.appData("aardio\std\wubi\spelling\" 
 				+ winform.wubiVersion + "\" + char + ".gif")
@@ -422,7 +435,7 @@ subscribe("wubi.system.phrase.changed",function(...){
 subscribe("wubi.system.lex.changed",function(...){
 	winform.systemLex = wubi.lexFile()
 	var ver  = winform.systemLex.getVersion()
-	var verString = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["06"]="五笔新世纪";["zhengma"]="郑码"})[ver];
+	var verString = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["06"]="五笔新世纪";["zhengma"]="郑码";["xhyx"]="小鹤音形"})[ver];
 	winform.plusTitle.text = '根据系统码表( ' +verString + ' )反查上面输入的汉字,可直接输入拼音\n五笔编码自第二码开始可使用Z键通配任意编码（ 首码除外 ）'
 	
 	var wubiSpellingGifPath86 = fsys.appdata("aardio\std\wubi\spelling\86");
@@ -443,6 +456,9 @@ subscribe("wubi.system.lex.changed",function(...){
 	winform.txtSpelling.text = "";
 	
 	import wubi.table;
+	
+	var keyboardChars1 = wubi.table[ver]
+	var keyboardChars2 = wubi.table.keyboard[ver];
 	for(name,ctrl in winform.eachControl("plus","^key[A-Z]") ){
 		ctrl.onMouseHover = function(wParam,lParam){
 			winform.hotkey.hide = true;
@@ -461,12 +477,15 @@ subscribe("wubi.system.lex.changed",function(...){
 		}	
 		
 		var k = string.right(name,1);
-		var wubiKeyChars = wubi.table[ver][k];
+		var wubiKeyChars = keyboardChars1[k];
 		if(wubiKeyChars){
 			ctrl.iconText = k +" "+ string.charAt(wubiKeyChars,1);
 		}
+		else {
+			ctrl.iconText = k;
+		}
 		 
-		ctrl.text = ""; 
+		ctrl.text = keyboardChars2[k]:""; 
 		ctrl.skin(style.key)
 	}
 	

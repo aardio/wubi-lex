@@ -224,7 +224,7 @@ addFile = function(winform,inputPath,lexName){
 		updatePath(lexName,inputPath);
 		winform.publish("afterLexListUpdated");
 	}
-	elseif(..string.endWith(inputPath,".txt",true) || ..string.endWith(inputPath,".yaml",true)){
+	elseif(..string.endWith(inputPath,".txt",true) || ..string.endWith(inputPath,".yaml",true) ||..string.endWith(inputPath,".ini",true)){
 		..win.invoke(
 			function(winform,inputPath,lexPath){
 				import wubi.lexFile;

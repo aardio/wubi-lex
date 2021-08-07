@@ -21,10 +21,10 @@ ddSaveToSystem={cls="plus";text="存为系统码表";left=803;top=628;right=974;
 ddSimplified={cls="plus";text="一字一码 ( 出简不出全 )";left=659;top=436;right=876;bottom=467;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=13};
 ddSimplized={cls="plus";text="移除繁体字";left=659;top=529;right=876;bottom=560;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=11};
 ddUnique={cls="plus";text="一码一词 ( 不限单字 )";left=659;top=467;right=876;bottom=498;align="left";bgcolor=-6960024;border={color=-9920564;radius=1;width=1};font=LOGFONT(h=-15);notify=1;tabstop=1;textPadding={left=20};z=15};
-editLex={cls="edit";left=281;top=59;right=969;bottom=556;db=1;dl=1;dr=1;dt=1;edge=1;font=LOGFONT(h=-16);multiline=1;vscroll=1;z=1};
+editLex={cls="edit";left=281;top=55;right=969;bottom=556;db=1;dl=1;dr=1;dt=1;edge=1;font=LOGFONT(h=-16);multiline=1;vscroll=1;z=1};
 editSearch={cls="plus";left=330;top=566;right=595;bottom=590;align="right";border={bottom=1;color=-8355712};db=1;dl=1;dr=1;editable=1;font=LOGFONT(h=-16);z=14};
 lbTip={cls="plus";left=410;top=15;right=946;bottom=49;align="left";color=2960685;font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText="  ";textPadding={left=24};z=5};
-listbox={cls="listbox";left=11;top=59;right=275;bottom=595;db=1;dl=1;dt=1;edge=1;font=LOGFONT(h=-16);items={};vscroll=1;z=4}
+listbox={cls="listbox";left=11;top=56;right=275;bottom=595;db=1;dl=1;dt=1;edge=1;font=LOGFONT(h=-16);items={};vscroll=1;z=4}
 )
 /*}}*/
 
@@ -429,7 +429,7 @@ var updateSystemLexVersion = function(){
 			import wubi.lexFile;
 			var wubiLex = wubi.lexFile()
 			var ver = wubiLex.getVersion();
-			ver = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["06"]="五笔新世纪";["zhengma"]="郑码"})[ver]; 
+			ver = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["06"]="五笔新世纪";["zhengma"]="郑码";xhyx="小鹤音形"})[ver]; 
 			winform.listbox.updateSystemLexVersion(ver)
 		},winform
 	)
@@ -442,19 +442,26 @@ subscribe("wubi.system.lex.changed",function(...){
 
 winform.editLex.limit = 0;
 winform.editLex.text =/*
-可拖拽码表文件到当前窗口（不是编辑框）。
-可添加二进制码表（*.lex）或文本格式码表（*.txt,*.yaml）
-文本格式码表支持 UTF-8,UNICODE(UTF-16) 等各种编码。
-
-码表每行一个编码，按键(小写字母)与输入文本间用空格或制表符分开。
-下面的写法都可以自动识别(不符合格式要求的行、或以#开始的行都会自动忽略)：
+#可拖拽码表文件到当前窗口（不是编辑框）。
+#可添加二进制码表（*.lex）或文本格式码表（*.txt,*.yaml）
+#文本格式码表支持 UTF-8,UNICODE(UTF-16) 等各种编码。
+#码表每行一个编码，按键(小写字母)与输入文本间用空格或制表符分开。
+#下面的写法都可以自动识别(不符合格式要求的行、或以#开始的行都会自动忽略)：
 ------------------------------------------------------------
 duyr	码前词后
-gdgt	码前词后 一码一行
 ltlt	支持%20表示空格，%09表示制表符，%0D表示换行，%0A表示换行
+duyr	码前词后升序权重 1
+duyr	升序权重数值越小越往前排 2
+gdgt	码前词后 一码一行
+
 词前码后	yudr
+码前词后降序权重	yudr
+降序权重数值越大越往前排	yudr
 一行多码	gt gtqd
 一行多码无分隔符gt gtqd
+
+ysxb=1,短语格式逗号前是序号
+ysxb=2,序号越小越往前排
 
 试试 用鼠标选中 这些 没有指定编码的文本 
 然后在右键菜单点击 使用选定码表造词 
@@ -692,20 +699,20 @@ winform.ddSimplified.oncommand = function(id,event){
 
 var createMenuItems = function(){
     
-    var wubiTextTableConvert = function(reverse,singleLine,sortWeight){
+    var wubiTextTableConvert = function(reverse,singleLine,sortWeight,toPhrase){
     	thread.invoke( 
-			function(winform,reverse,singleLine,sortWeight){
+			function(winform,reverse,singleLine,sortWeight,toPhrase){
 				winform.editLex.busy(true,"正在转换格式 ……");
 				
 				import wubi.lexFile;
 				var wubiLex = wubi.lexFile("");
 				wubiLex.addText(winform.editLex.text);
-				winform.editLex.text = wubiLex.tostring(reverse,singleLine,sortWeight);
+				winform.editLex.text = wubiLex.tostring(reverse,singleLine,sortWeight,toPhrase);
 				
 				var statistics = wubiLex.statistics(); 
 				winform.editLex.busy(false
 					,string.format("总编码数：%d 重码数：%d",statistics.totalTxt,statistics.coincidentTxt ) )
-			},winform,reverse,singleLine,sortWeight
+			},winform,reverse,singleLine,sortWeight,toPhrase
 		)
     }
     
@@ -884,7 +891,7 @@ var createMenuItems = function(){
 					wubiTextTableConvert(false,false,true); 
 				}
 			}; 
-			
+			{};
 			{ "词组在前 / 编码在后";
 				function(id){  
 					wubiTextTableConvert(true,false,false);  
@@ -900,6 +907,12 @@ var createMenuItems = function(){
 					wubiTextTableConvert(true,false,true); 
 				}
 			}; 
+			{};
+			{ "短语格式 / 等号分隔键值 / 升序号";
+				function(id){  
+					wubiTextTableConvert(false,false,true,true); 
+				}
+			};
 		}}
 		{ /*---分隔线---*/ };
 		{ "分离短语";{  
@@ -1354,7 +1367,7 @@ import app.lexNetContents;
 winform.btnAddFile.oncommand = function(id,event){
 	var popmenu = win.ui.popmenu(winform);
 	popmenu.add('添加本地码表文件',function(id){
-		var inputPath = fsys.dlg.open("码表(*.lex;*.txt,*.yaml;*.csv,*.json)|*.lex;*.txt;*.yaml;*.csv;*.json||",,,winform)
+		var inputPath = fsys.dlg.open("码表(*.lex;*.txt,*.yaml;*.csv,*.json)|*.lex;*.txt;*.yaml;*.csv;*.json;*.ini||",,,winform)
 		if(inputPath){
 			app.lexContents.addFile(winform,inputPath);
 		}

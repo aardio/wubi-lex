@@ -2,7 +2,7 @@
 namespace app.lexNetContents{
 	
 	getTable = function(){
-		var dataPath = ..io.appData("/aardio/std/wubi/lex-default.table");
+		var dataPath = ..io.appData("/aardio/std/wubi/lex-default-v2.table");
 	
 		if(..io.exist(dataPath)){
 			var result;
@@ -168,6 +168,15 @@ namespace app.lexNetContents{
 				{
 					name = "郑码( 繁体超集 )";
 					url = "http://wubi.aardio.com/download/lex/zhengma/zhengma.cht.ex.lex.lzma";
+				};
+			}
+		};
+		{	 
+			name = "小鹤音形";
+			items = {   
+				{
+					name = "小鹤音形( 大词库 )";
+					url = "http://wubi.aardio.com/download/lex/xhyx.lex.lzma";
 				};
 			}
 		};

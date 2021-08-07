@@ -164,6 +164,13 @@ namespace tsfUtil{
 										}
 									} 
 									
+									if(lexFile.getVersion()=="xhyx"){
+										import win.reg;
+										var regSettings = win.reg("HKEY_CURRENT_USER\Software\Microsoft\InputMethod\Settings\CHS");
+										regSettings.setDwValue("PinyinMixEnable",1);
+										regSettings.close();
+									}
+									
 									winform.publish("wubi.system.lex.changed");	
 								} 
 								
