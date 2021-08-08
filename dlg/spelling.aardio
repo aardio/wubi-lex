@@ -90,6 +90,7 @@ var searchSpelling = win.debounce(function(str){
 
 	winform.txtSpelling.text = ""
 	winform.plusSpellingGif.background = null;
+	winform.plusSpellingGif.text = "";
 	winform.plusTitle.text = ""
 	
 	var firstChar = string.left(str,1,true);
@@ -453,6 +454,7 @@ subscribe("wubi.system.lex.changed",function(...){
 	winform.editInput.text = "";
 	winform.plusCode.text =""
 	winform.plusSpellingGif.background = null;
+	winform.plusSpellingGif.text = "";
 	winform.txtSpelling.text = "";
 	
 	import wubi.table;
@@ -485,7 +487,7 @@ subscribe("wubi.system.lex.changed",function(...){
 			ctrl.iconText = k;
 		}
 		 
-		ctrl.text = keyboardChars2[k]:""; 
+		ctrl.text = keyboardChars2[[k]]:""; 
 		ctrl.skin(style.key)
 	}
 	
