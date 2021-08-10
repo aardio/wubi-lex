@@ -1087,7 +1087,9 @@ class lexFile{
 				
 				for(k,word in words){
 					 if(len(word)===1){
-					 	cachCharCodes[word] = code;
+					 	if(#cachCharCodes[word]<#code){
+					 		cachCharCodes[word] = code;
+					 	} 
 					 }
 				} 
 			}
