@@ -66,7 +66,7 @@ namespace tsfUtil{
 	}
 	
 	aclGrant = function(filePath,fileProc){
-		if(!..io.exist(filePath) ){ return fileProc(filePath) }
+		if(!..io.exist(filePath) ){ return fileProc() }
 		
 		var out,err = ..fsys.acl.takeOwn(filePath);
 		if(!out) return null,err;
@@ -142,13 +142,12 @@ namespace tsfUtil{
 									sleep(1000)
 								}
 								
-								 
 								var savePath = chsWubiNewPath : chsWubiPath;
 								if(savePath){
 									var lexData;
 									if(phraseText||srcLexText||appendMode){
 										lexFile.saveLex(savePath);
-										lexData =..string.load(chsWubiNewPath);  
+										lexData =..string.load(savePath);  
 									}
 									else {
 										lexData = ..string.load(srcLexPath);
