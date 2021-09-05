@@ -51,7 +51,9 @@ winform.btnSave.skin(style.primaryButton)
 
 import winex.accObject;
 import wubi.chineseNumber;
+import wubi.candidateWindow;
 import string.chineseNumber;
+
 var hotkeyMgr;
 winform.btnSave.oncommand = function(id,event){
     config.hotkey.save();
@@ -95,6 +97,12 @@ winform.btnSave.oncommand = function(id,event){
 			var prev = hotkeyMgr.prevKeyCode;
 			if(key.getStateX("CTRL"))return;
 			if(key.getStateX("ALT"))return;
+			
+			if(wubi.candidateWindow.isVisible() ) {
+				hotkeyMgr.prevKeyCode = null;
+				return;
+			}
+			
 			if(key.getStateX("SHIFT")){
 				if(vk==0xBD/*_VK_OEM_MINU*/){
 					if(prev){ 
