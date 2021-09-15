@@ -158,8 +158,8 @@ mainForm.wndproc = {
 			import tsfInput;
 			var imStatus = tsfInput.getStatus();
 			var wubiVersion = ""
-			if(..globalSystemWubiVersion){
-				wubiVersion = " ( 码表：" + ..globalSystemWubiVersion + " )"
+			if(..globalSystemWubiVersionText){
+				wubiVersion = " ( 码表：" + ..globalSystemWubiVersionText + " )"
 			}
 			var id = mainForm.popmenu.add('启用微软五笔'+wubiVersion,function(id){
 				tsfInput.enableWubi(!imStatus.wubi);

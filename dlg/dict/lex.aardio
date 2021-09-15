@@ -422,19 +422,21 @@ winform.listbox.reloadLexList()
 
 import win.debounce;
 var updateSystemLexVersion = function(){
-	winform.listbox.updateSystemLexVersion = function(ver){
-		winform.listbox.systemLexName = "系统码表( " + ver + " )"
+	winform.listbox.updateSystemLexVersion = function(verText,verNum){
+		winform.listbox.systemLexName = "系统码表( " + verText + " )"
 		winform.listbox.reloadLexList(); 
-		..globalSystemWubiVersion = ver;
+		..globalSystemWubiVersionText = verText;
+		..globalSystemWubiVersionNumberText = verNum;
+		..publish("wubi.system.lex.version.changed",verNum,verText)
 	}
 	
 	thread.invoke( 
 		function(winform){
 			import wubi.lexFile;
 			var wubiLex = wubi.lexFile()
-			var ver = wubiLex.getVersion();
-			ver = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["06"]="五笔新世纪";["zhengma"]="郑码";xhyx="小鹤音形"})[ver]; 
-			winform.listbox.updateSystemLexVersion(ver)
+			var verNum = wubiLex.getVersion();
+			var verText = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["06"]="五笔新世纪";["zhengma"]="郑码";xhyx="小鹤音形"})[verNum]; 
+			winform.listbox.updateSystemLexVersion(verText,verNum)
 		},winform
 	)
 }

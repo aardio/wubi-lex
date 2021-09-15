@@ -77,16 +77,6 @@ winform.updateEtymonVersion = function(){
 	} 
 }
 
-subscribe("wubi.system.lex.changed",function(){
-    winform.updateEtymonVersion();
-});
-
-winform.updateEtymonVersion();
-
-subscribe("showEtymon",function(...){
-	winform.updateEtymonVersion();
-} )
-
 winform.etymonTxt.text = /*
 文本字根：
 ----------------------------------------------------------------------------------------------
@@ -146,35 +136,35 @@ X 纟(慈)母无心弓和匕，幼无力
 
 五笔新世纪版字根歌
 ----------------------------------------------------------------------------------------------
-G 王旁青头兼五一 
-F 土士二干十寸雨 
-D 大三肆头古石厂 
-S 木丁西边要无女 
-A 工戈草头右框七 
+G　王旁青头五一提
+F　土士二干十寸雨
+D　大三肆头古石厂
+S　木丁西边要无女
+A　工戈草头右框七
 
-H 目止具头卜虎皮 
-J 日曰两竖与虫依 
-K 口中两川三个竖 
-L 田框四车甲单底 
-M 山由贝骨下框几 
+H　目止具头卜虎皮
+J　日曰两竖与虫依
+K　口中两川三个竖
+L　田框四车甲单底
+M　山由贝骨下框里
 
-T 禾竹牛旁双人立 
-R 白斤气头叉手提 
-E 月舟衣乃豕豸用 
-W 人八登祭三四里 
-Q 金夕犭儿包头鱼 
+T　禾竹牛旁卧人立
+R　白斤气头叉手提
+E　月舟衣力豕豸臼
+W　人八登祭风头几
+Q　金夕犭儿包头鱼
 
-Y 言文方广在四一 
-U 立辛两点病门里 
-I 水边一族三点小 
-O 火变业头四点米 
-P 之字宝盖补示衣
- 
-N 已类左框心尸羽 
-B 子耳了也孑齿底 
-V 女刀九巡录无水 
-C 又巴甬矣马失蹄 
-X 幺母绞丝弓和匕 
+Y　言文方点在四一
+U　立带两点病门里
+I　水边一族三点小
+O　火变三态广二米
+P　之字宝盖补示衣
+
+N　已类左框心尸羽
+B　子耳了也乃齿底
+V　女刀九巡录无水
+C　又巴甬矣马失蹄
+X　幺母绞丝弓三匕
 
 五笔091版字根歌
 ----------------------------------------------------------------------------------------------
@@ -242,7 +232,26 @@ Y 阝刀乙子也弓习
 Z 纟三折凵母女厶 
 */
 
-winform.enableDpiScaling();
 winform.show();
+subscribe("wubi.system.lex.version.changed",function(verNum){
+	if(verNum){
+		tbs.selIndex = table.find({"86";"98";"06";"091";"zhengma";"xhyx"},..globalSystemWubiVersionNumberText);
+	}
+	else {
+		winform.updateEtymonVersion();
+	}
+});
+
+if(..globalSystemWubiVersionNumberText){
+	tbs.selIndex = table.find({"86";"98";"06";"091";"zhengma";"xhyx"},..globalSystemWubiVersionNumberText);
+}
+else {
+	winform.updateEtymonVersion();
+}
+
+subscribe("showEtymon",function(...){
+	winform.updateEtymonVersion();
+} )
+
 win.loopMessage();
 return winform;
