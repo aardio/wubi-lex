@@ -1370,6 +1370,9 @@ winform.ddAppendToSystem.oncommand = function(id,event){
 
 import style;
 import app.lexNetContents;
+winform.btnAddFile.onMouseDown = function(wParam,lParam){
+    app.lexNetContents.update();
+}
 winform.btnAddFile.oncommand = function(id,event){
 	var popmenu = win.ui.popmenu(winform);
 	popmenu.add('添加本地码表文件',function(id){
@@ -1393,24 +1396,28 @@ winform.btnAddFile.oncommand = function(id,event){
 	} ) 
 	
 	popmenu.add();
-	 
-	var lexTable = app.lexNetContents.getTable();
- 
-	for i,lexConfig in table.eachIndex(lexTable){
-		var menu = win.ui.popmenu(winform);
-		for(i=1;#lexConfig.items;1){
-			var lexItem  = lexConfig.items[i];
-			menu.add(lexItem.name,function(id){
-				app.lexContents.addFile(winform,lexItem.url,lexItem.name);
-			});
-		}
-		popmenu.add(lexConfig.name,menu);
-	}
-
-	var x,y,cx,cy = winform.btnAddFile.getPos()
-	popmenu.popup(x,y+cy);
 	
-	app.lexNetContents.update();
+	var x,y,cx,cy = winform.btnAddFile.getPos()
+	
+	winform.setTimeout( 
+		function(){
+			var lexTable = app.lexNetContents.getTable();
+ 		
+			for i,lexConfig in table.eachIndex(lexTable){
+				var menu = win.ui.popmenu(winform);
+				for(i=1;#lexConfig.items;1){
+					var lexItem  = lexConfig.items[i];
+					menu.add(lexItem.name,function(id){
+						app.lexContents.addFile(winform,lexItem.url,lexItem.name);
+					});
+				}
+				popmenu.add(lexConfig.name,menu);
+			}
+			
+		},50 //延后到弹出菜单以后异步执行,等待更新数据,并顺带制造出动画效果
+	);
+	
+	popmenu.popup(x,y+cy);
 }
 
 winform.setTimeout( 

@@ -1,8 +1,9 @@
 ﻿//lexNetContents 网络码表
 namespace app.lexNetContents{
 	
+	dataPath = ..io.appData("/aardio/std/wubi/lex-default-v2.table");
+	 
 	getTable = function(){
-		var dataPath = ..io.appData("/aardio/std/wubi/lex-default-v2.table");
 	
 		if(..io.exist(dataPath)){
 			var result;
@@ -20,20 +21,15 @@ namespace app.lexNetContents{
 	
 	update = function(){
 		..thread.invoke( 
-			function(){
-				import web.json;
-				import inet.http;
-				var http = inet.http();
-				http.disableCache();
-				
-				var bin = http.get("http://wubi.aardio.com/download/lex/index.json");
-				if(bin){
-					var tab = ..web.json.tryParse(bin);
-					if(type(tab)==type.table){
-						..string.save(..io.appData("/aardio/std/wubi/lex-default.table"), ..table.tostring(tab,true)) 	
-					} 
-				}
-			}
+			function(dataPath){
+				import web.rest.jsonLiteClient;
+
+				var http = web.rest.jsonLiteClient();
+				var tab = http.get("http://wubi.aardio.com/download/lex/index.json");
+				if(type(tab)==type.table){
+					..string.save(dataPath, ..table.tostring(tab,true)) 	
+				} 
+			},dataPath
 		) 
 	} 
 	
@@ -173,7 +169,11 @@ namespace app.lexNetContents{
 		};
 		{	 
 			name = "小鹤音形";
-			items = {   
+			items = { 
+				{
+                	name = "小鹤音形( 小词库 )";
+                	url ="http://wubi.aardio.com/download/lex/xhyx.min.lex.lzma"
+            	},  
 				{
 					name = "小鹤音形( 大词库 )";
 					url = "http://wubi.aardio.com/download/lex/xhyx.lex.lzma";
