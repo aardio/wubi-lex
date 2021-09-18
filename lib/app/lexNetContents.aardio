@@ -172,17 +172,20 @@ namespace app.lexNetContents{
 			items = { 
 				{
                 	name = "小鹤音形( 小词库 )";
-                	url ="http://wubi.aardio.com/download/lex/xhyx.min.lex.lzma"
+                	url = "http://wubi.aardio.com/download/lex/xhyx.lex.lzma";
             	},  
 				{
 					name = "小鹤音形( 大词库 )";
-					url = "http://wubi.aardio.com/download/lex/xhyx.lex.lzma";
+					url = "http://wubi.aardio.com/download/lex/xhyx.ext.lex.lzma";
+				},  
+				{
+					name = "小鹤音形( 单字 )";
+					url = "http://wubi.aardio.com/download/lex/xhyx.min.lex.lzma";
 				};
 			}
 		};
 	} 
 }
-
 
 /**intellisense()
 app.lexNetContents.getTable() = 获取默认码表目录
