@@ -1,5 +1,6 @@
 ﻿//tsfInput 语言
 import win.rt.bcp47;
+import win.reg;
 
 namespace tsfInput;
 
@@ -37,7 +38,94 @@ getStatus = function(){
 	return status;
 }
 
+getDoublePinyinSchemes = function(){
+	var result = {
+		{name = "微软双拼",index = 0, scheme = ""};
+		{name = "智能ABC",index = 1, scheme = ""};
+		{name = "自然码",index = 3, scheme = ""}; 
+	}
+	
+	var regSettings = ..win.reg("HKEY_CURRENT_USER\Software\Microsoft\InputMethod\Settings\CHS");
+	if(!regSettings) return result;
+
+	for(name,scheme,t in regSettings.eachValue()) {
+		if(..string.find(name,"UserDefinedDoublePinyinScheme\d+")){
+			if(scheme  && type.isString(scheme) ){
+				var schemeName = ..string.match(scheme,"^([^*]+)");
+				if(schemeName){
+					var i = ..string.match(name,"(\d+)");
+					if(i){
+						..table.push(result,{
+							name = schemeName;
+							index = 10 + (tonumber(i):0);
+							scheme = scheme;
+						})
+					}
+				}
+			}
+		}
+	}
+	
+	var freeIndex = 10; 
+	for i,v in ..table.eachIndex(result){
+		if(..string.find(v.name,"小鹤") || ..string.endWith(v.scheme,"*2*^*iuvdjhcwfg^xmlnpbksqszxkrltvyovt") ){
+			result.xhup = i; 
+			break;
+		}
+		
+		if(v.index>=freeIndex){
+			freeIndex = v.index+1;
+		}
+	}
+	
+	if(!result.xhup){
+		regSettings.setSzValue("UserDefinedDoublePinyinScheme"+(freeIndex-10),"小鹤双拼*2*^*iuvdjhcwfg^xmlnpbksqszxkrltvyovt") 
+		..table.push(result,{
+			name = "小鹤双拼";
+			index = freeIndex;
+			scheme = "小鹤双拼*2*^*iuvdjhcwfg^xmlnpbksqszxkrltvyovt";
+		})
+		
+		result.xhup = #result;
+	}
+	
+	if(regSettings.queryValue("Enable Double Pinyin")){
+		result.default = regSettings.queryValue("DoublePinyinScheme") : 0;
+	}
+	
+	regSettings.close();
+	return result;	
+}
+
+enableoublePinyinScheme = function(enabled,schemeId){
+	 
+	var regSettings = ..win.reg("HKEY_CURRENT_USER\Software\Microsoft\InputMethod\Settings\CHS");
+	if(!regSettings) return false;
+	
+	if(enabled){
+		if(schemeId!==null)regSettings.setDwValue("DoublePinyinScheme",schemeId);
+		regSettings.setDwValue("Enable Double Pinyin",1);
+	}
+	else {
+		regSettings.setDwValue("DoublePinyinScheme",0);
+		regSettings.setDwValue("Enable Double Pinyin",0);
+	}
+	
+	regSettings.close();
+	return true; 
+}
+
+enableXhup = function(enabled){
+	var schemes = getDoublePinyinSchemes();
+	if(!schemes.xhup) return false;
+	
+	enableoublePinyinScheme(enabled,schemes.xhup);
+}
+
 /**intellisense(tsfInput)
+getDoublePinyinSchemes() = 获取全部双拼方案,\n如果不存在小鹤双拼方案，就安装该方案
+enableoublePinyinScheme(.(enabled,schemeId) = 是否启用指定的双拼方案\n@schemeId 参数为双拼方案 ID
+enableXhup(.(enabled) = 是否安装并开启小鹤双拼
 enablePinyin(.(enabled) = 是否启用微软拼音
 enableWubi(.(enabled) = 是否启用微软五笔
 enableUsKeyboard(.(enabled) = 是否启用英文键盘

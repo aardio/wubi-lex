@@ -166,15 +166,20 @@ mainForm.wndproc = {
 			});
 			mainForm.popmenu.check(id,imStatus.wubi,0/*_MF_BYCOMMAND*/);
 			
+			var id = mainForm.popmenu.add('启用英文键盘',function(id){
+				tsfInput.enableUsKeyboard(!imStatus.en);
+			});
+			
+			mainForm.popmenu.add();
+			
+			mainForm.popmenu.check(id,imStatus.en,0/*_MF_BYCOMMAND*/); 
 			var id = mainForm.popmenu.add('启用微软拼音',function(id){
 				tsfInput.enablePinyin(!imStatus.pinyin);
 			});
 			mainForm.popmenu.check(id,imStatus.pinyin,0/*_MF_BYCOMMAND*/);
-			
-			var id = mainForm.popmenu.add('启用英文键盘',function(id){
-				tsfInput.enableUsKeyboard(!imStatus.en);
-			});
-			mainForm.popmenu.check(id,imStatus.en,0/*_MF_BYCOMMAND*/);  
+
+			import ui.doublePinyinMenu;
+		 	mainForm.popmenu.add('双拼方案',ui.doublePinyinMenu(mainForm));
 			
 			mainForm.popmenu.add();
 			mainForm.popmenu.add('打开系统输入法设置 ...',function(id){

@@ -8,14 +8,15 @@ btnOpenIcon={cls="plus";text='\uF115';left=815;top=411;right=844;bottom=434;colo
 btnSave={cls="plus";text='\uF0C7   更新设置';left=636;top=497;right=838;bottom=533;bgcolor=11580047;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;tabstop=1;z=5};
 btnSelectFont={cls="plus";text='\uF031';left=571;top=456;right=600;bottom=479;color=2960685;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;z=22};
 chkDefaultModeEn={cls="plus";text="默认英文模式（ 可短按 Shift 键切换 )";left=156;top=131;right=769;bottom=162;align="left";dl=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=3};
-chkEnableMsPinyin={cls="plus";text="启用微软拼音输入法";left=471;top=555;right=661;bottom=586;align="left";db=1;dr=1;font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=27};
-chkEnableMsWubi={cls="plus";text="启用微软五笔输入法";left=276;top=555;right=466;bottom=586;align="left";db=1;dr=1;font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=26};
+chkEnableMsPinyin={cls="plus";text="启用微软拼音输入法";left=495;top=555;right=685;bottom=586;align="left";db=1;dr=1;font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=27};
+chkEnableMsWubi={cls="plus";text="启用微软五笔输入法";left=289;top=555;right=479;bottom=586;align="left";db=1;dr=1;font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=26};
 chkEnableSystemRun={cls="plus";text="允许开机启动 wubiLex （ 启动时不再需要确认管理权限，建议开启 ）";left=156;top=296;right=732;bottom=327;align="left";dl=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=13};
 chkEnableWubiUdp={cls="plus";text="允许自定义短语";left=156;top=243;right=412;bottom=274;align="left";dl=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=7};
 chkHalfWidthInputModeByDefault={cls="plus";text="英文标点默认使用半角输入模式（ 可按 Shift + 空格键 切换 ）";left=156;top=168;right=741;bottom=199;align="left";dl=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=15};
-chkUsKeyboard={cls="plus";text="启用英文键盘";left=665;top=555;right=807;bottom=586;align="left";db=1;dr=1;font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=28};
+chkUsKeyboard={cls="plus";text="启用英文键盘";left=131;top=555;right=273;bottom=586;align="left";db=1;dr=1;font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=28};
 chkUseEnglishPunctuationsInChineseInputMode={cls="plus";text="中文输入时使用英文标点（ WIN10 2004 以上版本支持 Ctrl + . 切换 ）";left=156;top=206;right=730;bottom=237;align="left";dl=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=16};
 chkWubiAutoFinalize={cls="plus";text="四码唯一时自动上屏（ 拼音混输时不建议开启 ）";left=156;top=93;right=596;bottom=124;align="left";dl=1;dr=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome')};iconText='\uF0C8 ';notify=1;textPadding={left=24};z=12};
+cmbDoublePiny={cls="plus";text="选择双拼方案";left=680;top=556;right=825;bottom=587;align="left";db=1;dr=1;font=LOGFONT(h=-15);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome');padding={left=9}};iconText='\uF15D';notify=1;paddingLeft=1;textPadding={left=31};z=29};
 editMaxCandidates={cls="plus";left=768;top=447;right=810;bottom=476;align="left";border={bottom=1;color=-16744448};dr=1;font=LOGFONT(h=-16);notify=1;tabstop=1;textPadding={top=6;bottom=1};z=24};
 editWubiDescription={cls="plus";left=284;top=352;right=565;bottom=385;align="left";border={bottom=1;color=-16744448};dl=1;dr=1;editable=1;font=LOGFONT(h=-16);tabstop=1;textPadding={top=6;bottom=1};z=11};
 editWubiFont={cls="plus";left=284;top=443;right=573;bottom=476;border={bottom=1;color=-16744448};dl=1;dr=1;editable=1;font=LOGFONT(h=-16);notify=1;tabstop=1;textPadding={top=6;bottom=1};z=9};
@@ -50,6 +51,7 @@ winform.btnSave.skin(style.primaryButton)
 winform.btnOpenIcon.skin( style.plainButton )
 winform.plusOpenMsSetting.skin(style.button)
 winform.plusOpenHotkeys.skin(style.button)
+winform.cmbDoublePiny.skin(style.transButton)
 
 import win.reg;
 var regSettings = win.reg("HKEY_CURRENT_USER\Software\Microsoft\InputMethod\Settings\CHS");
@@ -331,6 +333,18 @@ winform.chkEnableMsWubi.oncommand = function(id,event){
 
 winform.chkUsKeyboard.oncommand = function(id,event){
 	tsfInput.enableUsKeyboard(winform.chkUsKeyboard.checked);	
+}
+
+import ui.doublePinyinMenu;
+winform.cmbDoublePiny.oncommand = function(id,event){
+	var x,y,cx,cy = winform.cmbDoublePiny.getPos();
+	var menu = ui.doublePinyinMenu(winform);
+	winform.setTimeout( 
+		function(){
+			menu.getPos( id )
+		}
+	);
+	menu.popup(x,y,,0x20/*_TPM_BOTTOMALIGN*/);
 }
 
 winform.enableDpiScaling();

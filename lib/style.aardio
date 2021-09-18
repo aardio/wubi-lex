@@ -20,6 +20,7 @@ namespace style{
 			default=0;
 			hover=0xFF928BB3;
 			disabled=0xFFCCCCCC; 
+			active=0x99928BB3;
 		}
 	};
 	checkBox = {
