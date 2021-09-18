@@ -118,7 +118,21 @@ default = /*******
 本程序已默认载入大量aardio库，可以在这里直接调用。
 例如可以方便地调用命令行与PowerShell 的库 process.popen,process.batch 等。
 可以方便地调用 MSAA 接口的库  winex.accObject;
+屏幕图文识别、找字的库 dotNet.ocr
+后台模拟点击的库 winex.key,winex.mouse
+前台模拟点击的库 mouse,key 
+查找窗口的库 winex 
+
 ......这些库的用法请参考 aardio 文档。
+
+import mouse;
+import dotNet.ocr;
+var ocr = dotNet.ocr();
+
+var ocrResult = ocr.detectScreen();
+var x,y = ocrResult.findPoint("在屏幕上查找的文字",0.1);
+mouse.moveTo(x,y,true); //模拟点击
+
 
 //发送字符串
 key.sendString("这里是要发送的字符串")

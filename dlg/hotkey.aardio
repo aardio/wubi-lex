@@ -49,6 +49,12 @@ winform.chkEnableHotkey.oncommand = function(id,event){
 
 winform.btnSave.skin(style.primaryButton)
 
+import key;
+import mouse;
+import winex;
+import winex.mouse;
+import winex.key;
+import dotNet.ocr;
 import winex.accObject;
 import wubi.chineseNumber;
 import wubi.candidateWindow;
