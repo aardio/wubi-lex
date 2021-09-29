@@ -4,7 +4,7 @@ import win.ui;
 winform = win.form(text="wubiLex - 反查字根表简易编辑器";right=981;bottom=816)
 winform.add(
 btnLoad={cls="button";text="加载";left=684;top=13;right=809;bottom=46;dr=1;dt=1;font=LOGFONT(h=-15);z=4};
-btnLzma={cls="button";text="压缩输出为lzma文件";left=670;top=777;right=899;bottom=810;db=1;dr=1;font=LOGFONT(h=-15;name='FontAwesome');z=7};
+btnLzma={cls="button";text="全部反查数据压缩输出为 lzma 文件";left=571;top=777;right=899;bottom=810;db=1;dr=1;font=LOGFONT(h=-15;name='FontAwesome');z=7};
 btnSave={cls="button";text="保存";left=819;top=13;right=944;bottom=46;disabled=1;dr=1;dt=1;font=LOGFONT(h=-15);z=2};
 btnSearch={cls="plus";text='\uF002';left=365;top=21;right=394;bottom=44;color=3947580;dr=1;dt=1;font=LOGFONT(h=-16;name='FontAwesome');iconColor=2960685;notify=1;z=5};
 cmbWubiVersion={cls="combobox";left=497;top=16;right=669;bottom=42;dr=1;dt=1;edge=1;font=LOGFONT(h=-15);items={"86";"98";"06";"091";"xhyx";"zhengma"};mode="dropdownlist";z=3};
@@ -32,7 +32,7 @@ winform.btnLoad.oncommand = function(id,event){
     }
     
     winform.editData.spellingFilePath = "\sepllingData\"+winform.cmbWubiVersion.selText+".txt";
-	winform.editData.text = string.load(winform.editData.spellingFilePath);
+	winform.editData.text = string.crlf( string.load(winform.editData.spellingFilePath) );
 	winform.editData.modified = false;
 }
 
