@@ -14,10 +14,12 @@ import com.interface.ITfInputProcessorProfileMgr;
 import winex;
 import key.ime;
 import tsfInput;
+import win.rt.bcp47;
 
 namespace tsfUtil{
 
 	reset = function(proc){
+		var oldWinLangs = ..win.rt.bcp47.getUserLanguages();
 		..tsfInput.enableWubi(false);
 		
 		var srvMgr = ..service.manager();
@@ -44,7 +46,9 @@ namespace tsfUtil{
 			).waitOne()  
 			
 		sleep(1000); 
+	
 		..tsfInput.enableWubi(true);
+		..win.rt.bcp47.setUserLanguages(oldWinLangs);
 	}
 	
 	deactivate = function(){
