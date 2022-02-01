@@ -1099,7 +1099,7 @@ class lexFile{
 		
 		return this.cachCharCodes;
 	}
-	combineCode = function(str){
+	combine = function(str){
 		var cachCharCodes = this.getCachCharCodes();
 		
 		var arr = ..string.split(str);
@@ -1131,7 +1131,7 @@ class lexFile{
 			return codes[1][[1]] ++ codes[2][[1]] ++ codes[3][[1]] ++ codes[4][[1]];
 		}
 	}
-	combineCodeZhengma = function(str){
+	combineZhengma = function(str){
 		var cachCharCodes = this.getCachCharCodes();
 		
 		var arr = ..string.split(str);
@@ -1163,6 +1163,38 @@ class lexFile{
 			return codes[1][[1]] ++ codes[2][[1]] ++ codes[3][[1]] ++ codes[4][[1]];
 		}
 	}
+	combineBxm = function(str){
+		var cachCharCodes = this.getCachCharCodes();
+		
+		var arr = ..string.split(str);
+		if(#arr<2){return;}
+		
+		var codes = {}
+		codes[1] = cachCharCodes[arr[1]];
+		codes[2] = cachCharCodes[arr[2]];
+		
+		if(!(codes[1]&&codes[2])){return;}
+		
+		if(arr[3]){
+			codes[3] = cachCharCodes[arr[3]];
+			if(!(codes[3]))return;
+		}
+		
+		if(#arr>=4){
+			codes[4]= cachCharCodes[arr[#arr]];
+			if(!(codes[4]))return;
+		}
+		
+		if(#arr==2){ 
+			return codes[1][[1]] ++ codes[1][[2]] ++ codes[2][[1]] ++ codes[2][[2]];
+		}
+		elseif(#arr==3){ 
+			return codes[1][[1]] ++ codes[1][[2]] ++ codes[2][[1]] ++ codes[3][[1]];
+		}
+		elseif(#arr>=4){ 
+			return codes[1][[1]] ++ codes[2][[1]] ++ codes[3][[1]] ++ codes[4][[1]];
+		}
+	}
 	test = function(code,str){
 		var words = this.outputMap[code];
 		return !!(words && ..table.find(words,str));
@@ -1178,6 +1210,10 @@ class lexFile{
 
 		if( this.test("qv","月") && this.test("ev","世")){
 			return "zhengma","formation";	
+		}
+
+		if( this.test("hodd","够"/*HODD*/) && this.test("opto","啊")){
+			return "bxm";	
 		}
 		
 		var wubi98 = 0;
@@ -1311,6 +1347,7 @@ class lexFile{
 		elseif(wubi091>wubi86 && wubi091>wubi98 && wubi091>wubi06){
 			return "091";
 		}
+		
 		return "86";
 	} 
 }
@@ -1350,7 +1387,8 @@ filter(过滤函数) = @.filter(\n	function(txt,code){\n		return true;__/*遍历
 statistics() = 返回统计数据
 simplified() = 出简不出全
 optShortCodeChar() = 简码字全码后移
-combineCode(__) = 参数中输入词组，返回自动生成的编码,\n此函数使用五笔规则生成编码，不需要在码表中查找词组\n失败返回null,成功返回编码
+combine(__) = 参数中输入词组，返回自动生成的编码,\n此函数使用五笔规则生成编码，不需要在码表中查找词组\n失败返回null,成功返回编码
+combineBxm(__) = 参数中输入表形码词组，返回自动生成的编码,\n此函数使用五笔规则生成编码，不需要在码表中查找词组\n失败返回null,成功返回编码
 isEmpty() = 如果码表为空则返回true
 getTableData() = 返回表数据,\n返回表为包含所有编码的数组,\n每个编码为一个数组,第一列为编码,其余列为词语
 setTableData(__) = 添加参数指定的表数据,\n每个编码为一个数组,第一列为编码,其余列为词语

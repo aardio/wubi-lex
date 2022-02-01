@@ -168,7 +168,16 @@ winform.editPhrase.enablePopMenu({
 							
 							for txt in string.gmatch(selText,":+") { 
 								
-								var code = lexFile.combineCodeZhengma(txt);
+								var code = lexFile.combineZhengma(txt);
+								if(code){
+									push(result,code + '\t' + txt);
+								}
+							} 
+						} 
+						if(imeVer=="bxm"){
+							for txt in string.gmatch(selText,":+") { 
+								
+								var code = lexFile.combineBxm(txt);
 								if(code){
 									push(result,code + '\t' + txt);
 								}
@@ -177,7 +186,7 @@ winform.editPhrase.enablePopMenu({
 						else {
 							for txt in string.gmatch(selText,":+") { 
 								
-								var code = lexFile.combineCode(txt);
+								var code = lexFile.combine(txt);
 								if(code){
 									push(result,code + '\t' + txt);
 								}

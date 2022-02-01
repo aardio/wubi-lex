@@ -1,4 +1,11 @@
 //RUNAS//
+import fsys;
+import fsys.dlg;
+import wubi.lexFile;
+import win.inputBox;
+import sevenZip.lzma;
+import config;
+import app.lexContents;
 import fonts.fontAwesome;
 import win.ui.menu;
 import win.ui;
@@ -27,15 +34,6 @@ lbTip={cls="plus";left=410;top=15;right=946;bottom=49;align="left";color=2960685
 listbox={cls="listbox";left=11;top=56;right=275;bottom=595;db=1;dl=1;dt=1;edge=1;font=LOGFONT(h=-16);items={};vscroll=1;z=4}
 )
 /*}}*/
-
-import fsys;
-import fsys.dlg;
-import wubi.lexFile;
-import win.inputBox;
-import sevenZip.lzma;
-import config;
-import app.lexContents;
-import win.dlg.message;
 
 winform.lbTip.busy = function(busy,text){
 	if(busy){
@@ -435,7 +433,7 @@ var updateSystemLexVersion = function(){
 			import wubi.lexFile;
 			var wubiLex = wubi.lexFile()
 			var verNum = wubiLex.getVersion();
-			var verText = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["06"]="五笔新世纪";["zhengma"]="郑码";xhyx="小鹤音形"})[verNum]; 
+			var verText = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["06"]="五笔新世纪";["zhengma"]="郑码";xhyx="小鹤音形";bxm="表形码"})[verNum]; 
 			winform.listbox.updateSystemLexVersion(verText,verNum)
 		},winform
 	)
@@ -761,7 +759,16 @@ var createMenuItems = function(){
 							
 							for txt in string.gmatch(selText,":+") { 
 								
-								var code = lexFile.combineCodeZhengma(txt);
+								var code = lexFile.combineZhengma(txt);
+								if(code){
+									push(result,code + '\t' + txt);
+								}
+							} 
+						} 
+						elseif(imeVer=="bxm"){ 
+							
+							for txt in string.gmatch(selText,":+") {
+								var code = lexFile.combineBxm(txt);
 								if(code){
 									push(result,code + '\t' + txt);
 								}
@@ -770,7 +777,7 @@ var createMenuItems = function(){
 						else {
 							for txt in string.gmatch(selText,":+") { 
 								
-								var code = lexFile.combineCode(txt);
+								var code = lexFile.combine(txt);
 								if(code){
 									push(result,code + '\t' + txt);
 								}
@@ -837,7 +844,7 @@ var createMenuItems = function(){
 								
 								if(strlen(word)==1) continue;
 								
-								var code = lexFile.combineCodeZhengma(word);
+								var code = lexFile.combineZhengma(word);
 								var items = lexFileNew.getCode(code)
 								if(!#items && code){
 									if(!newWord[code])newWord[code]={{word;weight}}
@@ -853,7 +860,7 @@ var createMenuItems = function(){
 								if(!word) continue;
 								if(strlen(word)==1) continue;
 								
-								var code = lexFile.combineCode(word);
+								var code = lexFile.combine(word);
 								var items = lexFileNew.getCode(code)
 								if(!#items && code){
 									if(!newWord[code])newWord[code]={{word;weight}}

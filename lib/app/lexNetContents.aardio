@@ -184,6 +184,23 @@ namespace app.lexNetContents{
 				};
 			}
 		};
+		{
+        	items = {
+             	{
+                	name = "表形码威版";
+                	url = "http://wubi.aardio.com/download/lex/bxm.wei.lex.lzma";
+            	};
+            	{
+                	name = "表形码 Win95 版";
+                	url = "http://wubi.aardio.com/download/lex/bxm.win95.lex.lzma";
+            	};
+            	{
+                	name = "表形码老夫子版";
+                	url = "http://wubi.aardio.com/download/lex/bxm.lfz.lex.lzma";
+            	};
+        	},
+        	name = "表形码"
+    	},
 	} 
 }
 

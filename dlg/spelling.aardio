@@ -97,14 +97,24 @@ var searchSpelling = win.debounce(function(str){
 	if(wb.script.animateCharacter) wb.script.animateCharacter(firstChar);
 	
 	var ver = winform.wubiVersion;
-	var levelOne = wubi.table.levelOne[ver];
+	var levelOne = wubi.table.levelOne[[ver]];
+	if(!levelOne){
+		levelOne = {}
+		for(i='A'#;'Z'#;1){
+			var c = ..string.pack(i);
+			var words = winform.systemLex.outputMap[..string.lower(c)];
+			levelOne[c] = words[[1]];
+		} 
+		wubi.table.levelOne[[ver]] = levelOne;
+	}
+	
 	if(!table.find(levelOne,str)){ 
 		for(name,ctrl in winform.eachControl("plus","key[A-Z]") ){
 			ctrl.checked = false
 			ctrl.text = ""	
 			
 			var k = string.right(name,1);
-			var wubiKeyChars = wubi.table[ver][k];
+			var wubiKeyChars = wubi.table[ver][[k]];
 			if(wubiKeyChars){
 				ctrl.iconText = k +" "+ string.charAt(wubiKeyChars,1);	
 			} 
@@ -171,7 +181,7 @@ var searchSpelling = win.debounce(function(str){
 	var length  = #wchars;
 	 
 	var spellingTable = wubi.spellingTable.init(winform.wubiVersion);
-	if(winform.wubiVersion=="zhengma"){
+	if(winform.wubiVersion=="zhengma" || winform.wubiVersion=="bxm"){
 		winform.txtSpelling.text = spellingTable.find(str); 
 		return;
 	}
@@ -436,7 +446,7 @@ subscribe("wubi.system.phrase.changed",function(...){
 subscribe("wubi.system.lex.changed",function(...){
 	winform.systemLex = wubi.lexFile()
 	var ver  = winform.systemLex.getVersion()
-	var verString = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["06"]="五笔新世纪";["zhengma"]="郑码";["xhyx"]="小鹤音形"})[ver];
+	var verString = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["06"]="五笔新世纪";["zhengma"]="郑码";["xhyx"]="小鹤音形";["bxm"]="表形码"})[ver];
 	winform.plusTitle.text = '根据系统码表( ' +verString + ' )反查上面输入的汉字,可直接输入拼音\n五笔编码自第二码开始可使用Z键通配任意编码（ 首码除外 ）'
 	
 	var wubiSpellingGifPath86 = fsys.appdata("aardio\std\wubi\spelling\86");
@@ -461,13 +471,14 @@ subscribe("wubi.system.lex.changed",function(...){
 	
 	var keyboardChars1 = wubi.table[ver]
 	var keyboardChars2 = wubi.table.keyboard[ver];
+	
 	for(name,ctrl in winform.eachControl("plus","^key[A-Z]") ){
 		ctrl.onMouseHover = function(wParam,lParam){
 			winform.hotkey.hide = true;
 			if(!winform.wubiVersion) return;
 			
 			var k = string.right(name,1);
-			var wubiKeyChars = wubi.table[winform.wubiVersion][k]
+			var wubiKeyChars = wubi.table[winform.wubiVersion][[k]]
 			if(wubiKeyChars){
 				winform.plusWubiTable.text = wubiKeyChars;
 				showEtymonImage(winform.wubiVersion,k);	
@@ -479,7 +490,7 @@ subscribe("wubi.system.lex.changed",function(...){
 		}	
 		
 		var k = string.right(name,1);
-		var wubiKeyChars = keyboardChars1[k];
+		var wubiKeyChars = keyboardChars1[[k]];
 		if(wubiKeyChars){
 			ctrl.iconText = k +" "+ string.charAt(wubiKeyChars,1);
 		}

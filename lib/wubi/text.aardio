@@ -1,4 +1,4 @@
-﻿
+﻿//text 文本编码
 namespace wubi.text;
 
 var unhex  = ..string.unhex;
