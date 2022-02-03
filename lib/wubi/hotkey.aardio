@@ -13,7 +13,7 @@ default = /*******
 }
 
 /* 
-//中文模式下按 Ctrl+. 切换中英文标点模式 ,WIN2004以上系统已经默认支持
+//中文模式下按 Ctrl+. 切换中英文标点模式 ,Win10 2004 以上系统已经默认支持
 ["Ctrl+."] = function(){  
     import win.reg;
     var reg = win.reg("HKEY_CURRENT_USER\Software\Microsoft\InputMethod\Settings\CHS");

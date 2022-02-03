@@ -181,7 +181,7 @@ namespace tsfUtil{
 								if(phraseText){
 									var ret,err = ..wubi.phrase.saveToSystem(phraseText);
 									if(!ret){
-										winform.msgboxErr(err:"未知错误","wubiLex - 短语词库")
+										winform.msgboxErr(err:"未知错误","WubiLex - 短语词库")
 									} 	
 									else {
 										winform.publish("wubi.system.phrase.changed")

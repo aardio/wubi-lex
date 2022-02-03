@@ -18,8 +18,15 @@ import win.versionEx;
 winform.btnLoad.oncommand = function(id,event){
 	winform.lbTip.text = "";
 	
-	if( !win.versionEx.isWin10ReleaseLater("1703") ){
-		return winform.msgboxErr("仅支持 Win10 1703以上版本的五笔短语词库")
+	var is1703Later;
+	if(_WIN10_LATER) {
+		if( _WIN_VER_MAJOR > 10 ||  _WIN_VER_MINOR > 0 || _WIN_VER_BUILD >= 15063 ){
+			is1703Later = true;
+		} 
+	}
+
+	if( !is1703Later ){
+		return winform.msgboxErr("仅支持 Win10 1703 以上版本的五笔短语词库")
 	}
 	
 	var wubiUdpPath = wubi.phrase.getWubiUdpPrimaryPath() 
@@ -54,8 +61,15 @@ winform.btnSave.oncommand = function(id,event){
 	config.phrase.editorText = winform.editPhrase.text;
 	config.phrase.save();
 	
-	if( !win.version.isWin10ReleaseLater("1703") ){
-		return winform.msgboxErr("仅支持 Win10 1703以上版本的五笔短语词库")
+	var is1703Later;
+	if(_WIN10_LATER) {
+		if( _WIN_VER_MAJOR > 10 ||  _WIN_VER_MINOR > 0 || _WIN_VER_BUILD >= 15063 ){
+			is1703Later = true;
+		} 
+	}
+
+	if( !is1703Later ){
+		return winform.msgboxErr("仅支持 Win10 1703 以上版本的五笔短语词库")
 	}
 	
 	var str = string.trim(winform.editPhrase.text);

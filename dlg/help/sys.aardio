@@ -1,11 +1,11 @@
 import win.ui;
 import fonts.fontAwesome;
 /*DSG{{*/
-var winform = win.form(text="wubiLex - WIN10 使用技巧";right=977;bottom=602;bgcolor=16777215;border="dialog frame")
+var winform = win.form(text="WubiLex - Windows 使用技巧";right=977;bottom=602;bgcolor=16777215;border="dialog frame")
 winform.add(
 btnHelp={cls="plus";text="下载仅 6.5MB、且永久免费的 aardio 可以快速编写桌面软件扩展系统功能";left=355;top=575;right=905;bottom=604;align="left";color=3947580;db=1;dl=1;dr=1;font=LOGFONT(h=-13);iconColor=2960685;iconStyle={align="left";font=LOGFONT(h=-16;name='FontAwesome')};iconText='\uF05A';notify=1;paddingLeft=20;z=3};
 keyboardShortcuts={cls="plus";left=12;top=15;right=966;bottom=574;align="left";border={color=-4144960;radius=8;width=1};db=1;dl=1;dr=1;dt=1;font=LOGFONT(h=-15);textPadding={left=10;top=10;right=10;bottom=10};valign="top";z=1};
-lbKeyboardShortcuts={cls="plus";text="WIN10 使用技巧:";left=51;top=2;right=218;bottom=24;align="left";dl=1;dr=1;dt=1;font=LOGFONT(h=-16);iconColor=2960685;iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome')};iconText='\uF11C  ';textPadding={left=30};z=2}
+lbKeyboardShortcuts={cls="plus";text="Windows 使用技巧:";left=51;top=2;right=218;bottom=24;align="left";dl=1;dr=1;dt=1;font=LOGFONT(h=-16);iconColor=2960685;iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome')};iconText='\uF11C  ';textPadding={left=30};z=2}
 )
 /*}}*/
 

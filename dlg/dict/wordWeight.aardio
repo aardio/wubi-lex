@@ -1,7 +1,7 @@
 import fonts.fontAwesome;
 import win.ui;
 /*DSG{{*/
-var winform = win.form(text="wubilex 码表编辑 - 重新计算权重";right=651;bottom=335;bgcolor=16777215;border="none";exmode="none";max=false;min=false;mode="popup")
+var winform = win.form(text="WubiLex 码表编辑 - 重新计算权重";right=651;bottom=335;bgcolor=16777215;border="none";exmode="none";max=false;min=false;mode="popup")
 winform.add(
 bk={cls="bk";left=0;top=0;right=653;bottom=29;bgcolor=12632256;z=5};
 btnOpenFile={cls="plus";text='\uF115';left=540;top=87;right=577;bottom=106;color=2960685;dr=1;font=LOGFONT(h=-16;name='FontAwesome');notify=1;z=3};

@@ -1,7 +1,7 @@
 import fonts.fontAwesome;
 import win.ui;
 /*DSG{{*/
-winform = win.form(text="wubiLex - 反查字根表简易编辑器";right=981;bottom=816)
+winform = win.form(text="WubiLex - 反查字根表简易编辑器";right=981;bottom=816)
 winform.add(
 btnLoad={cls="button";text="加载";left=684;top=13;right=809;bottom=46;dr=1;dt=1;font=LOGFONT(h=-15);z=4};
 btnLzma={cls="button";text="全部反查数据压缩输出为 lzma 文件";left=571;top=777;right=899;bottom=810;db=1;dr=1;font=LOGFONT(h=-15;name='FontAwesome');z=7};

@@ -15,7 +15,7 @@ newFile = function(winform,lexName,defaultLexName){
 		}
 		
 		var inputBox = ..win.inputBox(winform)
-		inputBox.text = "wubiLex - 保存码表"
+		inputBox.text = "WubiLex - 保存码表"
 		inputBox.info.text = "请为码表指定一个友好名称"
 		inputBox.input.text = lexName : defaultLexName : "";
 		

@@ -3,8 +3,8 @@ import win.ui;
 var winform = win.form(text="短语格式说明";right=816;bottom=634;bgcolor=16777215;border="dialog frame";exmode="toolwindow";max=false;min=false;mode="popup")
 winform.add(
 edit={cls="edit";text='zzxx\t测试短语(可以包含空格、制表符等)\t1\r\nzzxx\t测试短语(可以使用%0D表示回车,%0A表示换行,%20表示空格,%09表示制表符)\t2';left=21;top=79;right=795;bottom=147;color=32768;edge=1;font=LOGFONT(h=-15);multiline=1;z=1};
-edit2={cls="edit";text='zzxx,1=测试短语(可以包含空格、制表符等)\r\nzzsj=2,%yyyy%年%MM%月%dd%日 %HH%:%mm%:%ss%\r\nzzsj=2,%yy%年%M%月%d%日 %H%:%m%:%s%\r\n/*上面百分号包含的是时间变量，注意：在WIN10系统设置页修改短语会导致时间变量失效*/';left=21;top=202;right=795;bottom=298;autohscroll=false;color=32768;edge=1;font=LOGFONT(h=-15);multiline=1;z=4};
-edit3={cls="edit";text='zzxx=测试短语\r\nzzbd=$[．· …… … \uFF5E \u2500\u2500 \u2500 ‖ \u2235 \u2234 \u2606 \u2605 \u25CB \u25CF \u25CE \u25C7 \u25C6 \u25A1 \u25A0 \u25B3 \u25B2 ※ \u3013]\r\nzzkh=$[「」『』〖〗《》〈〉〔〕【】\u226E\u226F\u2264\u2265]\r\n/*必须使用wubiLex才能使用这种写法（WIN10系统短语设置页面并不支持）。*/';left=21;top=420;right=795;bottom=524;color=32768;edge=1;font=LOGFONT(h=-15);multiline=1;z=7};
+edit2={cls="edit";text='zzxx,1=测试短语(可以包含空格、制表符等)\r\nzzsj=2,%yyyy%年%MM%月%dd%日 %HH%:%mm%:%ss%\r\nzzsj=2,%yy%年%M%月%d%日 %H%:%m%:%s%\r\n/*上面百分号包含的是时间变量，注意：在系统设置页修改短语会导致时间变量失效*/';left=21;top=202;right=795;bottom=298;autohscroll=false;color=32768;edge=1;font=LOGFONT(h=-15);multiline=1;z=4};
+edit3={cls="edit";text='zzxx=测试短语\r\nzzbd=$[．· …… … \uFF5E \u2500\u2500 \u2500 ‖ \u2235 \u2234 \u2606 \u2605 \u25CB \u25CF \u25CE \u25C7 \u25C6 \u25A1 \u25A0 \u25B3 \u25B2 ※ \u3013]\r\nzzkh=$[「」『』〖〗《》〈〉〔〕【】\u226E\u226F\u2264\u2265]\r\n/*必须使用 WubiLex 才能使用这种写法（系统短语设置页面并不支持）。*/';left=21;top=420;right=795;bottom=524;color=32768;edge=1;font=LOGFONT(h=-15);multiline=1;z=7};
 static={cls="static";text="每行表示一个短语配置，每行包含3个部份：按键 输出短语 候选词排列位置
 3个部分使用空格或制表符分隔，使用小写字母串表示按键，输出文本可包含空白字符。
 例如按 zzxx 键输出短语“测试短语”以及 “测试短语2”：";left=21;top=8;right=795;bottom=77;font=LOGFONT(h=-16);transparent=1;z=2};
@@ -12,7 +12,7 @@ static2={cls="static";text='省略候选词排列位置则按添加短语的先�
 static3={cls="static";text="注意1：码表不可使用系统短语词库已占用的编码,在码表编辑器右键菜单中点
 「提取短语 -> 提取系统短语已占用编码」把冲突的词条提取到短语中可避免候选词排序出错。
 
-注意2：在WIN10系统短语设置页修改短语会导致这里的时间变量变成固定时间。";left=21;top=536;right=795;bottom=618;color=128;font=LOGFONT(h=-13);transparent=1;z=8};
+注意2：在系统短语设置页修改短语会导致这里的时间变量变成固定时间。";left=21;top=536;right=795;bottom=618;color=128;font=LOGFONT(h=-13);transparent=1;z=8};
 static4={cls="static";text="候选词排列位置可以省略(同时省略逗号)，可在等号后，也可放在等号前，等号后立即换行支持多行文本。";left=21;top=307;right=811;bottom=337;font=LOGFONT(h=-13);transparent=1;z=5};
 static5={cls="static";text="输出短语也可以写为$[短语数组]这种格式，短语数组可以按候选位置一次性排列包含多个短语，短语间使用空格分隔（不能使用制表符分隔），如果所有短语都是单个字符 - 可以省略分隔符。请看下面的例子：";left=21;top=344;right=795;bottom=417;font=LOGFONT(h=-16);transparent=1;z=6}
 )

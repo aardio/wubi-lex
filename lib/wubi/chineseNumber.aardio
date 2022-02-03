@@ -8,7 +8,7 @@ namespace wubi;
 class chineseNumber{
 	ctor(parent,tParam){
 	/*DSG{{*/
-	this = ..win.form(text="wubiLex - 中文化数值";right=498;bottom=30;border="none";exmode="toolwindow";mode="popup";topmost=1)
+	this = ..win.form(text="WubiLex - 中文化数值";right=498;bottom=30;border="none";exmode="toolwindow";mode="popup";topmost=1)
 	this.add(
 	btnClose={cls="plus";text='\uF00D';left=466;top=0;right=500;bottom=34;color=2368548;font=LOGFONT(h=-15;name='FontAwesome');notify=1;z=5};
 	dropdown={cls="plus";left=0;top=0;right=466;bottom=31;align="right";bgcolor=16777215;border={color=-3546113;width=2};editable="edit";font=LOGFONT(h=-16);forecolor=16777215;iconStyle={align="right";font=LOGFONT(name='FontAwesome');padding={right=8}};notify=1;textPadding={left=2;top=6;right=7;bottom=2};z=1};
