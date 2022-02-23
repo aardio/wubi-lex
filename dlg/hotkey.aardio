@@ -90,10 +90,21 @@ winform.btnSave.oncommand = function(id,event){
 		msgDlg.err('超级热键配置代码错误:\n'+e) 
 	}
 	
-	if(type(keyTable)==type.table){
-		for k,v in table.eachName(keyTable){ 
-			hotkeyMgr.regStr(k,v);
-		} 
+	var err;
+	try{
+		if(type(keyTable)==type.table){
+			for k,v in table.eachName(keyTable){ 
+				hotkeyMgr.regStr(k,v);
+			} 
+		}		
+	}
+	catch(e){
+		winform.editTable.showErrorTip(e);
+		err = e;
+	}
+	if(err){
+		winform.btnSave.disabledText = null;
+		return;
 	}
 
 	key.hotkey.lastAlphaKeys = function(){}

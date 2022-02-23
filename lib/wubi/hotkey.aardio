@@ -12,6 +12,8 @@ default = /*******
    ::User32.SwapMouseButton(!::User32.GetSystemMetrics(23));
 }
 
+/* 放在这中间的是注释 */
+
 /* 
 //中文模式下按 Ctrl+. 切换中英文标点模式 ,Win10 2004 以上系统已经默认支持
 ["Ctrl+."] = function(){  
@@ -32,6 +34,20 @@ default = /*******
     key.sendString("、")
 };
 */
+
+//引号配对
+[`SHIFT+"`] = function(){  
+   key.sendString(`""`);
+   key.up("SHIFT");
+   key.press("LEFT");
+}
+
+//括号配对
+[`SHIFT+(`] = function(){  
+   key.sendString(`()`);
+   key.up("SHIFT"); 
+   key.press("LEFT");
+}
 
 /*
 //按`date输入大写的当前日期

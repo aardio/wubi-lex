@@ -3,7 +3,7 @@ import process.admin;
 import fonts.fontAwesome;
 import win.ui;
 /*DSG{{*/
-mainForm = win.form(cls="AARDIO_WUBI_FORM";text="WubiLex ( 五笔助手 )";right=1040;bottom=642;border="none")
+mainForm = win.form(cls="AARDIO_WUBI_FORM";text="WubiLex ( 五笔助手 )";right=1040;bottom=642;bgcolor=16777215;border="none")
 mainForm.add(
 caption={cls="bkplus";text="WubiLex 10.9";left=35;top=12;right=153;bottom=30;color=15780518;dl=1;dt=1;font=LOGFONT(h=-16);z=5};
 custom={cls="custom";left=0;top=40;right=1040;bottom=643;bgcolor=16777215;db=1;dl=1;dr=1;dt=1;z=1};
