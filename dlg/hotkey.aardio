@@ -28,9 +28,9 @@ winform.chkDecimalPoint.skin(style.checkBox);
 winform.chkEnableHotkey.skin(style.checkBox);
 
 import config
-import wubi.hotkey;
+import app.hotkey;
 if(!config.hotkey.editTable){
-	config.hotkey.editTable = wubi.hotkey.default; 
+	config.hotkey.editTable = app.hotkey.defaultCode; 
 } 
 winform.bindConfig( config.hotkey,{
 	edit = "text";
@@ -192,7 +192,7 @@ winform.editTable.enablePopMenu({
 	{
 		"恢复到范例";
 		function(id){
-			winform.editTable.text = wubi.hotkey.default;
+			winform.editTable.text = app.hotkey.defaultCode;
 			winform.editTable.modified = false;
 		} 
 	};
@@ -200,7 +200,7 @@ winform.editTable.enablePopMenu({
 
 winform.btnReset.skin(style.button)
 winform.btnReset.oncommand = function(id,event){
-	winform.editTable.text = wubi.hotkey.default;
+	winform.editTable.text = app.hotkey.defaultCode;
 	winform.editTable.modified = false;
 }
 winform.editTable.modified = false;

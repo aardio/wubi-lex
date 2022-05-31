@@ -5,6 +5,7 @@ winform = win.form(text="WubiLex - 词库";right=1039;bottom=602;bgcolor=1579315
 winform.add(
 custom={cls="custom";left=62;top=0;right=1040;bottom=603;bgcolor=16777215;db=1;dl=1;dr=1;dt=1;z=3};
 navBar={cls="bkplus";left=0;top=-1;right=62;bottom=602;bgcolor=11829830;db=1;dl=1;dt=1;z=1};
+navImTip={cls="plus";text="ImTip";left=0;top=184;right=61;bottom=264;bkBottom=3;bkLeft=7;bkRight=8;bkTop=2;border={color=-65536};color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={font=LOGFONT(h=-25;name='FontAwesome');padding={bottom=20}};iconText='\uF034';notify=1;textPadding={bottom=10};valign="bottom";x=0.5;y=0.2;z=5};
 navLex={cls="plus";text="码表";left=0;top=21;right=62;bottom=101;bkBottom=3;bkLeft=7;bkRight=8;bkTop=2;border={color=-65536};color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={font=LOGFONT(h=-29;name='FontAwesome');padding={bottom=20}};iconText='\uF0AE';notify=1;textPadding={bottom=10};valign="bottom";x=0.5;y=0.2;z=2};
 navPhrase={cls="plus";text="短语";left=0;top=102;right=62;bottom=182;bkBottom=3;bkLeft=7;bkRight=8;bkTop=2;border={color=-65536};color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={font=LOGFONT(h=-29;name='FontAwesome');padding={bottom=20}};iconText='\uF27B';notify=1;textPadding={bottom=10};valign="bottom";x=0.5;y=0.2;z=4}
 )
@@ -13,7 +14,7 @@ navPhrase={cls="plus";text="短语";left=0;top=102;right=62;bottom=182;bkBottom=
 import win.ui.tabs;
 var tbs = win.ui.tabs( 
 	winform.navLex,
-	winform.navPhrase,
+	winform.navPhrase
 );
 
 tbs.skin({
@@ -43,6 +44,28 @@ winform.showPhrase = function(){
 	tbs.selIndex = 2;	
 }
 
-winform.enableDpiScaling();
+winform.navImTip.skin({
+	background={
+		active=0xFFFFFFFF;
+		default=0x00FFFFFF;
+		hover=0x38FFFFFF
+	};
+	color={
+		default=0xFFFFFFFF; 
+	}; 
+})
+winform.navImTip.oncommand = function(id,event){
+	import win.ui.atom;
+	var atom,hwnd = ..win.ui.atom.find("E474890D-1DFA-4575-B456-7B46C15665DC.imtip");
+	
+	if(hwnd){
+		win.sendCopyData(hwnd,"start");
+	}
+	else { 
+		import process;
+		process.openUrl("http://imtip.aardio.com");
+	} 
+}
+
 winform.show();
-return win.loopMessage();
+win.loopMessage();

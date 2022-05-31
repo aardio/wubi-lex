@@ -14,7 +14,6 @@ if(!config.hotkey.spelling){
 	config.hotkey.spelling = {2/*_MOD_CONTROL*/;0x71/*_VK_F2*/}
 }
 
-
 /**intellisense(config)
 __appName = 应用程序名
 __appVersion = 应用程序内部版本号

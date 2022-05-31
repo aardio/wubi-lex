@@ -1,4 +1,5 @@
 ﻿//tsfInput 语言
+import sys.input;
 import win.rt.bcp47;
 import win.reg;
 
@@ -7,15 +8,15 @@ namespace tsfInput;
 var input = ..raw.loadDll("input.dll","","stdcall,unicode")
 
 enablePinyin = function(enabled){ 
-	input.InstallLayoutOrTipW("0804:{81D4E9C9-1D3B-41BC-9E6C-4B40BF79E35E}{FA550B04-5AD7-411F-A5AC-CA038EC515D7}",!enabled?1:0 )
+	..sys.input.disable("0804:{81D4E9C9-1D3B-41BC-9E6C-4B40BF79E35E}{FA550B04-5AD7-411F-A5AC-CA038EC515D7}",!enabled )
 }
 
 enableWubi = function(enabled){
-	input.InstallLayoutOrTipW("0x0804:{6A498709-E00B-4C45-A018-8F9E4081AE40}{82590C13-F4DD-44F4-BA1D-8667246FDF8E}",!enabled?1:0)
+	..sys.input.disable("0x0804:{6A498709-E00B-4C45-A018-8F9E4081AE40}{82590C13-F4DD-44F4-BA1D-8667246FDF8E}",!enabled)
 }
 
 enableUsKeyboard = function(enabled){ 
-	input.InstallLayoutOrTipW("0409:00000409",!enabled?1:0 )
+	..sys.input.disable("0409:00000409",!enabled?1:0 )
 }
 
 getInputMethods = ..win.rt.bcp47.getInputMethods;
@@ -77,17 +78,7 @@ getDoublePinyinSchemes = function(){
 			freeIndex = v.index+1;
 		}
 	}
-	
-	if(!result.xhup){
-		regSettings.setSzValue("UserDefinedDoublePinyinScheme"+(freeIndex-10),"小鹤双拼*2*^*iuvdjhcwfg^xmlnpbksqszxkrltvyovt") 
-		..table.push(result,{
-			name = "小鹤双拼";
-			index = freeIndex;
-			scheme = "小鹤双拼*2*^*iuvdjhcwfg^xmlnpbksqszxkrltvyovt";
-		})
-		
-		result.xhup = #result;
-	}
+	result.freeIndex = freeIndex;
 	
 	if(regSettings.queryValue("Enable Double Pinyin")){
 		result.default = regSettings.queryValue("DoublePinyinScheme") : 0;

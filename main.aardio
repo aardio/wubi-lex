@@ -5,7 +5,7 @@ import win.ui;
 /*DSG{{*/
 mainForm = win.form(cls="AARDIO_WUBI_FORM";text="WubiLex ( 五笔助手 )";right=1040;bottom=642;bgcolor=16777215;border="none")
 mainForm.add(
-caption={cls="bkplus";text="WubiLex 10.9";left=35;top=12;right=153;bottom=30;color=15780518;dl=1;dt=1;font=LOGFONT(h=-16);z=5};
+caption={cls="bkplus";text="WubiLex 11.0";left=35;top=12;right=153;bottom=30;color=15780518;dl=1;dt=1;font=LOGFONT(h=-16);z=5};
 custom={cls="custom";left=0;top=40;right=1040;bottom=643;bgcolor=16777215;db=1;dl=1;dr=1;dt=1;z=1};
 logo={cls="bkplus";text='\uF0AD';left=6;top=9;right=35;bottom=34;color=15780518;dl=1;dt=1;font=LOGFONT(h=-18;name='FontAwesome');z=4};
 stripHelp={cls="plus";text="帮助";left=557;top=5;right=651;bottom=40;align="left";color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome');padding={left=12;top=3}};iconText='\uF06A';notify=1;paddingLeft=1;paddingRight=1;paddingTop=3;textPadding={left=38};x=0.5;y=0.2;z=8};
@@ -95,6 +95,7 @@ mainForm.onDestroy = function(){
 	}
 }
 
+import config;
 import process;
 import win.ui.menu;
 import key;
@@ -103,23 +104,24 @@ mainForm.wndproc = {
 		if( lParam = 0x205/*_WM_RBUTTONUP*/ ){
 			win.setForeground(mainForm.hwnd)
 			mainForm.popmenu = win.ui.popmenu(mainForm);//创建弹出菜单
-			mainForm.popmenu.add('五笔设置',function(id){
+			mainForm.popmenu.add('设置输入法',function(id){
 				tbs.selIndex = 4;
 				mainForm.show();
 			});
-			mainForm.popmenu.add('超级热键',function(id){
+			mainForm.popmenu.add('设置超级热键',function(id){
 				tbs.selIndex = 3;
-				mainForm.show(); 
+				mainForm.show();  
 			});
+			 
 			mainForm.popmenu.add();
 			
-			mainForm.popmenu.add('管理系统码表',function(id){
+			mainForm.popmenu.add('管理码表',function(id){
 				tbs.selIndex = 1;
 				tbs.selForm.showLex();
 				mainForm.show();
 			});
 			
-			mainForm.popmenu.add('管理用户短语词库',function(id){
+			mainForm.popmenu.add('管理短语',function(id){
 				tbs.selIndex = 1;
 				tbs.selForm.showPhrase();
 				mainForm.show();
@@ -149,12 +151,17 @@ mainForm.wndproc = {
 				publish("spellingFocus")
 			});
 			
-			mainForm.popmenu.add('查看字根键位图',function(id){
+			mainForm.popmenu.add('└──  字根键位图',function(id){
 				publish("showEtymon");
 				mainForm.show();
 			});
 			mainForm.popmenu.add();
-			 
+			
+			mainForm.popmenu.add('系统设置 / 输入法',function(id){
+				import process.control;
+				process.control("ms-settings:keyboard")
+			});
+			
 			import tsfInput;
 			var imStatus = tsfInput.getStatus();
 			var wubiVersion = ""
@@ -165,6 +172,11 @@ mainForm.wndproc = {
 				tsfInput.enableWubi(!imStatus.wubi);
 			});
 			mainForm.popmenu.check(id,imStatus.wubi,0/*_MF_BYCOMMAND*/);
+			
+			mainForm.popmenu.add('└──  系统设置 / 五笔',function(id){
+				import process.control;
+				process.control("ms-settings:regionlanguage-chsime-wubi");
+			});
 			
 			var id = mainForm.popmenu.add('启用英文键盘',function(id){
 				tsfInput.enableUsKeyboard(!imStatus.en);
@@ -179,24 +191,12 @@ mainForm.wndproc = {
 			mainForm.popmenu.check(id,imStatus.pinyin,0/*_MF_BYCOMMAND*/);
 
 			import ui.doublePinyinMenu;
-		 	mainForm.popmenu.add('双拼方案',ui.doublePinyinMenu(mainForm));
-			
-			mainForm.popmenu.add();
-			mainForm.popmenu.add('打开系统输入法设置 ...',function(id){
-				import process.control;
-				process.control("ms-settings:keyboard")
-			});
-			mainForm.popmenu.add('打开系统五笔设置 ...',function(id){
-				import process.control;
-				process.control("ms-settings:regionlanguage-chsime-wubi");
-			});
+		 	mainForm.popmenu.add('└──  双拼方案',ui.doublePinyinMenu(mainForm));
+		
 			mainForm.popmenu.add();
 			mainForm.popmenu.add('打开屏幕键盘',function(id){
-				import process;
-				import fsys.wow64;
-				fsys.wow64.disableRedirection(
-				    lambda() process.execute("osk")
-				);
+				import process.wow64;
+				process.wow64.execute("osk")
 			});
 			
 			var id = mainForm.popmenu.add('反转鼠标左右按键',function(id){
@@ -204,18 +204,9 @@ mainForm.wndproc = {
 			});
 			mainForm.popmenu.check(id,::User32.GetSystemMetrics(23),0/*_MF_BYCOMMAND*/); 
 			
-			mainForm.popmenu.add('关闭显示器',function(id){
-    			//延时异步执行，避免显示器刚关掉又被唤醒
-    			winform.setTimeout( 
-        			function(){ 
-            			//用:User32.SendMessage会卡，改用异步的::User32.PostMessage
-            			::User32.PostMessage( 0xFFFF/*_HWND_BROADCAST*/ ,0x112/*_WM_SYSCOMMAND*/, 0xF170/*_SC_MONITORPOWER*/ ,2);
-        			},200 //给一点延时，万一鼠标还在晃呢?
-    			)	
-			});
 			mainForm.popmenu.add();
 			
-			mainForm.popmenu.add('打开官网: wubi.aardio.com',function(id){
+			mainForm.popmenu.add('官方网站',function(id){
 				process.openUrl("http://wubi.aardio.com")
 			});
 			
@@ -287,9 +278,6 @@ else {
 import win.ui.accelerator;
 win.ui.accelerator({
 	{ ctrl = true; vkey = 'W'#; oncommand = function(id,event){ 
-		import console
-		console.log(12)
-	
 	mainForm.hitMin() } }  
 },mainForm);
 
