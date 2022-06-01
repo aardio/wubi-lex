@@ -19,10 +19,5 @@
 			<file name="sys.aardio" path="dlg\help\sys.aardio" comment="dlg\help\sys.aardio"/>
 			<file name="wubi.aardio" path="dlg\help\wubi.aardio" comment="dlg\help\wubi.aardio"/>
 		</folder>
-		<folder name="web" path="dlg\web" embed="true" comment="目录" local="false" ignored="false">
-			<file name="hanzi-writer.min.js" path="dlg\web\hanzi-writer.min.js" comment="dlg\web\hanzi-writer.min.js"/>
-			<file name="polyfill.min.js" path="dlg\web\polyfill.min.js" comment="dlg\web\polyfill.min.js"/>
-			<file name="writer.html" path="dlg\web\writer.html" comment="dlg\web\writer.html"/>
-		</folder>
 	</folder>
 </project>
