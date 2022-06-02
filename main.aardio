@@ -5,7 +5,7 @@ import win.ui;
 /*DSG{{*/
 mainForm = win.form(cls="AARDIO_WUBI_FORM";text="WubiLex ( 五笔助手 )";right=1040;bottom=642;bgcolor=16777215;border="none")
 mainForm.add(
-caption={cls="bkplus";text="WubiLex 11.0";left=35;top=12;right=153;bottom=30;color=15780518;dl=1;dt=1;font=LOGFONT(h=-16);z=5};
+caption={cls="bkplus";text="WubiLex 11.2";left=35;top=12;right=153;bottom=30;color=15780518;dl=1;dt=1;font=LOGFONT(h=-16);z=5};
 custom={cls="custom";left=0;top=40;right=1040;bottom=643;bgcolor=16777215;db=1;dl=1;dr=1;dt=1;z=1};
 logo={cls="bkplus";text='\uF0AD';left=6;top=9;right=35;bottom=34;color=15780518;dl=1;dt=1;font=LOGFONT(h=-18;name='FontAwesome');z=4};
 stripHelp={cls="plus";text="帮助";left=557;top=5;right=651;bottom=40;align="left";color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome');padding={left=12;top=3}};iconText='\uF06A';notify=1;paddingLeft=1;paddingRight=1;paddingTop=3;textPadding={left=38};x=0.5;y=0.2;z=8};
@@ -157,11 +157,7 @@ mainForm.wndproc = {
 			});
 			mainForm.popmenu.add();
 			
-			mainForm.popmenu.add('系统设置 / 输入法',function(id){
-				import process.control;
-				process.control("ms-settings:keyboard")
-			});
-			
+		 
 			import tsfInput;
 			var imStatus = tsfInput.getStatus();
 			var wubiVersion = ""
@@ -192,6 +188,55 @@ mainForm.wndproc = {
 
 			import ui.doublePinyinMenu;
 		 	mainForm.popmenu.add('└──  双拼方案',ui.doublePinyinMenu(mainForm));
+		 	
+		 	
+		 	mainForm.popmenu.add();//分隔线
+		 	
+		 	mainForm.popmenu.add('打开系统输入法设置',function(id){
+				import process.control;
+				process.control("ms-settings:keyboard")
+			});
+		 	
+
+		 	var menuDefTip = ..win.ui.popmenu(..mainForm);
+			var id = menuDefTip.add("所有应用使用同一输入法",function(){ 
+				..tsfInput.setLocal(!..tsfInput.getLocal());
+			})
+			menuDefTip.check(id,!..tsfInput.getLocal(),0/*_MF_BYCOMMAND*/);  
+			
+			var inputMethodOverride = ..tsfInput.getInputMethodOverride();
+			var tips = ..sys.input.getEnabledLayoutOrTips();
+			if(..table.next(tips)){
+				
+				for(tip,tipType in tips){
+					if(tipType==2/*_LOTP_KEYBOARDLAYOUT*/){
+						var desc = ..sys.input.getDescription(tip);
+						if(#desc){
+							var id = menuDefTip.add(desc,function(){ 
+								if(tip!=inputMethodOverride) ..sys.input.setDefault(tip);
+								else ..sys.input.setDefault("");
+							})
+							menuDefTip.check(id,tip==inputMethodOverride,0/*_MF_BYCOMMAND*/);  
+						}
+					} 
+				} 
+							
+				for(tip,tipType in tips){
+					if(tipType==1/*_LOTP_INPUTPROCESSOR*/){
+						var desc = ..sys.input.getDescription(tip);
+						if(#desc){
+							var id = menuDefTip.add(desc,function(){ 
+								if(tip!=inputMethodOverride) ..sys.input.setDefault(tip);
+								else ..sys.input.setDefault("");
+							})
+							menuDefTip.check(id,tip==inputMethodOverride,0/*_MF_BYCOMMAND*/);  
+						}
+					} 
+				} 
+			}
+			
+			mainForm.popmenu.add('设置默认输入法',menuDefTip);   
+			
 		
 			mainForm.popmenu.add();
 			mainForm.popmenu.add('打开屏幕键盘',function(id){

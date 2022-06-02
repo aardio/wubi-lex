@@ -4,7 +4,7 @@ import process;
 import process.cache;
 import process.popen;
 import process.batch;
-import wubi.candidateWindow;
+import winex.msCandidate;
 import win.dlg.message;
 import key.hotkey;
 import winex;
@@ -57,7 +57,7 @@ import winex.key;
 import dotNet.ocr;
 import winex.accObject;
 import wubi.chineseNumber;
-import wubi.candidateWindow;
+import winex.msCandidate;
 import string.chineseNumber;
 
 var hotkeyMgr;
@@ -115,7 +115,7 @@ winform.btnSave.oncommand = function(id,event){
 			if(key.getStateX("CTRL"))return;
 			if(key.getStateX("ALT"))return;
 			
-			if(wubi.candidateWindow.isVisible() ) {
+			if(winex.msCandidate.isVisible() ) {
 				hotkeyMgr.prevKeyCode = null;
 				return;
 			}

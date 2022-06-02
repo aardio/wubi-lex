@@ -1,7 +1,7 @@
 import fonts.fontAwesome;
 import win.ui;
 /*DSG{{*/
-winform = win.form(text="WubiLex - 词库";right=1039;bottom=602;bgcolor=15793151;border="none")
+var winform = win.form(text="WubiLex - 词库";right=1039;bottom=602;bgcolor=15793151;border="none")
 winform.add(
 custom={cls="custom";left=62;top=0;right=1040;bottom=603;bgcolor=16777215;db=1;dl=1;dr=1;dt=1;z=3};
 navBar={cls="bkplus";left=0;top=-1;right=62;bottom=602;bgcolor=11829830;db=1;dl=1;dt=1;z=1};
@@ -60,6 +60,11 @@ winform.navImTip.oncommand = function(id,event){
 	
 	if(hwnd){
 		win.sendCopyData(hwnd,"start");
+		
+		var hwnd  = winex.find("IMTIP_SETTING_FORM");
+		if(hwnd){
+			win.setForeground(hwnd);			
+		}
 	}
 	else { 
 		import process;
