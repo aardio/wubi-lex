@@ -1,7 +1,7 @@
 # WubiLex ( 五笔助手 )
 Win10/Win11 自带五笔码表与短语词库安装、管理工具( 可将五笔替换为郑码等其他形码输入法 )，增强微软五笔的设置、热键等功能。
 
-> <a href="http://wubi.aardio.com/update/WubiLex.7z">点这里下载 WubiLex( 五笔助手 )，</a>  体积仅 862KB。   
+> <a href="http://wubi.aardio.com/update/WubiLex.7z">点这里下载 WubiLex( 五笔助手 )，</a>  体积仅 818KB。   
 > 软件界面以全部功能使用使用纯<a href="http://www.aardio.com/">aardio 编程语言(开发环境仅 6.5MB)</a> 实现。 
 
    
@@ -21,7 +21,7 @@ Win10/Win11 自带五笔码表与短语词库安装、管理工具( 可将五笔
 
 为了解决上述的问题，我自己写了一个开源软件 WubiLex :
 > 这是一个 Win10/Win11 自带五笔的码表与短语词库安装、管理工具，并可增强微软五笔的设置、热键等功能。
-发布后的软件仅820KB, 只要一个EXE文件，不需要安装，不需要任何DLL依赖。软件已自带五笔86、98、091、新世纪码表，以及极点五笔、QQ五笔、
+发布后的软件仅 818KB, 只要一个EXE文件，不需要安装，不需要任何DLL依赖。软件已自带五笔 86、98、091、新世纪码表，以及极点五笔、QQ五笔、
 微软五笔默认词库、昱琼词库、海峰词库等。甚至自带了小鹤音形、郑码词库、表形码词库等，可以一键把微软五笔替换为小鹤音形输入法、郑码输入法、表形码输入法。
 
 ![微软五笔词库替换](./screenshots/1.png)
@@ -50,25 +50,9 @@ WubiLex 提供了方便的反查拆字功能。按 Ctrl + F2 反查五笔编码�
 
 另外，WubiLex 还提供了强大的「超级热键」功能，可以用于扩展输入法功能，
 列如输入数字后自动将句号转换为小数点，输入大写中文数字的中文日期等等。
-![超级热键](./screenshots/4.png)
-这里补充一个重要的超级热键，  
-效果：中文模式下按 Ctrl+. 切换中英文标点模式。  
-将下面的代码复制到「超级热键」中，然后点击「保存」按钮即可生效。  
-``` javascript
-["Ctrl+."] = function(){    
-    import win.reg;  
-    var reg = win.reg("HKEY_CURRENT_USER\Software\Microsoft\InputMethod\Settings\CHS");  
-    var mode = !reg.queryValue("UseEnglishPunctuationsInChineseInputMode") ? 1 : 0  
-    reg.setDwValue("UseEnglishPunctuationsInChineseInputMode",mode)	  
-      
-    key.ime.changeRequest(0x4090409)  
-    key.ime.changeRequest(0x8040804)  
-};  
-```
+![超级热键](./screenshots/4.png)  
 
-补充： Win10 2004 已经默认支持 Ctrl +. 快捷键( 中文输入模式才有效 )   
-  
-再介绍一个超级热键：按Ctrl+$ 打开财务大写、日期时间大写、数学运算工具。    
+超级热键：按Ctrl+$ 打开财务大写、日期时间大写、数学运算工具。    
 将下面的代码复制到「超级热键」中，然后点击「保存」按钮即可生效。    
 ``` javascript
 ["Ctrl+$"] = function(){  
@@ -79,6 +63,53 @@ WubiLex 提供了方便的反查拆字功能。按 Ctrl + F2 反查五笔编码�
 效果如下：  
 ![财务大写](./screenshots/cn.gif) 
 
+超级热键：按大写 + 自动切换到英文输入。      
+``` javascript
+["CAPSLK"]  = function(){  
+    key.ime.setOpenStatus(false);
+    key.ime.setConversionMode(0); 
+    
+    return true;//允许按键继续发送，不改变大小写键的默认行为
+};
+```
+
+超级热键：斜杠“/”改为顿号。      
+``` javascript
+["/"] = function(){
+    var openState,mode = key.ime.state();
+    if( !( openState && (mode==3) ) ) return true; 
+    key.sendString("、")
+};
+```
+
+超级热键：顿号改为斜杠“/” 。    
+``` javascript
+["/"] = function(){
+    var openState,mode = key.ime.state();
+    if( !( openState && (mode==3) ) ) return true;
+    key.sendString("/")
+};
+```
+
+超级热键：叠字键。    
+``` javascript
+["`"]  = function(){  
+   var openState,mode = key.ime.state();//用法请查看 aardio 文档
+   if(!openState 
+   		||  mode !=3 || key.getState("Shift")  
+   		|| key.getState("Ctrl")  
+   		|| key.getState("CAPSLK")  ) {
+  		return true; //允许此按键继续发送
+   }
+   
+   key.combine("SHIFT","LEFT"); //向后选一个字
+   key.combine("CTRL","C"); //复制
+   key.press("RIGHT"); //取消选中
+   key.combine("CTRL","V"); //粘贴
+};
+```
+更多热键建议下载 aardio 查看 aardio 自带的范例，WubiLex 新版已经自带了 process.popen,process.batch 等支持库，可以方便地执行命令行、批处理、PowerShell 脚本等，也可以方便地创建 COM 对象，调用系统 API 函数。可以自行添加更多的 aardio 库，按原路径放到 ImTip.exe 所在目录的 /lib/ 目录下即可。  
+
 
 WubiLex 的帮助页面收集整理了很多微软五笔常用快捷键、用法帮助。  
 注意：Win10 2004 以上版本已经可以关闭 Shift, Ctrl+Space 等快捷键。  
@@ -86,4 +117,8 @@ WubiLex 的帮助页面收集整理了很多微软五笔常用快捷键、用法
 并提供了五笔86、五笔98、五笔新世纪（06版）、五笔091、郑码等字根图，
 整理收集了所有可以直接复制粘贴的文本字根(不需要安装自定义字体)
 ![五笔字根图](./screenshots/7.jpg)
+ 
+WubiLex 还可以快捷开关、切换英文键盘、微软五笔、微软拼音，并可方便地切换微软双拼方案。如果小鹤双拼方案未安装仍然会出现在双拼候选列表中 —— 勾选即可自动安装。
+
+![五笔字根图](./screenshots/0.png)
  
