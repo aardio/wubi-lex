@@ -1,6 +1,6 @@
 //chineseNumber 大写数值
 import win.ui;
-import fonts.imtip;
+import fonts.fontAwesome;
 import winex.caret;
 import win.ui.tabs;
 
@@ -8,10 +8,10 @@ namespace ui;
 class chineseNumber{
 	ctor(numberChars,unitChars){
 	/*DSG{{*/
-	this = ..win.form(text="ImTip - 中文化数值";right=498;bottom=30;border="none";exmode="toolwindow";mode="popup";topmost=1)
+	this = ..win.form(text="WubiLex - 中文化数值";right=498;bottom=30;border="none";exmode="toolwindow";mode="popup";topmost=1)
 	this.add(
-	btnClose={cls="plus";text='\uF839';left=466;top=0;right=500;bottom=34;color=2368548;font=LOGFONT(h=-15;name='imtip');notify=1;z=5};
-	dropdown={cls="plus";left=0;top=0;right=466;bottom=31;align="right";bgcolor=16777215;border={color=-3546113;width=2};editable="edit";font=LOGFONT(h=-16);forecolor=16777215;iconStyle={align="right";font=LOGFONT(name='imtip');padding={right=8}};notify=1;textPadding={left=2;top=6;right=7;bottom=2};z=1};
+	btnClose={cls="plus";text='\uF839';left=466;top=0;right=500;bottom=34;color=2368548;font=LOGFONT(h=-15;name='fontAwesome');notify=1;z=5};
+	dropdown={cls="plus";left=0;top=0;right=466;bottom=31;align="right";bgcolor=16777215;border={color=-3546113;width=2};editable="edit";font=LOGFONT(h=-16);forecolor=16777215;iconStyle={align="right";font=LOGFONT(name='fontAwesome');padding={right=8}};notify=1;textPadding={left=2;top=6;right=7;bottom=2};z=1};
 	menuItem={cls="plus";text="测试菜单三";left=1;top=33;right=500;bottom=78;align="right";bgcolor=11525002;border={left=1;right=1;bottom=1;color=-3546113};tabstop=1;textPadding={right=20};z=2};
 	menuItem2={cls="plus";text="测试菜单三";left=1;top=78;right=500;bottom=123;align="right";bgcolor=11525002;border={left=1;right=1;bottom=1;color=-3546113};tabstop=1;textPadding={right=20};z=3};
 	menuItem3={cls="plus";text="测试菜单三";left=1;top=123;right=500;bottom=168;align="right";bgcolor=11525002;border={left=1;right=1;bottom=1;color=-3546113};tabstop=1;textPadding={right=20};z=4}

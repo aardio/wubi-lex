@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<project ver="10" name="WubiLex" libEmbed="true" icon="\app.ico" ui="win" output="WubiLex.exe" CompanyName="aardio" FileDescription="WubiLex ( 五笔助手 )" LegalCopyright="Copyright (C) aardio 2021" ProductName="WubiLex ( 五笔助手 )" InternalName="WubiLex.exe" FileVersion="11.2.0.0" ProductVersion="11.2.0.0" publishDir="/dist/" dstrip="true" local="false" ignored="false">
+<project ver="10" name="WubiLex" libEmbed="true" icon="\app.ico" ui="win" output="WubiLex.exe" CompanyName="aardio" FileDescription="WubiLex ( 五笔助手 )" LegalCopyright="Copyright (C) aardio 2021" ProductName="WubiLex ( 五笔助手 )" InternalName="WubiLex.exe" FileVersion="11.3.0.0" ProductVersion="11.3.0.0" publishDir="/dist/" dstrip="true" local="false" ignored="false">
 	<file name="main.aardio" path="main.aardio" comment="main.aardio"/>
 	<folder name="资源文件" path="res" embed="true" local="false" ignored="false"/>
 	<folder name="界面" path="dlg" comment="目录" embed="true" local="false" ignored="false">
