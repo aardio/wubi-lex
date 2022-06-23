@@ -56,7 +56,9 @@ import winex.mouse;
 import winex.key;
 import dotNet.ocr;
 import winex.accObject;
-import wubi.chineseNumber;
+import wubi.chineseNumber;//@Deprecated
+import ui.chineseNumber;//@Deprecated
+import win.dlg.chineseNumber;
 import winex.msCandidate;
 import string.chineseNumber;
 

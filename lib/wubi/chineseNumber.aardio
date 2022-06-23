@@ -1,5 +1,5 @@
 //chineseNumber 大写数值
-import ui.chineseNumber;
+import win.dlg.chineseNumber;
 
 namespace wubi;
-chineseNumber = ..ui.chineseNumber;
+chineseNumber = ..win.dlg.chineseNumber; //@Deprecated
