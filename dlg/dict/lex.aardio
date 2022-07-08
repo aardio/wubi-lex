@@ -843,12 +843,18 @@ var createMenuItems = function(){
 								if(!word) continue;
 								
 								if(strlen(word)==1) continue;
+								weight = tonumber(weight);
 								
 								var code = lexFile.combineZhengma(word);
+								if(!code) continue;
+								
 								var items = lexFileNew.getCode(code)
-								if(!#items && code){
+								if(#items < 2){
 									if(!newWord[code])newWord[code]={{word;weight}}
 									else {
+										var first = newWord[code][1];
+										if(first && first[2] >= weight ) weight = first[2] + 1; 
+									 
 										push( newWord[code],{word;weight})
 									}
 								}
@@ -858,13 +864,20 @@ var createMenuItems = function(){
 							for( line in ..io.lines(weightFilePath) ){
 								var word,weight = match(line,"(:+)\s+(\d+)");
 								if(!word) continue;
+								
 								if(strlen(word)==1) continue;
+								weight = tonumber(weight);
 								
 								var code = lexFile.combine(word);
+								if(!code) continue;
+								
 								var items = lexFileNew.getCode(code)
-								if(!#items && code){
+								if(#items < 2){
 									if(!newWord[code])newWord[code]={{word;weight}}
 									else {
+										var first = newWord[code][1];
+										if(first && first[2] >= weight ) weight = first[2] + 1; 
+									 
 										push( newWord[code],{word;weight})
 									}
 								}
