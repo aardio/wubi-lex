@@ -2,7 +2,7 @@
 > <a href="http://wubi.aardio.com/update/WubiLex.7z">点这里下载 WubiLex( 五笔助手 )，</a>  体积仅 818KB。   
 > 软件全部功能与界面使用纯 <a href="http://www.aardio.com/">aardio 编程语言(开发环境仅 6.5MB)</a> 实现。 
 
-请参考：<a href="https://www.toutiao.com/article/7134275219254084111/?log_from=b5275b7e5dfba_1662167457543">官方头条号 | 交流反馈</a>
+请参考：<a href="https://www.toutiao.com/article/7134275219254084111/?log_from=b5275b7e5dfba_1662167457543" target="_blank">官方头条号 | 交流反馈</a>
 
 WubiLex 可替换 Win10/Win11 自带微软五笔的系统码表、短语词库。WubiLex 已自带五笔86、98、091、新世纪、小鹤音形、郑码、表形码 …… 等码表。
 
@@ -34,7 +34,7 @@ WubiLex 还提供了强大的「超级热键」功能（ ImTip 也支持超级�
 
 ![财务大写](./screenshots/cn.gif) 
 
-请参考：<a href="https://www.toutiao.com/article/7135834986963517964/?log_from=c329e5c14053a_1662110952400">官方头条号 | 超级热键大全 | 教程</a>
+请参考：<a href="https://www.toutiao.com/article/7135834986963517964/?log_from=c329e5c14053a_1662110952400"  target="_blank">官方头条号 | 超级热键大全 | 教程</a>
 
 WubiLex 的帮助页面收集整理了很多微软五笔常用快捷键、用法帮助。  
 注意：Win10 2004 以上版本已经可以关闭 Shift, Ctrl+Space 等快捷键。  
