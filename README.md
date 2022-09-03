@@ -1,6 +1,6 @@
 # WubiLex ( 五笔助手 )
 > <a href="http://wubi.aardio.com/update/WubiLex.7z">点这里下载 WubiLex( 五笔助手 )，</a>  体积仅 818KB。   
-> 软件界面以全部功能使用使用纯<a href="http://www.aardio.com/">aardio 编程语言(开发环境仅 6.5MB)</a> 实现。 
+> 软件全部功能与界面使用纯 <a href="http://www.aardio.com/">aardio 编程语言(开发环境仅 6.5MB)</a> 实现。 
 
 请参考：<a href="https://www.toutiao.com/article/7134275219254084111/?log_from=b5275b7e5dfba_1662167457543">官方头条号 | 交流反馈</a>
 
