@@ -4,7 +4,7 @@
 
 请参考：<a href="https://www.toutiao.com/article/7134275219254084111/?log_from=b5275b7e5dfba_1662167457543" target="_blank">官方头条号 | 交流反馈</a>
 
-WubiLex 可替换 Win10/Win11 自带微软五笔的系统码表、短语词库。WubiLex 已自带五笔86、98、091、新世纪、小鹤音形、郑码、表形码 …… 等码表。
+WubiLex 可替换 Win10/Win11 自带微软五笔的系统码表、短语词库，软件已自带五笔86、98、091、新世纪、小鹤音形、郑码、表形码 …… 等码表。
 
 ![微软五笔词库替换](./screenshots/1.png)
 
