@@ -605,9 +605,10 @@ winform.ddSimplized.oncommand = function(id,event){
 					
 			import string.conv;	
 			var simplized = string.conv.simplized;
+			var isGb2312 = string.conv.isGb2312;
 			wubiLex.filter(
 				function(txt,code){
-					return simplized(txt)===txt;
+					return isGb2312(txt) || simplized(txt)===txt;
 				}
 			)
 				
