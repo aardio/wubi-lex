@@ -88,26 +88,9 @@ winform.lnkVersion.oncommand = function(id,event){
 	}
 }
 
-import win.versionEx;
-var winver  = win.versionEx.name;
-if(win.versionEx.csdVersion){
-	winver = winver + " " + win.versionEx.csdVersion;
-}
-if(win.versionEx.releaseId){
-	winver = winver + " Version( " + win.versionEx.releaseId + " )";
-}
+import win.versionEx; 
+winform.winver.text = "当前系统版本：" + win.versionEx.format();
 
-if(win.versionEx.buildNumber){
-    var buildNumber = win.versionEx.buildNumber;
-    if(win.versionEx.updateBuildRevision){
-    	buildNumber = buildNumber + "." + win.versionEx.updateBuildRevision;
-    }
-	winver = winver + " / OS Build( " + buildNumber + " )";
-}
-
-winform.winver.text = "当前系统版本：" + winver;
-
-winform.enableDpiScaling();
 winform.show();
 win.loopMessage();
 return winform;

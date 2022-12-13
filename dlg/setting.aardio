@@ -325,7 +325,6 @@ winform.cmbDoublePiny.oncommand = function(id,event){
 	menu.popup(x,y,,0x20/*_TPM_BOTTOMALIGN*/);
 }
 
-winform.enableDpiScaling();
 winform.show();
 win.loopMessage();
 return winform;

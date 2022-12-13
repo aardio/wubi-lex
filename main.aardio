@@ -307,7 +307,6 @@ subscribe("showEtymon",function(...){
 
 mainForm.tabs = tbs;
 
-mainForm.enableDpiScaling();
 if(_ARGV.tray){ 
 	mainForm.modifyStyleEx(0x40000/*_WS_EX_APPWINDOW*/,0x80/*_WS_EX_TOOLWINDOW*/)	
 	mainForm.setTimeout( 

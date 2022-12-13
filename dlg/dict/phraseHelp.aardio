@@ -18,7 +18,6 @@ static5={cls="static";text="输出短语也可以写为$[短语数组]这种格�
 )
 /*}}*/
 
-winform.enableDpiScaling();
 winform.show();
 win.loopMessage();
 return winform;

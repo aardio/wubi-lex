@@ -94,7 +94,6 @@ winform.btnOpenFile.oncommand = function(id,event){
 	}
 }
 
-winform.enableDpiScaling();
 winform.show();
 win.loopMessage();
 return winform;
