@@ -236,7 +236,7 @@ Z 纟三折凵母女厶
 winform.show();
 subscribe("wubi.system.lex.version.changed",function(verNum){
 	if(verNum){
-		tbs.selIndex = table.find({"86";"98";"06";"091";"zhengma";"xhyx"},..globalSystemWubiVersionNumberText);
+		tbs.selIndex = table.find({"86";"98";"06";"091";"092";"zhengma";"xhyx"},..globalSystemWubiVersionNumberText);
 	}
 	else {
 		winform.updateEtymonVersion();
@@ -244,7 +244,7 @@ subscribe("wubi.system.lex.version.changed",function(verNum){
 });
 
 if(..globalSystemWubiVersionNumberText){
-	tbs.selIndex = table.find({"86";"98";"06";"091";"zhengma";"xhyx"},..globalSystemWubiVersionNumberText);
+	tbs.selIndex = table.find({"86";"98";"06";"091";"092";"zhengma";"xhyx"},..globalSystemWubiVersionNumberText);
 }
 else {
 	winform.updateEtymonVersion();
