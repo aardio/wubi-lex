@@ -73,15 +73,6 @@ winform.btnSimplified.busy = function(busy,text){
 	}
 }
 
-subscribe("beforeAddLexFile",function(...){
-	winform.btnAddFile.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
-} )
-
-subscribe("afterLexListUpdated",function(...){
-	winform.listbox.reloadLexList();
-	winform.btnAddFile.disabledText = null;	
-} )
-
 import process.admin;
 process.admin.enableDropMsg(winform.hwnd);
 winform.onDropFiles = function(files){
@@ -90,6 +81,21 @@ winform.onDropFiles = function(files){
 
 import app.lexContents;
 app.lexContents.loadDefault();
+
+subscribe("beforeAddLexFile",function(...){
+	winform.btnAddFile.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
+} )
+
+subscribe("afterLexListUpdated",function(succeeded,lexName){
+	if(succeeded)winform.listbox.reloadLexList();
+	else {
+		if(lexName){
+			app.lexContents.remove(lexName);
+		}
+	}
+	
+	winform.btnAddFile.disabledText = null;	
+} )
 
 import tsfUtil;
 import key.ime;
@@ -433,7 +439,7 @@ var updateSystemLexVersion = function(){
 			import wubi.lexFile;
 			var wubiLex = wubi.lexFile()
 			var verNum = wubiLex.getVersion();
-			var verText = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["06"]="五笔新世纪";["zhengma"]="郑码";xhyx="小鹤音形";bxm="表形码"})[verNum]; 
+			var verText = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["092"]="五笔092";["06"]="五笔新世纪";["zhengma"]="郑码";xhyx="小鹤音形";bxm="表形码"})[verNum]; 
 			winform.listbox.updateSystemLexVersion(verText,verNum)
 		},winform
 	)

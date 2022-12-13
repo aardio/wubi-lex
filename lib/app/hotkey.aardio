@@ -39,6 +39,14 @@ defaultCode = /***********************
 	return true;//允许按键继续发送，不改变大小写键的默认行为
 };
 
+//按0选第10个重码（设置最大候选数为9）
+["0"] = function(){
+    if( winex.msCandidate.isVisible() ){
+        key.press("NEXT", "SPACE");
+    }
+    else return true;//允许按键继续发送，不改变默认行为
+};
+
 //按 Ctrl + .  切换到中文输入 + 中文标点 + 小写
 ["Ctrl+."]  = function(hFocus){    
 	var openState,mode = key.ime.state();

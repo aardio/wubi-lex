@@ -222,26 +222,27 @@ addFile = function(winform,inputPath,lexName){
 	
 	if( ..string.startWith(inputPath,"http://",true) ){
 		updatePath(lexName,inputPath);
-		winform.publish("afterLexListUpdated");
+		winform.publish("afterLexListUpdated",true);
 	}
 	elseif(..string.endWith(inputPath,".txt",true) || ..string.endWith(inputPath,".yaml",true) ||..string.endWith(inputPath,".ini",true)){
 		..win.invoke(
-			function(winform,inputPath,lexPath){
+			function(winform,inputPath,lexPath,lexName){
 				import wubi.lexFile;
 				var wubiLex = wubi.lexFile(inputPath)
 				if(!wubiLex){
 					winform.msgErr(`错误的码表文件`)
+					winform.publish("afterLexListUpdated",false,lexName);
 					return;
 				}
 				wubiLex.saveLex(lexPath)	
-				winform.publish("afterLexListUpdated");
+				winform.publish("afterLexListUpdated",true,lexName);
 				
-			},winform,inputPath,lexPath
+			},winform,inputPath,lexPath,lexName
 		)
 	}
 	elseif(..string.endWith(inputPath,".json",true)){
 		..win.invoke(
-			function(winform,inputPath,lexPath){ 
+			function(winform,inputPath,lexPath,lexName){ 
 				import web.json;
 				var str = string.load(inputPath);
 				var data = web.json.parse(str); 
@@ -251,10 +252,8 @@ addFile = function(winform,inputPath,lexName){
 						|| type(data[1][1])!=type.string
 						|| !string.match(data[1][1],"^[a-z]+$")
 						){
-						winform.msgErr("JSON文件未包含五笔码表")
-						
-						winform.editLex.readonly = false;
-						winform.btnConvert.disabledText = null;
+						winform.msgErr("JSON 文件未包含五笔码表") 
+						winform.publish("afterLexListUpdated",false,lexName); 
 						return;
 					}
 					else {
@@ -262,19 +261,20 @@ addFile = function(winform,inputPath,lexName){
 						var wubiLex = wubi.lexFile(""); 
 						wubiLex.setTableData(data);  
 						wubiLex.saveLex(lexPath)
-						winform.publish("afterLexListUpdated");
+						winform.publish("afterLexListUpdated",true,lexName);
 					}
 				}
 				else {
-					winform.msgErr("JSON文件未包含五笔码表")	
+					winform.msgErr("JSON 文件未包含五笔码表")
+					winform.publish("afterLexListUpdated",false,lexName);
 				}
 				
-			},winform,inputPath,lexPath
+			},winform,inputPath,lexPath,lexName
 		)
 	}
 	elseif(..string.endWith(inputPath,".csv",true)){
 		..win.invoke(
-			function(winform,inputPath,lexPath){ 
+			function(winform,inputPath,lexPath,lexName){ 
 				import string.database;
 				import fsys.codepage;
 				var db = string.database(',','"');
@@ -286,10 +286,8 @@ addFile = function(winform,inputPath,lexName){
 						|| type(data[1][1])!=type.string
 						|| !string.match(data[1][1],"^[a-z]+$")
 						){
-						winform.msgErr("CSV文件未包含五笔码表")
-						
-						winform.editLex.readonly = false;
-						winform.btnConvert.disabledText = null;
+						winform.msgErr("CSV 文件未包含五笔码表")
+						winform.publish("afterLexListUpdated",false,lexName);
 						return;
 					}
 					else {
@@ -297,14 +295,15 @@ addFile = function(winform,inputPath,lexName){
 						var wubiLex = wubi.lexFile(""); 
 						wubiLex.setTableData(data);  
 						wubiLex.saveLex(lexPath)
-						winform.publish("afterLexListUpdated");
+						winform.publish("afterLexListUpdated",true,lexName);
 					}
 				}
 				else {
-					winform.msgErr("CSV文件未包含五笔码表")	
+					winform.msgErr("CSV 文件未包含五笔码表")
+					winform.publish("afterLexListUpdated",false,lexName);
 				}
 				
-			},winform,inputPath,lexPath
+			},winform,inputPath,lexPath,lexName
 		)
 	}
 	elseif(..string.endWith(inputPath,".lex.lzma",true)){
@@ -312,35 +311,39 @@ addFile = function(winform,inputPath,lexName){
 		var file = ..io.open(lexPath,"rb");
 		if(!file){
 			winform.msgErr(`错误的码表文件`)
+			winform.publish("afterLexListUpdated",false,lexName);
 			return;
 		}
 		
 		if( file.read(#"imscwubi")!=="imscwubi"){
 			file.close();
 			winform.msgErr(`错误的码表文件`)
+			winform.publish("afterLexListUpdated",false,lexName);
 			return;
 		}
 		
 		file.close();
-		winform.publish("afterLexListUpdated");
+		winform.publish("afterLexListUpdated",true);
 	}
 	else {
 		var file = ..io.open(inputPath,"rb");
 		if(!file){
 			winform.msgErr(`错误的码表文件`)
+			winform.publish("afterLexListUpdated",false);
 			return;
 		}
 		
 		if( file.read(#"imscwubi")!=="imscwubi"){
 			file.close();
 			winform.msgErr(`错误的码表文件`)
+			winform.publish("afterLexListUpdated",false);
 			return;
 		}
 		
 		file.close()
 		
 		..fsys.copy(inputPath,lexPath);
-		winform.publish("afterLexListUpdated");
+		winform.publish("afterLexListUpdated",true);
 	} 
 }
 

@@ -109,6 +109,23 @@ namespace app.lexNetContents{
 				};
 			}
 		};
+    	{
+    	    name = "五笔092";
+        	items = {
+            	{
+                	name = "五笔092( 常规 )";
+                	url = "http://wubi.aardio.com/download/lex/092/092wb.lex.lzma"
+            	};
+            	{
+                	name = "五笔092( 超集 )";
+                	url = "http://wubi.aardio.com/download/lex/092/092wbp.lex.lzma"
+            	};
+            	{
+                	name = "五笔092K";
+                	url = "http://wubi.aardio.com/download/lex/092/092Kwb.lex.lzma"
+            	}
+        	}
+    	};
 		{	 
 			name = "五笔09";
 			items = {   

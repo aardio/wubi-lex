@@ -1211,6 +1211,10 @@ class lexFile{
 		if( this.test("qv","月") && this.test("ev","世")){
 			return "zhengma","formation";	
 		}
+		
+		if( this.test("sr","版") && this.test("ks","吃") && this.test("ms","见")){
+			return "092";	
+		}
 
 		if( this.test("hodd","够"/*HODD*/) && this.test("opto","啊")){
 			return "bxm";	

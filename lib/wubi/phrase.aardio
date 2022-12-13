@@ -219,8 +219,9 @@ saveToSystem = function(phraseText){
 	var match = ..string.match;
 	var split = ..string.split;
 	var indexOf = ..string.indexOf;
+	var replace = ..string.replace;
 	
-	phraseText = ..string.replace( phraseText,"\/\*.+?\*\/",""); 
+	phraseText = replace( phraseText,"\/\*.+?\*\/",""); 
 
 	var orderMap = {}
 	var multiline = false;
@@ -290,7 +291,7 @@ saveToSystem = function(phraseText){
 				if(!order){
 					var arr = match(phrase,"^\$\[(.+)\]$");
 					if(#arr){
-						arr = indexOf(arr," ") ? split(arr," ") : split(arr);
+						arr = indexOf(arr," ") ? split(replace(arr,"  +"," ")," ") : split(arr);
 						for(i=1;#arr;1){
 							push(phraseArray,{code;arr[i];i}); 
 						}
@@ -393,7 +394,7 @@ default = /**
 aar=aardio
 zzrq=2,%yyyy%年%MM%月%dd%日
 zzsj=2,%yyyy%年%MM%月%dd%日 %HH%:%mm%:%ss%
-z=$[「」『』〖〗《》〈〉〔〕【】≮≯≤≥]
+z=$[『』 「」 🤝 ✊ 👍 👋 💪 🙏 └──] 
 zzkh=$[「」『』〖〗《》〈〉〔〕【】≮≯≤≥]
 zzbd=$[．· …… … ～ ── ─ ‖ ∵ ∴ ☆ ★ ○ ● ◎ ◇ ◆ □ ■ △ ▲ ※ 〓]
 zzbq=$[🤝👍💪👋🙏😄😂🤣😍☹😭😇]

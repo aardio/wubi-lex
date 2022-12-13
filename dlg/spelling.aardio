@@ -83,6 +83,9 @@ var searchSpelling = win.debounce(function(str){
 	winform.plusSpellingGif.text = "";
 	winform.plusTitle.text = ""
 	
+	var bmp = winform.plusSpellingGif.setBackground(null);
+	if(bmp){ bmp.dispose() }
+	
 	var firstChar = string.left(str,1,true);
 	
 	var ver = winform.wubiVersion;
@@ -170,7 +173,8 @@ var searchSpelling = win.debounce(function(str){
 	var length  = #wchars;
 	 
 	var spellingTable = wubi.spellingTable.init(winform.wubiVersion);
-	if(winform.wubiVersion=="zhengma" || winform.wubiVersion=="bxm"){
+	if(winform.wubiVersion=="zhengma" 
+		|| winform.wubiVersion=="bxm"){
 		winform.txtSpelling.text = spellingTable.find(str); 
 		return;
 	}
@@ -223,6 +227,12 @@ var searchSpelling = win.debounce(function(str){
 					}
 				}
 			}	
+			
+			if(winform.wubiVersion=="091" 
+				|| winform.wubiVersion=="092"){
+				winform.plusSpellingGif.text = ""; 
+				return;
+			}
 	}
 	 
 	var getSpellingGifPath = function(char){
@@ -382,7 +392,7 @@ winform.editInput.editBox.onChange = function(){
 	var char = string.charAt(str,1)
 	if(!char){
 		if(winform.wubiVersion){
-			var verString = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["06"]="五笔新世纪";["zhengma"]="郑码"})[winform.wubiVersion];
+			var verString = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["092"]="五笔092";["06"]="五笔新世纪";["zhengma"]="郑码"})[winform.wubiVersion];
 			winform.plusTitle.text = "可在上面重复输入相同单字进行练习, 当前安装的系统码表: " + verString	
 		}
 	
@@ -434,13 +444,17 @@ subscribe("wubi.system.phrase.changed",function(...){
 subscribe("wubi.system.lex.changed",function(...){
 	winform.systemLex = wubi.lexFile()
 	var ver  = winform.systemLex.getVersion()
-	var verString = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["06"]="五笔新世纪";["zhengma"]="郑码";["xhyx"]="小鹤音形";["bxm"]="表形码"})[ver];
+	
+	import wubi.fonts;
+	wubi.fonts.install(winform.txtSpelling,,ver);
+
+	var verString = ({["98"]="五笔98";["86"]="五笔86";["091"]="五笔091";["092"]="五笔092";["06"]="五笔新世纪";["zhengma"]="郑码";["xhyx"]="小鹤音形";["bxm"]="表形码"})[ver];
 	winform.plusTitle.text = '根据系统码表( ' +verString + ' )反查上面输入的汉字,可直接输入拼音\n五笔编码自第二码开始可使用Z键通配任意编码（ 首码除外 ）'
 	
 	var wubiSpellingGifPath86 = fsys.appdata("aardio\std\wubi\spelling\86");
 	var wubiSpellingGifPath98 = fsys.appdata("aardio\std\wubi\spelling\98"); 
 	if( !(..io.exist(wubiSpellingGifPath86) && ..io.exist(wubiSpellingGifPath98)) ){
-		winform.plusDownloadSpellingGif.hide = ver == "zhengma"
+		winform.plusDownloadSpellingGif.hide = !(ver == "86" || ver == "98" || ver == "06");
 	}
 	else {
 		winform.plusDownloadSpellingGif.hide = true;

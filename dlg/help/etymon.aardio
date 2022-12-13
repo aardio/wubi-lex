@@ -5,11 +5,12 @@ var winform = win.form(text="aardio form";right=977;bottom=602;bgcolor=16777215)
 winform.add(
 etymonImage={cls="plus";left=34;top=21;right=949;bottom=546;background="F:\aardio.10\091.png";db=1;dl=1;dr=1;dt=1;font=LOGFONT(h=-16);iconColor=12632256;iconStyle={font=LOGFONT(h=-64;name='FontAwesome')};iconText="   ";repeat="scale";textPadding={bottom=5};valign="bottom";z=8};
 etymonTxt={cls="edit";left=13;top=12;right=966;bottom=552;autohscroll=false;border=1;db=1;dl=1;dr=1;dt=1;font=LOGFONT(h=-16);hide=1;multiline=1;vscroll=1;z=9};
-nav06={cls="plus";text="新世纪字根图";left=458;top=563;right=557;bottom=595;border={top=1;color=-16744448};db=1;dr=1;z=3};
-nav091={cls="plus";text="091版字根图";left=557;top=563;right=656;bottom=595;border={top=1;color=-16744448};db=1;dr=1;z=4};
-nav86={cls="plus";text="86版字根图";left=260;top=563;right=359;bottom=595;border={top=1;color=-16744448};db=1;dr=1;z=1};
-nav98={cls="plus";text="98版字根图";left=359;top=563;right=458;bottom=595;border={top=1;color=-16744448};db=1;dr=1;z=2};
-navLeft={cls="plus";left=0;top=563;right=260;bottom=564;bgcolor=32768;border={color=-16744448};db=1;dl=1;dr=1;forecolor=16777215;linearGradient=180;z=6};
+nav06={cls="plus";text="新世纪字根图";left=363;top=563;right=462;bottom=595;border={top=1;color=-16744448};db=1;dr=1;z=3};
+nav091={cls="plus";text="091版字根图";left=462;top=563;right=561;bottom=595;border={top=1;color=-16744448};db=1;dr=1;z=12};
+nav092={cls="plus";text="092版字根图";left=557;top=563;right=656;bottom=595;border={top=1;color=-16744448};db=1;dr=1;notify=1;z=4};
+nav86={cls="plus";text="86版字根图";left=165;top=563;right=264;bottom=595;border={top=1;color=-16744448};db=1;dr=1;z=1};
+nav98={cls="plus";text="98版字根图";left=264;top=563;right=363;bottom=595;border={top=1;color=-16744448};db=1;dr=1;z=2};
+navLeft={cls="plus";left=0;top=563;right=167;bottom=564;bgcolor=32768;border={color=-16744448};db=1;dl=1;dr=1;forecolor=16777215;linearGradient=180;z=6};
 navTxt={cls="plus";text="文本字根";left=869;top=563;right=968;bottom=595;border={top=1;color=-16744448};db=1;dr=1;z=5};
 navXhyx={cls="plus";text="小鹤音形字根图";left=755;top=563;right=869;bottom=595;border={top=1;color=-16744448};db=1;dr=1;z=11};
 navZhengMa={cls="plus";text="郑码字根图";left=656;top=563;right=755;bottom=595;border={top=1;color=-16744448};db=1;dr=1;z=10};
@@ -18,7 +19,7 @@ plus={cls="plus";left=968;top=563;right=978;bottom=595;border={top=1;color=-1674
 /*}}*/
 
 import win.ui.tabs;
-var tbs = win.ui.tabs(winform.nav86,winform.nav98,winform.nav06,winform.nav091,winform.navZhengMa,winform.navXhyx,winform.navTxt)
+var tbs = win.ui.tabs(winform.nav86,winform.nav98,winform.nav06,winform.nav091,winform.nav092,winform.navZhengMa,winform.navXhyx,winform.navTxt)
 tbs.margin = 0;
 
 tbs.skin({
@@ -59,7 +60,7 @@ var showImage = function(winform,ver){
 }
 
 tbs.onSelchange = function(idx,strip,form){
-	var ver =({"86";"98";"06";"091";"zhengma";"xhyx";})[idx];
+	var ver =({"86";"98";"06";"091";"092";"zhengma";"xhyx";})[idx];
 	winform.etymonImage.hide = !ver;
 	winform.etymonTxt.hide = ver;
 	
@@ -73,7 +74,7 @@ winform.updateEtymonVersion = function(){
     winform.systemLex = wubi.lexFile()
 	var ver  = winform.systemLex.getVersion()
 	if(ver) {
-		tbs.selIndex = table.find({"86";"98";"06";"091";"zhengma";"xhyx"},ver);	
+		tbs.selIndex = table.find({"86";"98";"06";"091";"092";"zhengma";"xhyx"},ver);	
 	} 
 }
 

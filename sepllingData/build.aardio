@@ -7,8 +7,8 @@ btnLoad={cls="button";text="加载";left=684;top=13;right=809;bottom=46;dr=1;dt=
 btnLzma={cls="button";text="全部反查数据压缩输出为 lzma 文件";left=571;top=777;right=899;bottom=810;db=1;dr=1;font=LOGFONT(h=-15;name='FontAwesome');z=7};
 btnSave={cls="button";text="保存";left=819;top=13;right=944;bottom=46;disabled=1;dr=1;dt=1;font=LOGFONT(h=-15);z=2};
 btnSearch={cls="plus";text='\uF002';left=365;top=21;right=394;bottom=44;color=3947580;dr=1;dt=1;font=LOGFONT(h=-16;name='FontAwesome');iconColor=2960685;notify=1;z=5};
-cmbWubiVersion={cls="combobox";left=497;top=16;right=669;bottom=42;dr=1;dt=1;edge=1;font=LOGFONT(h=-15);items={"86";"98";"06";"091";"xhyx";"zhengma"};mode="dropdownlist";z=3};
-editData={cls="edit";left=22;top=67;right=953;bottom=594;db=1;dl=1;dr=1;dt=1;edge=1;hscroll=1;multiline=1;vscroll=1;z=1};
+cmbWubiVersion={cls="combobox";left=497;top=16;right=669;bottom=42;dr=1;dt=1;edge=1;font=LOGFONT(h=-15);items={"86";"98";"06";"091";"092";"xhyx";"zhengma"};mode="dropdownlist";z=3};
+editData={cls="edit";left=22;top=67;right=953;bottom=593;db=1;dl=1;dr=1;dt=1;edge=1;hscroll=1;multiline=1;vscroll=1;z=1};
 editEtymons={cls="edit";left=22;top=603;right=953;bottom=764;autohscroll=false;db=1;dl=1;dr=1;edge=1;multiline=1;vscroll=1;z=8};
 editSearch={cls="plus";left=91;top=18;right=356;bottom=42;align="right";border={bottom=1;color=-8355712};dr=1;dt=1;editable=1;font=LOGFONT(h=-16);z=6}
 )
@@ -31,6 +31,17 @@ winform.btnLoad.oncommand = function(id,event){
     	if(!winform.msgboxTest('文本已修改\n继续操作将丢弃修改的文本'))return;
     }
     
+    import wubi.fonts;
+	wubi.fonts.install(winform.editData,16,winform.cmbWubiVersion.selText);
+	if(winform.cmbWubiVersion.selText=="092"){
+		winform.editEtymons.hide = true;
+		winform.editData.bottom = winform.editEtymons.bottom;
+	}
+	else {
+		winform.editEtymons.hide = false;
+		winform.editData.bottom = winform.editEtymons.top - winform.dpiScale(10);
+	}
+	
     winform.editData.spellingFilePath = "\sepllingData\"+winform.cmbWubiVersion.selText+".txt";
 	winform.editData.text = string.crlf( string.load(winform.editData.spellingFilePath) );
 	winform.editData.modified = false;
@@ -91,6 +102,7 @@ winform.btnLzma.oncommand = function(id,event){
 			sevenZip.lzma.encodeFile("\sepllingData\86.txt","\sepllingData\dist\86.lzma")
 			sevenZip.lzma.encodeFile("\sepllingData\98.txt","\sepllingData\dist\98.lzma")
 			sevenZip.lzma.encodeFile("\sepllingData\091.txt","\sepllingData\dist\091.lzma")
+			sevenZip.lzma.encodeFile("\sepllingData\092.txt","\sepllingData\dist\092.lzma")
 			sevenZip.lzma.encodeFile("\sepllingData\xhyx.txt","\sepllingData\dist\xhyx.lzma")
 			sevenZip.lzma.encodeFile("\sepllingData\zhengma.txt","\sepllingData\dist\zhengma.lzma")
 			winform.btnLzma.disabledText = null;

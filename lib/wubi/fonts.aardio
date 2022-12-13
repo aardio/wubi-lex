@@ -2,24 +2,36 @@
 import fonts;
 namespace wubi.fonts;
 	
-var etymonFontPath = ..io.appData("/aardio/std/wubi/fonts/wubi-lex-etymon-v5.otf") 
+var etymonFontPath,etymonFontName;
 
-install = function(plusCtrl,pxSize){
+install = function(plusCtrl,pxSize,wubiVersion){
+	if(wubiVersion=="092"){
+		etymonFontPath = ..io.appData("/aardio/std/wubi/fonts/wubi-lex-etymon-092.otf");
+		etymonFontName = "092wubiLexEtymon"; 
+	}
+	else {
+		etymonFontPath = ..io.appData("/aardio/std/wubi/fonts/wubi-lex-etymon-v5.otf");
+		etymonFontName = "wubiLexEtymon";	
+	}
+	
     plusCtrl.onEtymonFontInstalled = function(){
-    	fontFamily = ..fonts.addFamily(etymonFontPath,"wubiLexEtymon"); 
-    	plusCtrl.setFont(h=-(pxSize:30);name='wubiLexEtymon');
+    	fontFamily = ..fonts.addFamily(etymonFontPath,etymonFontName); 
+    	plusCtrl.setFont(h=-(pxSize:30);name=etymonFontName);
     }
     
 	if(!..io.exist(etymonFontPath)){
 		..thread.invoke( 
-			function(plusCtrl,etymonFontPath){
+			function(plusCtrl,etymonFontPath,wubiVersion){
+				var url = "http://wubi.aardio.com/download/spelling/fonts/wubi-lex-etymon-v5.lzma";
+				if(wubiVersion=="092"){
+					url = "http://wubi.aardio.com/download/spelling/fonts/wubi-lex-etymon-092.lzma";
+				}
+				
 				import sevenZip.lzma.httpFile;
-				if( sevenZip.lzma.httpFile.saveFromUrl(
-					"http://wubi.aardio.com/download/spelling/fonts/wubi-lex-etymon-v5.lzma"
-					,etymonFontPath) ){
-						plusCtrl.onEtymonFontInstalled();
-					}
-			},plusCtrl,etymonFontPath
+				if( sevenZip.lzma.httpFile.saveFromUrl(url,etymonFontPath) ){
+					plusCtrl.onEtymonFontInstalled();
+				}
+			},plusCtrl,etymonFontPath,wubiVersion
 		)
 	}
 	else {
