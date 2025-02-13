@@ -312,8 +312,8 @@ winform.listbox.wndproc = function(hwnd,message,wParam,lParam){
 									var wubiLex = wubi.lexFile(lexPath); 
 									var data = wubiLex.getTableData();
 									
-									import string.database;
-									var db = string.database(',','"'); 
+									import string.csv;
+									var db = string.csv(',','"'); 
 									string.save(csvPath,'\xEF\xBB\xBF' )
 									string.save(csvPath,db.stringify(data),true)
 									

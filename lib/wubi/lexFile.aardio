@@ -2,7 +2,7 @@
 import fsys;
 import fsys.codepage;
 import string.builder;
-import string.database;
+import string.csv;
 import string.conv;	
 import wubi.phrase;
 import wubi.text;

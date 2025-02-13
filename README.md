@@ -1,10 +1,8 @@
 # WubiLex ( 五笔助手 )
-> <a href="http://wubi.aardio.com/update/WubiLex.7z">点这里下载 WubiLex( 五笔助手 )，</a>  体积仅 816KB。   
+> <a href="http://wubi.aardio.com/update/WubiLex.7z">点这里下载 WubiLex( 五笔助手 )，</a>  体积仅 786KB。   
 > 软件全部功能与界面使用纯 <a href="http://www.aardio.com/">aardio 编程语言(开发环境仅 6.5MB)</a> 实现。 
 
-请参考：<a href="https://mp.weixin.qq.com/s/-bdN1oypEdpHhx_SKx2p-Q">官方微信 | 意见反馈 | 教程</a>
-
-WubiLex 可替换 Win10/Win11 自带微软五笔的系统码表、短语词库，软件已自带五笔86、98、091、092、新世纪、小鹤音形、郑码、表形码 …… 等码表。
+WubiLex 可替换 Win10/Win11 自带微软五笔的系统码表、短语词库，软件已自带五笔 86、98、091、092、新世纪、小鹤音形、郑码、表形码 …… 等码表。
 
 ![微软五笔词库替换](./screenshots/1.png)
 
@@ -26,18 +24,12 @@ WubiLex 提供了方便的反查拆字功能。按 Ctrl + F2 反查五笔编码�
 
 我们一般看到的五笔字根图都是包含所有按键字根的全图，但是这种字根图会让人眼花缭乱，如果我们的眼睛看到的内容越多，记忆效率就会越低。所以我制作了这种简洁版的虚拟键盘。
 
-WubiLex 还提供了强大的「超级热键」功能（ ImTip 也支持超级热键 ），可以用于扩展输入法功能，例如输入数字后自动将句号转换为小数点，输入大写中文数字的中文日期等等。
-
-![超级热键](./screenshots/4.png)  
-
-例如按超级热键 Ctrl+$ 打开财务大写、日期时间大写、数学运算工具。
+请注意 WubiLex 新版不再提供超级热键功能，如果需要超级热键功能，推荐下载仅 800 多 KB的 [ImTip](https://imtip.aardio.com)。例如按 Ctrl+$ 打开财务大写、日期时间大写、数学运算：
 
 ![财务大写](./screenshots/cn.gif) 
 
-请参考：<a href="https://mp.weixin.qq.com/s/-bdN1oypEdpHhx_SKx2p-Q">官方微信 | 超级热键大全 | 教程</a>
 
-WubiLex 的帮助页面收集整理了很多微软五笔常用快捷键、用法帮助。  
-注意：Win10 2004 以上版本已经可以关闭 Shift, Ctrl+Space 等快捷键。  
+WubiLex 的帮助页面收集整理了很多微软五笔常用快捷键、用法帮助。  注意：Win10 2004 以上版本已经可以关闭 Shift, Ctrl+Space 等快捷键。  
 
 ![五笔常用技巧](./screenshots/5.png)
 

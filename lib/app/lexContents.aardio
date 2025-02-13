@@ -275,9 +275,9 @@ addFile = function(winform,inputPath,lexName){
 	elseif(..string.endWith(inputPath,".csv",true)){
 		..win.invoke(
 			function(winform,inputPath,lexPath,lexName){ 
-				import string.database;
+				import string.csv;
 				import fsys.codepage;
-				var db = string.database(',','"');
+				var db = string.csv(',','"');
 				var str = fsys.codepage.load(inputPath);
 				var data = db.parse(str); 
 				

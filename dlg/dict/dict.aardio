@@ -55,20 +55,24 @@ winform.navImTip.skin({
 	}; 
 })
 winform.navImTip.oncommand = function(id,event){
+	
 	import win.ui.atom;
 	var atom,hwnd = ..win.ui.atom.find("E474890D-1DFA-4575-B456-7B46C15665DC.imtip");
 	
 	if(hwnd){
-		win.sendCopyData(hwnd,"start");
-		
-		var hwnd  = winex.find("IMTIP_SETTING_FORM");
-		if(hwnd){
-			win.setForeground(hwnd);			
-		}
+		win.sendCopyData(hwnd,"main"); 
 	}
 	else { 
 		import process;
-		process.openUrl("http://imtip.aardio.com");
+		import process.cache;
+		
+		var path  = ..process.cache.find("imtip.exe");
+		if(path){
+			process.execute(path);
+		}
+		else {
+			process.openUrl("http://imtip.aardio.com");
+		} 
 	} 
 }
 

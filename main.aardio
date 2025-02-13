@@ -5,13 +5,12 @@ import win.ui;
 /*DSG{{*/
 mainForm = win.form(cls="AARDIO_WUBI_FORM";text="WubiLex ( 五笔助手 )";right=1040;bottom=642;bgcolor=16777215;border="none")
 mainForm.add(
-caption={cls="bkplus";text="WubiLex 11.7";left=35;top=12;right=153;bottom=30;color=15780518;dl=1;dt=1;font=LOGFONT(h=-16);z=5};
+caption={cls="bkplus";text="WubiLex 12.0";left=35;top=12;right=153;bottom=30;color=15780518;dl=1;dt=1;font=LOGFONT(h=-16);z=5};
 custom={cls="custom";left=0;top=40;right=1040;bottom=643;bgcolor=16777215;db=1;dl=1;dr=1;dt=1;z=1};
 logo={cls="bkplus";text='\uF0AD';left=6;top=9;right=35;bottom=34;color=15780518;dl=1;dt=1;font=LOGFONT(h=-18;name='FontAwesome');z=4};
-stripHelp={cls="plus";text="帮助";left=557;top=5;right=651;bottom=40;align="left";color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome');padding={left=12;top=3}};iconText='\uF06A';notify=1;paddingLeft=1;paddingRight=1;paddingTop=3;textPadding={left=38};x=0.5;y=0.2;z=8};
-stripHotkey={cls="plus";text="热键";left=355;top=5;right=449;bottom=40;align="left";color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome');padding={left=12;top=3}};iconText='\uF11C ';notify=1;paddingLeft=1;paddingRight=1;paddingTop=3;textPadding={left=38};x=0.5;y=0.2;z=9};
+stripHelp={cls="plus";text="帮助";left=455;top=5;right=549;bottom=40;align="left";color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome');padding={left=12;top=3}};iconText='\uF06A';notify=1;paddingLeft=1;paddingRight=1;paddingTop=3;textPadding={left=38};x=0.5;y=0.2;z=8};
 stripLex={cls="plus";text="词库";left=152;top=5;right=246;bottom=40;align="left";color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome');padding={left=12;top=3}};iconText='\uF00A';notify=1;paddingLeft=1;paddingRight=1;paddingTop=3;textPadding={left=38};x=0.5;y=0.2;z=3};
-stripSetting={cls="plus";text="设置";left=456;top=5;right=550;bottom=40;align="left";color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome');padding={left=12;top=3}};iconText='\uF0AD';notify=1;paddingLeft=1;paddingRight=1;paddingTop=3;textPadding={left=38};x=0.5;y=0.2;z=7};
+stripSetting={cls="plus";text="设置";left=354;top=5;right=448;bottom=40;align="left";color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome');padding={left=12;top=3}};iconText='\uF0AD';notify=1;paddingLeft=1;paddingRight=1;paddingTop=3;textPadding={left=38};x=0.5;y=0.2;z=7};
 stripSpelling={cls="plus";text="反查";left=253;top=5;right=347;bottom=40;align="left";color=16777215;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-19;name='FontAwesome');padding={left=12;top=3}};iconText='\uF002';notify=1;paddingLeft=1;paddingRight=1;paddingTop=3;textPadding={left=38};x=0.5;y=0.2;z=6};
 titleBar={cls="bkplus";left=0;top=0;right=1042;bottom=41;bgcolor=14977280;dl=1;dr=1;dt=1;z=2}
 )
@@ -43,7 +42,6 @@ import win.ui.tabs;
 var tbs = win.ui.tabs( 
 	mainForm.stripLex,
 	mainForm.stripSpelling,
-	mainForm.stripHotkey,
 	mainForm.stripSetting,
 	mainForm.stripHelp
 );
@@ -65,9 +63,8 @@ tbs.skin({
 	
 tbs.loadForm(1,"\dlg\dict\dict.aardio" ); 
 tbs.loadForm(2,"\dlg\spelling.aardio" ); 
-tbs.loadForm(3,"\dlg\hotkey.aardio" ); tbs.preloadForm(3,false)
-tbs.loadForm(4,"\dlg\setting.aardio" ); 
-tbs.loadForm(5,"\dlg\help\help.aardio" ); 
+tbs.loadForm(3,"\dlg\setting.aardio" ); 
+tbs.loadForm(4,"\dlg\help\help.aardio" ); 
 tbs.selIndex = 1;
 
 import win.util.tray;
@@ -105,14 +102,9 @@ mainForm.wndproc = {
 			win.setForeground(mainForm.hwnd)
 			mainForm.popmenu = win.ui.popmenu(mainForm);//创建弹出菜单
 			mainForm.popmenu.add('设置输入法',function(id){
-				tbs.selIndex = 4;
-				mainForm.show();
-			});
-			mainForm.popmenu.add('设置超级热键',function(id){
 				tbs.selIndex = 3;
-				mainForm.show();  
-			});
-			 
+				mainForm.show();
+			}); 
 			mainForm.popmenu.add();
 			
 			mainForm.popmenu.add('管理码表',function(id){
@@ -145,6 +137,7 @@ mainForm.wndproc = {
 				table.push(keys,key.getName(config.hotkey.spelling[[2]]));
 				hotkey = '\t' + string.join(keys," + ");
 			}
+			
 			mainForm.popmenu.add('字根反查' + hotkey,function(id){
 				tbs.selIndex = 2;
 				mainForm.show();
@@ -301,7 +294,7 @@ subscribe("spellingHotkeyChange",function(...){
 publish("spellingHotkeyChange");
 
 subscribe("showEtymon",function(...){
-	tbs.selIndex = 5;
+	tbs.selIndex = 4;
 	tbs.selForm.showEtymon();
 } )
 
