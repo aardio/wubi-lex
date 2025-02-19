@@ -61,6 +61,7 @@ winform.navImTip.oncommand = function(id,event){
 	
 	if(hwnd){
 		win.sendCopyData(hwnd,"main"); 
+		win.setForeground(hwnd);
 	}
 	else { 
 		import process;

@@ -10,7 +10,7 @@ encode = function(txt){
 }
 
 decode = function(txt){
-    return replace(txt,"<%20>|<%09>|<%0D>|<%0A>",lambda(c) unhex(c,"%") ) 
+    return replace(txt,"<\%20>|<\%09>|<\%0D>|<\%0A>",lambda(c) unhex(c,"%") ) 
 }
 
 /**intellisense(wubi.text)
