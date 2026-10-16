@@ -1,5 +1,5 @@
 # WubiLex ( 五笔助手 )
-> <a href="http://wubi.aardio.com/update/WubiLex.7z">点这里下载 WubiLex( 五笔助手 )，</a>  体积仅 786KB。   
+> <a href="http://wubi.aardio.com/update/WubiLex.7z">点这里下载 WubiLex( 五笔助手 )，</a>  体积仅 792KB。   
 > 软件全部功能与界面使用纯 <a href="http://www.aardio.com/">aardio 编程语言(开发环境仅 6.5MB)</a> 实现。 
 
 WubiLex 可替换 Win10/Win11 自带微软五笔的系统码表、短语词库，软件已自带五笔 86、98、091、092、新世纪、小鹤音形、郑码、表形码 …… 等码表。
